@@ -9,7 +9,6 @@
 #include "AppStateManager.hpp"
 
 #include "states/MenuState.hpp"
-#include "states/GameState.hpp"
 #include "states/PauseState.hpp"
 #include "states/SongListState.hpp"
 #include "states/PerformanceState.hpp"
@@ -42,7 +41,6 @@ private:
 
 
     MenuState*		  myMenuState;
-    GameState*		  myGameState;
     PauseState*		  myPauseState;
     SongListState*	  mySongListState;
     PerformanceState* myPerformanceState;

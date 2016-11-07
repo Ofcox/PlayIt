@@ -61,7 +61,6 @@ HEADERS += \
     states/PerformanceScene/SceneSettings.h \
     states/PerformanceScene/strings.h \
     states/AppState.hpp \
-    states/GameState.hpp \
     states/lang_cz.h \
     states/MenuState.hpp \
     states/PauseState.hpp \
@@ -76,8 +75,7 @@ HEADERS += \
     SongInfo.h \
     Chord.h \
     Note.h \
-    Staff.h \
-    NotationFile.h
+    Staff.h
 
 SOURCES += \
     states/PerformanceScene/bars.cpp \
@@ -85,7 +83,6 @@ SOURCES += \
     states/PerformanceScene/performancescene.cpp \
     states/PerformanceScene/SceneSettings.cpp \
     states/PerformanceScene/strings.cpp \
-    states/GameState.cpp \
     states/MenuState.cpp \
     states/PauseState.cpp \
     states/PerformanceState.cpp \
@@ -100,5 +97,4 @@ SOURCES += \
     SongInfo.cpp \
     Chord.cpp \
     Note.cpp \
-    Staff.cpp \
-    NotationFile.cpp
+    Staff.cpp
