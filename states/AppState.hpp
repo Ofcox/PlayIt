@@ -63,18 +63,6 @@ protected:
 };
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
-//Vytvori z tridy singleton a to neni dobre
-//Nahradim makrem, ktere inkluduje dulezite pointery a umozni spravne mazani objektu
-
-//#define DECLARE_APPSTATE_CLASS(T)										\
-//static void create(AppStateListener* parent, const Ogre::String name)	\
-//{																		\
-//    T* myAppState = new T();											\
-//	myAppState->m_pParent = parent;										\
-//	parent->manageAppState(name, myAppState);							\
-//}
-
-//|||||||||||||||||||||||||||||||||||||||||||||||
 
 #endif
 
