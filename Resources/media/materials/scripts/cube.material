@@ -1,0 +1,90 @@
+material Fret/FretMat
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			specular 1 1 1 50
+			ambient 1.0 1.0 1.0
+			diffuse 1.0 0.9569 0.898
+		}
+	}
+}
+
+material Fret/StringMat
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			specular 1 1 1 50
+			texture_unit
+			{
+				texture rockwall.tga
+			}
+		}
+	}
+}
+
+material Fret/String4Mat
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			specular 1 1 1 50
+			ambient 1.0 0.9569 0.898
+			diffuse 1.0 0.9569 0.898
+			texture_unit
+			{
+				texture rockwall.tga
+			}
+		}
+	}
+}
+material Fret/String3Mat
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			specular 1 1 1 50
+			ambient 0.2667 0.9098 0.1922
+			diffuse 0.2667 0.9098 0.1922
+			texture_unit
+			{
+				texture rockwall.tga
+			}
+		}
+	}
+}
+material Fret/String2Mat
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			specular 1 1 1 50
+			ambient 0.0588 0.2941 1.0
+			diffuse 0.0588 0.2941 1.0
+		}
+	}
+}
+material Fret/String1Mat
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0.9098 0.1961 0.1882
+			diffuse 0.9098 0.1961 0.1882
+			specular 1 1 1 50
+		}
+	}
+}

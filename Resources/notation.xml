@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<song version="0.1">
+  <artistName>Artist</artistName>
+  <songName>SongName</songName>
+  <albumName>Album</albumName>
+  <albumYear>1993</albumYear>
+  <arrangement>Rhythm</arrangement>
+  <songLength>0</songLength>
+  <tempo>60</tempo>
+  <tuning name="GCEA" string4="G" string3="C" string2="E" string1="A" />
+  <chordList>
+	<chordPattern name="C" englishName="C" germanName="Cdur" string4="0" string3="0" string2="0" string1="3" />
+	<chordPattern name="F" englishName="F" germanName="Fdur" string4="2" string3="0" string2="1" string1="0" />
+	<chordPattern name="G" englishName="G" germanName="Gdur" string4="0" string3="2" string2="3" string1="2" />
+  </chordList>
+  <!-- 1 = index finger, 2 = middle finger, 3 = ring finger, 4 = pinky finger, 5 = thumb -->
+  <fingerPatterns>
+	<fingers chord="C" string4="0" string3="0" string2="0" string1="3" />
+	<fingers chord="F" string4="2" string3="0" string2="1" string1="0" />
+	<fingers chord="G" string4="0" string3="1" string2="3" string1="2" />
+  </fingerPatterns>
+  <staff>
+    <bar number="1">
+      <element type= "chord" position="0" name="C" duration="0.5" strum="down" modifier="0" />
+    </bar>
+    <bar number="2">
+      <element type= "chord" position="0" name="C" duration="0.5" strum="down" modifier="0" />
+    </bar>
+	<bar number="3">
+      <element type= "chord" position="0" name="C" duration="0.5" strum="down" modifier="0" />
+    </bar>
+    <bar number="4">
+      <element type= "chord" position="0" name="C" duration="0.5" strum="down" modifier="0" />
+    </bar>
+	<bar number="5">
+      <element type= "chord" position="0" name="F" duration="0.5" strum="down" modifier="0" />
+	  <element type= "chord" position="2" name="F" duration="0.5" strum="up" modifier="0" />
+    </bar>
+	<bar number="6">
+      <element type= "chord" position="0" name="F" duration="0.5" strum="down" modifier="0" />
+	  <element type= "chord" position="2" name="F" duration="0.5" strum="up" modifier="0" />
+    </bar>
+	<bar number="7">
+      <element type= "chord" position="0" name="G" duration="0.5" strum="down" modifier="0" />
+	  <element type= "chord" position="2" name="G" duration="0.5" strum="up" modifier="0" />
+    </bar>
+	<bar number="8">
+      <element type= "chord" position="0" name="G" duration="0.5" strum="down" modifier="0" />
+	  <element type= "chord" position="2" name="G" duration="0.5" strum="up" modifier="0" />
+    </bar>
+    <bar number="9">
+      <element type= "chord" position="0" name="C" duration="1" strum="down" modifier="0" />
+	  <element type= "chord" position="1" name="C" duration="1" strum="up" modifier="0" />
+	  <element type= "chord" position="2" name="C" duration="1" strum="down" modifier="0" />
+	  <element type= "chord" position="3" name="C" duration="1" strum="up" modifier="0" />
+    </bar>
+	<bar number="10">
+      <element type= "chord" position="0" name="C" duration="1" strum="down" modifier="0" />
+	  <element type= "chord" position="1" name="C" duration="1" strum="up" modifier="0" />
+	  <element type= "chord" position="2" name="C" duration="1" strum="down" modifier="0" />
+	  <element type= "chord" position="3" name="C" duration="1" strum="up" modifier="0" />
+    </bar>
+	<bar number="11">
+      <element type= "chord" position="0" name="C" duration="1" strum="down" modifier="0" />
+	  <element type= "chord" position="1" name="C" duration="1" strum="up" modifier="0" />
+	  <element type= "chord" position="2" name="C" duration="1" strum="down" modifier="0" />
+	  <element type= "chord" position="3" name="C" duration="1" strum="up" modifier="0" />
+    </bar>
+	<bar number="12">
+      <element type= "chord" position="0" name="C" duration="1" strum="down" modifier="0" />
+	  <element type= "chord" position="1" name="C" duration="1" strum="up" modifier="0" />
+	  <element type= "chord" position="2" name="C" duration="1" strum="down" modifier="0" />
+	  <element type= "chord" position="3" name="C" duration="1" strum="up" modifier="0" />
+    </bar>
+	<bar number="13">
+	  <element type= "note" position = "0" name = "" string = "1" fret = "1" modifier="0" />
+	  <element type= "note" position = "1" name = "" string = "2" fret = "2" modifier="0" />
+	  <element type= "note" position = "2" name = "" string = "3" fret = "3" modifier="0" />
+	  <element type= "note" position = "3" name = "" string = "4" fret = "4" modifier="0" />
+	</bar>
+  </staff>
+</song>
