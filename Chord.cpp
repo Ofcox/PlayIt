@@ -23,7 +23,7 @@ ChordPattern *ChordList::getChordPatternByName( std::string chordName ) {
 
     for ( itr = chordPatterns.begin(); itr != chordPatterns.end(); ++itr )
     {
-        if ( ( *itr )->m_name == chordName ) {
+        if ( ( *itr )->getName() == chordName ) {
             return *itr;
         }
     }

@@ -29,12 +29,14 @@ using namespace rapidxml;
 
 //Load staff elements and saves them to NotationElements
 class NotationFileParser {
+private:
+    int				 m_barNumber;
+    std::string		 m_type;
+    ChordList*		 m_chordList;
+    ChordPattern*	 m_currentChord;
+    FingerPositions* m_FingerPositions;
+
 public:
-    int					m_barNumber;
-    std::string			m_type;
-    ChordList*			m_chordList;
-    ChordPattern*		m_currentChord;
-    FingerPositions*	m_FingerPositions;
     Ogre::SceneManager* m_pSceneMgr;
     Ogre::SceneNode*	m_staffNode;
 

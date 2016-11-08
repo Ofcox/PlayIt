@@ -28,9 +28,7 @@
 
 class PerformanceScene
 {
-public:
-    PerformanceScene( Ogre::SceneManager *sceneMgr );
-    ~PerformanceScene();
+private:
     Ogre::SceneManager* m_sceneMgr;
     Ogre::Vector3		m_direction;
 
@@ -41,6 +39,10 @@ public:
 
     FretGuide* m_fretguides;
     Strings*   m_strings;
+public:
+    PerformanceScene( Ogre::SceneManager *sceneMgr );
+    ~PerformanceScene();
+
     void scene();
     void update( const Ogre::FrameEvent &evt );
 

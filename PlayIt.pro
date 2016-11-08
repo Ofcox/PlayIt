@@ -55,7 +55,6 @@ HEADERS += \
     dependencies/rapidxml/rapidxml_print.hpp \
     dependencies/rapidxml/rapidxml_utils.hpp \
     states/PerformanceScene/bars.h \
-    states/PerformanceScene/FingerGuide.h \
     states/PerformanceScene/fretguide.h \
     states/PerformanceScene/performancescene.h \
     states/PerformanceScene/SceneSettings.h \

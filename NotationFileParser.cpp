@@ -42,7 +42,7 @@ NotationFileParser::NotationFileParser( std::string fileName, std::vector<Elemen
                 m_currentChord = m_chordList->getChordPatternByName( currentElementNode->first_attribute( "name" )->value() );
                 ocx::Chord* ChordObject = new ocx::Chord(  m_currentChord,
                                                            actualPosition( std::stof( currentElementNode->first_attribute( "position" )->value() ) ),
-                                                           m_currentChord->m_germanName ) ;
+                                                           m_currentChord->getGermanName() ) ;
 
                 elements.push_back( ChordObject );
             } else if ( m_type == "note" ) {
@@ -73,7 +73,7 @@ void NotationFileParser::loadElements( std::vector<Element*>& elements, Ogre::Sc
         if ( ( *itr )->m_type == NOTE ) {
             NoteObject				 = dynamic_cast<ocx::Note *>( *itr );
             NoteObject->m_noteEntity = m_pSceneMgr->createEntity( "cube.mesh" );
-            switch ( NoteObject->m_string ) {
+            switch ( NoteObject->getString() ) {
             case 1:
                 NoteObject->m_noteEntity->setMaterialName( "Fret/String1Mat" );
                 break;
@@ -90,9 +90,9 @@ void NotationFileParser::loadElements( std::vector<Element*>& elements, Ogre::Sc
 
             NoteObject->m_noteNode = m_staffNode->createChildSceneNode();
             NoteObject->m_noteNode->attachObject( NoteObject->m_noteEntity );
-            NoteObject->m_noteNode->setPosition( ( NoteObject->m_fret * SceneSettings::fretSpacing ) - ( SceneSettings::fretSpacing / 2 ),
-                                                 ( NoteObject->m_string * SceneSettings::stringSpacing ),
-                                                 -NoteObject->m_timePosition * SceneSettings::barScale );
+            NoteObject->m_noteNode->setPosition( ( NoteObject->getFret() * SceneSettings::fretSpacing ) - ( SceneSettings::fretSpacing / 2 ),
+                                                 ( NoteObject->getString() * SceneSettings::stringSpacing ),
+                                                 -NoteObject->getTimePosition() * SceneSettings::barScale );
             NoteObject->m_noteNode->setScale( 8, 4, 4 );
 
         } else if ( ( *itr )->m_type == CHORD ) {
@@ -100,7 +100,7 @@ void NotationFileParser::loadElements( std::vector<Element*>& elements, Ogre::Sc
             for ( int i = 0; i <= 3; ++i ) {
                 ChordObject->m_notes[i]->m_noteEntity = m_pSceneMgr->createEntity( "cube.mesh" );
 
-                switch ( ChordObject->m_notes[i]->m_string ) {
+                switch ( ChordObject->m_notes[i]->getString() ) {
                 case 1:
                     ChordObject->m_notes[i]->m_noteEntity->setMaterialName( "Fret/String1Mat" );
                     break;
@@ -118,17 +118,17 @@ void NotationFileParser::loadElements( std::vector<Element*>& elements, Ogre::Sc
                 ChordObject->m_chordNode			= m_staffNode->createChildSceneNode();
                 ChordObject->m_notes[i]->m_noteNode = ChordObject->m_chordNode->createChildSceneNode();
                 ChordObject->m_notes[i]->m_noteNode->attachObject( ChordObject->m_notes[i]->m_noteEntity );
-                ChordObject->m_notes[i]->m_noteNode->setPosition(  ( ChordObject->m_notes[i]->m_fret * SceneSettings::fretSpacing ) - ( SceneSettings::fretSpacing / 2 ),
-                                                                   ( ChordObject->m_notes[i]->m_string * SceneSettings::stringSpacing ),
+                ChordObject->m_notes[i]->m_noteNode->setPosition(  ( ChordObject->m_notes[i]->getFret() * SceneSettings::fretSpacing ) - ( SceneSettings::fretSpacing / 2 ),
+                                                                   ( ChordObject->m_notes[i]->getString() * SceneSettings::stringSpacing ),
                                                                    0 );
 
-                if ( !ChordObject->m_notes[i]->m_isNullFret ) {
-                    ChordObject->m_chordNode->setPosition( 0, 0, -ChordObject->m_timePosition * SceneSettings::barScale );
+                if ( !ChordObject->m_notes[i]->getIsNullFret() ) {
+                    ChordObject->m_chordNode->setPosition( 0, 0, -ChordObject->getTimePosition() * SceneSettings::barScale );
                     ChordObject->m_notes[i]->m_noteNode->setScale( 8, 4, 4 );
                 } else {
-                    ChordObject->m_chordNode->setPosition( 0, 0, -ChordObject->m_timePosition * SceneSettings::barScale );
-                    ChordObject->m_notes[i]->m_noteNode->setPosition( ( /*7.5+15 + */ ( ChordObject->m_beginFret * SceneSettings::fretSpacing ) + ( SceneSettings::fretSpacing ) /* position from finger guide class */ ),
-                                                                      ( ChordObject->m_notes[i]->m_string * SceneSettings::stringSpacing ),
+                    ChordObject->m_chordNode->setPosition( 0, 0, -ChordObject->getTimePosition() * SceneSettings::barScale );
+                    ChordObject->m_notes[i]->m_noteNode->setPosition( ( /*7.5+15 + */ ( ChordObject->getBeginFret() * SceneSettings::fretSpacing ) + ( SceneSettings::fretSpacing ) /* position from finger guide class */ ),
+                                                                      ( ChordObject->m_notes[i]->getString() * SceneSettings::stringSpacing ),
                                                                       0 );
                     ChordObject->m_notes[i]->m_noteNode->setScale( SceneSettings::fretSpacing * 4, 1, 1 );
                 }
