@@ -2,7 +2,7 @@
 #define SCENESETTINGS_H
 
 #include <OgreSceneManager.h>
-#include "../../SongInfo.h"
+#include "../SongListScene/SongInfo.h"
 
 class SceneSettings
 {

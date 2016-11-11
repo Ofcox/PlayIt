@@ -50,50 +50,50 @@ DISTFILES += \
     Project.txt
 
 HEADERS += \
-    dependencies/rapidxml/rapidxml.hpp \
-    dependencies/rapidxml/rapidxml_iterators.hpp \
-    dependencies/rapidxml/rapidxml_print.hpp \
-    dependencies/rapidxml/rapidxml_utils.hpp \
-    states/PerformanceScene/bars.h \
-    states/PerformanceScene/fretguide.h \
-    states/PerformanceScene/performancescene.h \
-    states/PerformanceScene/SceneSettings.h \
-    states/PerformanceScene/strings.h \
-    states/AppState.hpp \
-    states/lang_cz.h \
-    states/MenuState.hpp \
-    states/PauseState.hpp \
-    states/PerformanceState.hpp \
-    states/SongListState.hpp \
     AdvancedOgreFramework.hpp \
     AppStateManager.hpp \
-    DemoApp.hpp \
     DotSceneLoader.hpp \
-    FingerPlacement.h \
-    NotationFileParser.h \
-    SongInfo.h \
-    Chord.h \
-    Note.h \
-    Staff.h
+    Dependencies/rapidxml/rapidxml.hpp \
+    Dependencies/rapidxml/rapidxml_iterators.hpp \
+    Dependencies/rapidxml/rapidxml_print.hpp \
+    Dependencies/rapidxml/rapidxml_utils.hpp \
+    Scenes/AppState.hpp \
+    Scenes/MenuState.hpp \
+    Scenes/PauseState.hpp \
+    Scenes/PerformanceState.hpp \
+    Scenes/SongListState.hpp \
+    Scenes/PerformanceScene/Bars.h \
+    Scenes/PerformanceScene/FingerPlacement.h \
+    Scenes/PerformanceScene/FretGuide.h \
+    Scenes/PerformanceScene/Chord.h \
+    Scenes/PerformanceScene/NotationFileParser.h \
+    Scenes/PerformanceScene/Note.h \
+    Scenes/PerformanceScene/PerformanceScene.h \
+    Scenes/PerformanceScene/SceneSettings.h \
+    Scenes/PerformanceScene/Staff.h \
+    Scenes/PerformanceScene/Strings.h \
+    Scenes/SongListScene/SongInfo.h \
+    PlayIt.hpp
+
 
 SOURCES += \
-    states/PerformanceScene/bars.cpp \
-    states/PerformanceScene/fretguide.cpp \
-    states/PerformanceScene/performancescene.cpp \
-    states/PerformanceScene/SceneSettings.cpp \
-    states/PerformanceScene/strings.cpp \
-    states/MenuState.cpp \
-    states/PauseState.cpp \
-    states/PerformanceState.cpp \
-    states/SongListState.cpp \
     AdvancedOgreFramework.cpp \
     AppStateManager.cpp \
-    DemoApp.cpp \
     DotSceneLoader.cpp \
-    FingerPlacement.cpp \
     main.cpp \
-    NotationFileParser.cpp \
-    SongInfo.cpp \
-    Chord.cpp \
-    Note.cpp \
-    Staff.cpp
+    Scenes/MenuState.cpp \
+    Scenes/PauseState.cpp \
+    Scenes/PerformanceState.cpp \
+    Scenes/SongListState.cpp \
+    Scenes/PerformanceScene/Bars.cpp \
+    Scenes/PerformanceScene/FingerPlacement.cpp \
+    Scenes/PerformanceScene/FretGuide.cpp \
+    Scenes/PerformanceScene/Chord.cpp \
+    Scenes/PerformanceScene/NotationFileParser.cpp \
+    Scenes/PerformanceScene/Note.cpp \
+    Scenes/PerformanceScene/PerformanceScene.cpp \
+    Scenes/PerformanceScene/SceneSettings.cpp \
+    Scenes/PerformanceScene/Staff.cpp \
+    Scenes/PerformanceScene/Strings.cpp \
+    Scenes/SongListScene/SongInfo.cpp \
+    PlayIt.cpp

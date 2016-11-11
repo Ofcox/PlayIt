@@ -46,6 +46,7 @@ public:
     // Container of all fingers holding current chord
     std::vector<Finger> fingers;
 
+    // Contructor sets begin and end fret of ChordDefinition
     FingerPattern( ChordPattern* pChordDefinition, std::string chordName, int fingerOnString4, int fingerOnString3, int fingerOnString2, int fingerOnString1 );
 
 };
@@ -54,6 +55,7 @@ public:
 ===============================================================================
 
     Here are stored all finger patterns
+    TODO refactoring after implementation of Labels and Targets
 
 ===============================================================================
 */
