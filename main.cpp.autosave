@@ -15,10 +15,10 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT )
 int main( int argc, char **argv )
 #endif
 {
-    PlayIt demo;
+    PlayIt instance;
     try
     {
-        demo.start();
+        instance.start();
     }
     catch ( std::exception& e )
     {

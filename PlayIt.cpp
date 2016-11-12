@@ -1,23 +1,23 @@
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-#include "DemoApp.hpp"
+#include "PlayIt.hpp"
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-DemoApp::DemoApp() {
+PlayIt::PlayIt() {
     m_pAppStateManager = 0;
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-DemoApp::~DemoApp() {
+PlayIt::~PlayIt() {
     delete m_pAppStateManager;
     delete OgreFramework::getSingletonPtr();
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-void DemoApp::startDemo() {
+void PlayIt::start() {
     new OgreFramework();
     if ( !OgreFramework::getSingletonPtr()->initOgre( "Project Uketard pre-aplha 0.000001", 0, 0 ) ) {
         return;

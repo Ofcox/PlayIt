@@ -3,7 +3,8 @@
 
 #include "Note.h"
 
-#include "dependencies/rapidxml/rapidxml.hpp"
+#include "../../dependencies/rapidxml/rapidxml.hpp"
+
 using namespace rapidxml;
 
 namespace ocx {

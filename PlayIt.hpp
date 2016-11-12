@@ -8,20 +8,20 @@
 #include "AdvancedOgreFramework.hpp"
 #include "AppStateManager.hpp"
 
-#include "states/MenuState.hpp"
-#include "states/PauseState.hpp"
-#include "states/SongListState.hpp"
-#include "states/PerformanceState.hpp"
+#include "scenes/MenuState.hpp"
+#include "scenes/PauseState.hpp"
+#include "scenes/SongListState.hpp"
+#include "scenes/PerformanceState.hpp"
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-class DemoApp
+class PlayIt
 {
 public:
-    DemoApp();
-    ~DemoApp();
+    PlayIt();
+    ~PlayIt();
 
-    void startDemo();
+    void start();
 
 private:
     AppStateManager* m_pAppStateManager;

@@ -1,7 +1,7 @@
 #ifndef NOTATIONPARSER_H
 #define NOTATIONPARSER_H
 
-#include "dependencies/rapidxml/rapidxml.hpp"
+#include "../../dependencies/rapidxml/rapidxml.hpp"
 #include <string>
 #include <vector>
 
@@ -15,7 +15,7 @@
 
 #include "FingerPlacement.h"
 #include "Chord.h"
-#include "states/PerformanceScene/SceneSettings.h"
+#include "SceneSettings.h"
 
 /*
 ===============================================================================

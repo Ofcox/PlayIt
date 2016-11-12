@@ -2,8 +2,8 @@
 #define STAFF_H
 #include "NotationFileParser.h"
 
-#include "states/PerformanceScene/SceneSettings.h"
-#include "states/PerformanceScene/strings.h"
+#include "SceneSettings.h"
+#include "strings.h"
 
 /*
 ===============================================================================

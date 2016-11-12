@@ -9,13 +9,13 @@
 
 #include <OgreSubEntity.h>
 #include <OgreMaterialManager.h>
+#include <vector>
 
 #include "PerformanceScene/fretguide.h"
 #include "PerformanceScene/strings.h"
-#include "../Staff.h"
-#include <vector>
-#include "../SongInfo.h"
+#include "PerformanceScene/Staff.h"
 
+#include "SongListScene/SongInfo.h"
 
 /*
 ===============================================================================
