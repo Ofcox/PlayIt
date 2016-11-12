@@ -59,8 +59,8 @@ public:
 */
 class ChordList {
 public:
-    std::vector<ChordPattern*>	chordPatterns;
-    std::vector<FingerPattern*> fingerPatterns;
+    std::vector<ChordPattern*> chordPatterns;
+    //std::vector<FingerPattern*> fingerPatterns;
 
     ChordList();
     ~ChordList();

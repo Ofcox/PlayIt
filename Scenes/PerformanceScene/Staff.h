@@ -3,7 +3,8 @@
 #include "NotationFileParser.h"
 
 #include "SceneSettings.h"
-#include "strings.h"
+#include "Strings.h"
+#include "Targets.h"
 
 /*
 ===============================================================================

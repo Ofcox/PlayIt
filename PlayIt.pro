@@ -73,7 +73,8 @@ HEADERS += \
     Scenes/PerformanceScene/Staff.h \
     Scenes/PerformanceScene/Strings.h \
     Scenes/SongListScene/SongInfo.h \
-    PlayIt.hpp
+    PlayIt.hpp \
+    Scenes/PerformanceScene/Targets.h
 
 
 SOURCES += \
@@ -96,4 +97,5 @@ SOURCES += \
     Scenes/PerformanceScene/Staff.cpp \
     Scenes/PerformanceScene/Strings.cpp \
     Scenes/SongListScene/SongInfo.cpp \
-    PlayIt.cpp
+    PlayIt.cpp \
+    Scenes/PerformanceScene/Targets.cpp

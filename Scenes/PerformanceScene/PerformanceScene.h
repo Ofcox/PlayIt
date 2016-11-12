@@ -4,9 +4,9 @@
 #include <string>
 #include <OgreSceneManager.h>
 #include <OgreEntity.h>
-#include "note.h"
-#include "fretguide.h"
-#include "strings.h"
+#include "Note.h"
+#include "Fretguide.h"
+#include "Strings.h"
 
 /*
 ===============================================================================
