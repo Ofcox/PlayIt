@@ -4,15 +4,15 @@
 
 #include "SceneSettings.h"
 #include "Strings.h"
-#include "Targets.h"
+#include "Elements.h"
 
 /*
 ===============================================================================
 
-    Loads staff elements
-    Notes
-    Chords
-    Targets?
+    Loads   Strings
+            Staff elements
+                Notes
+                Chords
 
 ===============================================================================
 */
@@ -22,14 +22,8 @@ class Staff
 private:
     Strings* m_strings;
 
-    // Number of the last element that passed through strings
-    int m_lastPassedElement;
-    int m_currentElement;
-    // Number of next element that passing through strings
-    int m_nextElement;
-
     // Position informations of all notes and chords
-    std::vector<Element*> elements;
+    Elements* m_elements;
 
     // Pointer of scene node
     Ogre::SceneNode* m_staffNode;
@@ -37,21 +31,14 @@ private:
     Ogre::SceneManager* m_pSceneMgr;
     NotationFileParser* m_pNotationFileParser;
 
-    void showTarget();
-    bool elementHasReachedTarget();
-    bool elementIsInStringsRange( Element *element );
-
 public:
     Staff( Ogre::SceneManager* pSceneMgr, Ogre::SceneNode* pStaffNode );
     ~Staff();
 
     void loadElements();
 
-    //void setSringsObject(Strings* pStringsObject){m_strings = pStringsObject;}
-
     void update();
-    void load();
-    void unload();
+
 };
 
 #endif // STAFF_H

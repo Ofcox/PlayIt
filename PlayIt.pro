@@ -68,13 +68,13 @@ HEADERS += \
     Scenes/PerformanceScene/Chord.h \
     Scenes/PerformanceScene/NotationFileParser.h \
     Scenes/PerformanceScene/Note.h \
-    Scenes/PerformanceScene/PerformanceScene.h \
     Scenes/PerformanceScene/SceneSettings.h \
     Scenes/PerformanceScene/Staff.h \
     Scenes/PerformanceScene/Strings.h \
     Scenes/SongListScene/SongInfo.h \
     PlayIt.hpp \
-    Scenes/PerformanceScene/Targets.h
+    Scenes/PerformanceScene/Targets.h \
+    Scenes/PerformanceScene/Elements.h
 
 
 SOURCES += \
@@ -92,10 +92,10 @@ SOURCES += \
     Scenes/PerformanceScene/Chord.cpp \
     Scenes/PerformanceScene/NotationFileParser.cpp \
     Scenes/PerformanceScene/Note.cpp \
-    Scenes/PerformanceScene/PerformanceScene.cpp \
     Scenes/PerformanceScene/SceneSettings.cpp \
     Scenes/PerformanceScene/Staff.cpp \
     Scenes/PerformanceScene/Strings.cpp \
     Scenes/SongListScene/SongInfo.cpp \
     PlayIt.cpp \
-    Scenes/PerformanceScene/Targets.cpp
+    Scenes/PerformanceScene/Targets.cpp \
+    Scenes/PerformanceScene/Elements.cpp

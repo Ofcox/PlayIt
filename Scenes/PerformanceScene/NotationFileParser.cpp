@@ -1,30 +1,33 @@
 #include "NotationFileParser.h"
 
-NotationFileParser::NotationFileParser( std::string fileName, std::vector<Element *> &elements ) {
+NotationFileParser::NotationFileParser( std::string fileName ) {
     /// Alternative way to read the xml file into a vector
 //    ifstream notationFile("notation.xml");
 //    vector<char> buffer((istreambuf_iterator<char>(notationFile)), istreambuf_iterator<char>());
 //    buffer.push_back('\0');
 //    notationFile.close();
+    m_fileName = fileName;
 
-    std::ifstream	  file( fileName );
+}
+
+void NotationFileParser::loadElements( std::vector<Element *> &elements ) {
+    std::ifstream	  file( m_fileName );
     std::stringstream buffer;
     buffer << file.rdbuf();
     file.close();
     std::string content( buffer.str() );
 
     // Parse the buffer using the xml file parsing library into doc
-    doc.parse<0>( &content[0] );
-
+    m_doc.parse<0>( &content[0] );
     // Find our root node
-    root_node = doc.first_node( "song" );
+    m_rootNode = m_doc.first_node( "song" );
 
     m_chordList = new ChordList();
     loadChordList( m_chordList );
-    m_FingerPositions = new FingerPositions( root_node, m_chordList );
+    m_FingerPositions = new FingerPositions( m_rootNode, m_chordList );
 
     //loop variable
-    xml_node<>* currentBarNode = root_node->first_node( "staff" )->first_node( "bar" );
+    xml_node<>* currentBarNode = m_rootNode->first_node( "staff" )->first_node( "bar" );
 
     //loop through all bars
     while ( currentBarNode != NULL ) {
@@ -59,10 +62,7 @@ NotationFileParser::NotationFileParser( std::string fileName, std::vector<Elemen
     }
 }
 
-/*
-    REMOVE
-*/
-void NotationFileParser::loadElements( std::vector<Element*>& elements, Ogre::SceneManager* m_pSceneMgr, Ogre::SceneNode* m_staffNode ) {
+void NotationFileParser::createElementsModels( std::vector<Element*>& elements, Ogre::SceneManager* m_pSceneMgr, Ogre::SceneNode* m_staffNode ) {
     std::vector<Element*>::iterator itr;
 
     ocx::Note*	NoteObject;
@@ -145,7 +145,7 @@ void NotationFileParser::loadElements( std::vector<Element*>& elements, Ogre::Sc
 }
 
 void NotationFileParser::loadChordList( ChordList *chordList ) {
-    xml_node<>* currentNode = root_node->first_node( "chordList" )->first_node( "chordPattern" );
+    xml_node<>* currentNode = m_rootNode->first_node( "chordList" )->first_node( "chordPattern" );
     while ( currentNode != NULL ) {
 
         chordList->chordPatterns.push_back( new ChordPattern(  currentNode->first_attribute( "name" )->value(),

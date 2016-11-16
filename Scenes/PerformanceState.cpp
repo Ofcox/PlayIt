@@ -62,8 +62,6 @@ void PerformanceState::createScene() {
     m_pFretGuides = new FretGuide( m_pSceneMgr );
     m_pStrings	  = new Strings( m_pSceneMgr );
 
-    ////////////////////////////////////////////////////
-
     //Uzel, který obsahuje pohybující se i statické uzly
     //Hierarchie:
     //rootSceneNode
@@ -91,6 +89,7 @@ void PerformanceState::createScene() {
     m_staffNode = m_perfSceneNode->createChildSceneNode( "StaffNode" );
     m_staffNode->setPosition( 0, 0, 0 );
     m_staff = new Staff( m_pSceneMgr, m_staffNode );
+    //m_notationFileParser = new NotationFileParser( "notation.xml", m_staff->m_elements->m_elements );
     //m_staffLoader->setSringsObject(m_pStrings);
 
     m_staff->loadElements();
@@ -252,7 +251,7 @@ bool PerformanceState::mousePressed( const OIS::MouseEvent &evt, OIS::MouseButto
     if ( id == OIS::MB_Left ) {
         onLeftPressed( evt );
         m_bLMouseDown = true;
-    } else if ( id == OIS::MB_Right )      {
+    } else if ( id == OIS::MB_Right ) {
         m_bRMouseDown = true;
     }
 
@@ -266,7 +265,7 @@ bool PerformanceState::mouseReleased( const OIS::MouseEvent &evt, OIS::MouseButt
 
     if ( id == OIS::MB_Left ) {
         m_bLMouseDown = false;
-    } else if ( id == OIS::MB_Right )      {
+    } else if ( id == OIS::MB_Right ) {
         m_bRMouseDown = false;
     }
 
