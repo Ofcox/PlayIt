@@ -74,7 +74,8 @@ HEADERS += \
     Scenes/SongListScene/SongInfo.h \
     PlayIt.hpp \
     Scenes/PerformanceScene/Targets.h \
-    Scenes/PerformanceScene/Elements.h
+    Scenes/PerformanceScene/Elements.h \
+    Scenes/PerformanceScene/Neck.h
 
 
 SOURCES += \
@@ -98,4 +99,5 @@ SOURCES += \
     Scenes/SongListScene/SongInfo.cpp \
     PlayIt.cpp \
     Scenes/PerformanceScene/Targets.cpp \
-    Scenes/PerformanceScene/Elements.cpp
+    Scenes/PerformanceScene/Elements.cpp \
+    Scenes/PerformanceScene/Neck.cpp

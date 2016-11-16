@@ -9,7 +9,7 @@
 /*
 ===============================================================================
 
-    Loads   Strings
+    Loads
             Staff elements
                 Notes
                 Chords
@@ -20,7 +20,6 @@
 class Staff
 {
 private:
-    Strings* m_strings;
 
     // Position informations of all notes and chords
     Elements* m_elements;
@@ -28,8 +27,8 @@ private:
     // Pointer of scene node
     Ogre::SceneNode* m_staffNode;
 
-    Ogre::SceneManager* m_pSceneMgr;
-    NotationFileParser* m_pNotationFileParser;
+    Ogre::SceneManager* m_sceneMgr;
+    NotationFileParser* m_notationFileParser;
 
 public:
     Staff( Ogre::SceneManager* pSceneMgr, Ogre::SceneNode* pStaffNode );

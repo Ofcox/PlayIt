@@ -55,11 +55,11 @@ class ChordTarget : public Target {
 
 class Targets {
     std::vector<Target*> targets;
-    Ogre::SceneManager*	 m_pSceneMgr;
+    Ogre::SceneManager*	 m_sceneMgr;
     Ogre::SceneNode*	 m_stringsNode;
 
     Targets( std::vector<Element*>& elements, Ogre::SceneManager* sceneMgr, Ogre::SceneNode* stringsNode ) {
-        m_pSceneMgr	  = sceneMgr;
+        m_sceneMgr	  = sceneMgr;
         m_stringsNode = stringsNode;
         std::vector<Element*>::iterator itr;
 
@@ -73,7 +73,7 @@ class Targets {
                 NoteTargetObject = new NoteTarget();
                 noteObject		 = dynamic_cast<ocx::Note *>( *itr );
 
-                NoteTargetObject->m_noteTargetEntity = m_pSceneMgr->createEntity( "cube.mesh" );
+                NoteTargetObject->m_noteTargetEntity = m_sceneMgr->createEntity( "cube.mesh" );
                 switch ( noteObject->getString() ) {
                 case 1:
                     NoteTargetObject->m_noteTargetEntity->setMaterialName( "Fret/String1Mat" );

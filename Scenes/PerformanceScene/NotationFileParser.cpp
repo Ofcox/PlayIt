@@ -62,7 +62,7 @@ void NotationFileParser::loadElements( std::vector<Element *> &elements ) {
     }
 }
 
-void NotationFileParser::createElementsModels( std::vector<Element*>& elements, Ogre::SceneManager* m_pSceneMgr, Ogre::SceneNode* m_staffNode ) {
+void NotationFileParser::createElementsModels( std::vector<Element*>& elements, Ogre::SceneManager* pSceneMgr, Ogre::SceneNode* pStaffNode ) {
     std::vector<Element*>::iterator itr;
 
     ocx::Note*	NoteObject;
@@ -72,7 +72,7 @@ void NotationFileParser::createElementsModels( std::vector<Element*>& elements, 
 
         if ( ( *itr )->m_type == NOTE ) {
             NoteObject				 = dynamic_cast<ocx::Note *>( *itr );
-            NoteObject->m_noteEntity = m_pSceneMgr->createEntity( "cube.mesh" );
+            NoteObject->m_noteEntity = pSceneMgr->createEntity( "cube.mesh" );
             switch ( NoteObject->getString() ) {
             case 1:
                 NoteObject->m_noteEntity->setMaterialName( "Fret/String1Mat" );
@@ -88,7 +88,7 @@ void NotationFileParser::createElementsModels( std::vector<Element*>& elements, 
                 break;
             }
 
-            NoteObject->m_noteNode = m_staffNode->createChildSceneNode();
+            NoteObject->m_noteNode = pStaffNode->createChildSceneNode();
             NoteObject->m_noteNode->attachObject( NoteObject->m_noteEntity );
             NoteObject->m_noteNode->setPosition( ( NoteObject->getFret() * SceneSettings::fretSpacing ) - ( SceneSettings::fretSpacing / 2 ),
                                                  ( NoteObject->getString() * SceneSettings::stringSpacing ),
@@ -98,7 +98,7 @@ void NotationFileParser::createElementsModels( std::vector<Element*>& elements, 
         } else if ( ( *itr )->m_type == CHORD ) {
             ChordObject = dynamic_cast<ocx::Chord *>( *itr );
             for ( int i = 0; i <= 3; ++i ) {
-                ChordObject->m_notes[i]->m_noteEntity = m_pSceneMgr->createEntity( "cube.mesh" );
+                ChordObject->m_notes[i]->m_noteEntity = pSceneMgr->createEntity( "cube.mesh" );
 
                 switch ( ChordObject->m_notes[i]->getString() ) {
                 case 1:
@@ -115,7 +115,7 @@ void NotationFileParser::createElementsModels( std::vector<Element*>& elements, 
                     break;
                 }
 
-                ChordObject->m_chordNode			= m_staffNode->createChildSceneNode();
+                ChordObject->m_chordNode			= pStaffNode->createChildSceneNode();
                 ChordObject->m_notes[i]->m_noteNode = ChordObject->m_chordNode->createChildSceneNode();
                 ChordObject->m_notes[i]->m_noteNode->attachObject( ChordObject->m_notes[i]->m_noteEntity );
                 ChordObject->m_notes[i]->m_noteNode->setPosition(  ( ChordObject->m_notes[i]->getFret() * SceneSettings::fretSpacing ) - ( SceneSettings::fretSpacing / 2 ),

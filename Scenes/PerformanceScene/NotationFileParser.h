@@ -37,9 +37,6 @@ private:
     FingerPositions* m_FingerPositions;
     std::string		 m_fileName;
 
-    Ogre::SceneManager* m_pSceneMgr;
-    Ogre::SceneNode*	m_staffNode;
-
     xml_document<> m_doc;
     xml_node<>*	   m_rootNode;
 
@@ -52,7 +49,7 @@ public:
     // converts a relative position to bars to an actual position on staff
     float actualPosition( float position ) { return m_barNumber + ( position / 4 ); }
     void loadElements( std::vector<Element *> &elements );
-    void createElementsModels( std::vector<Element*>& elements, Ogre::SceneManager* m_pSceneMgr, Ogre::SceneNode* m_staffNode );
+    void createElementsModels( std::vector<Element*>& elements, Ogre::SceneManager* pSceneMgr, Ogre::SceneNode* pStaffNode );
     void loadChordList( ChordList *chordList );
     void loadTargets();
 

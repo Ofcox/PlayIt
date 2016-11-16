@@ -62,11 +62,9 @@ public:
 class FingerPositions
 {
 public:
-    xml_document<>				doc;
-    xml_node<>*					root_node;
     std::vector<FingerPattern*> fingerPatterns;
 
-    FingerPositions( xml_node<>* root_node, ChordList* pChordList );
+    FingerPositions( xml_node<>* pRootNode, ChordList* pChordList );
 };
 
 #endif // FINGERPLACEMENT_H

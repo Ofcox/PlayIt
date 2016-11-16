@@ -13,7 +13,7 @@ public:
     int m_nextElement;
 
     Ogre::SceneNode*	m_staffNode;
-    Ogre::SceneManager* m_pSceneMgr;
+    Ogre::SceneManager* m_sceneMgr;
 
     std::vector<Element*> m_elements;
     Elements( Ogre::SceneManager *pSceneMgr, Ogre::SceneNode *pStaffNode );
