@@ -1,11 +1,7 @@
 #ifndef PERFORMANCESTATE_H
 #define PERFORMANCESTATE_H
 
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
 #include "AppState.hpp"
-
-#include "../DotSceneLoader.hpp"
 
 #include <OgreSubEntity.h>
 #include <OgreMaterialManager.h>
@@ -15,12 +11,24 @@
 #include "PerformanceScene/strings.h"
 #include "PerformanceScene/Staff.h"
 
+#include "PerformanceScene/NotationFileParser.h"
+
 #include "SongListScene/SongInfo.h"
 
 /*
 ===============================================================================
 
-    Performance scene where you actually play
+    This class is processing the scene where you play
+
+    includes
+    Notes
+    FretGuide
+
+    Neck
+    Strings
+    FretLines
+
+    Notes and FretGuide are bound to the Staff. The Staff is shifting in Z axis.
 
 ===============================================================================
 */
@@ -53,15 +61,7 @@ public:
 
     void update( double timeSinceLastFrame );
 
-    std::vector<Ogre::Entity*>	  m_tabEntity;
-    std::vector<Ogre::SceneNode*> m_tabNode;
-
 private:
-    Ogre::SceneNode*  m_pOgreHeadNode;
-    Ogre::Entity*	  m_pOgreHeadEntity;
-    Ogre::MaterialPtr m_pOgreHeadMat;
-    Ogre::MaterialPtr m_pOgreHeadMatHigh;
-
     OgreBites::ParamsPanel* m_pDetailsPanel;
     bool					m_bQuit;
 
@@ -83,8 +83,8 @@ private:
     FretGuide* m_pFretGuides;
     Strings*   m_pStrings;
     Staff*	   m_staff;
-};
 
-//|||||||||||||||||||||||||||||||||||||||||||||||
+    NotationFileParser* m_notationFileParser;
+};
 
 #endif // PERFORMANCESTATE_H
