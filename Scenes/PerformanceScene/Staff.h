@@ -35,6 +35,7 @@ public:
     ~Staff();
 
     void loadElements();
+    Elements* getElements() { return m_elements; }
 
     void update();
 

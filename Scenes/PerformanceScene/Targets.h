@@ -26,8 +26,12 @@ public:
     Ogre::Entity*	 m_noteTargetEntity;
     Ogre::SceneNode* m_noteTargetNode;
 
-    NoteTarget();
-    NoteTarget( int string, int fret, float timePosition );
+    NoteTarget( int string, int fret, float timePosition ) {
+        m_string	   = string;
+        m_fret		   = fret;
+        m_timePosition = timePosition;
+    }
+
     int getFret() { return m_fret; }
     int getString() { return m_string; }
     float GetTimePosition() { return m_timePosition; }
@@ -37,6 +41,7 @@ public:
 };
 
 class ChordTarget : public Target {
+public:
     std::vector<Ogre::Entity*> m_chordTargetEntity;
 
     NoteTarget* string4;
@@ -54,24 +59,27 @@ class ChordTarget : public Target {
 };
 
 class Targets {
+public:
     std::vector<Target*> targets;
     Ogre::SceneManager*	 m_sceneMgr;
     Ogre::SceneNode*	 m_stringsNode;
 
-    Targets( std::vector<Element*>& elements, Ogre::SceneManager* sceneMgr, Ogre::SceneNode* stringsNode ) {
-        m_sceneMgr	  = sceneMgr;
-        m_stringsNode = stringsNode;
+    Targets( std::vector<Element*>& elements, Ogre::SceneManager* pSceneMgr, Ogre::SceneNode* pNeckNode ) {
+        m_sceneMgr	  = pSceneMgr;
+        m_stringsNode = pNeckNode;
+
         std::vector<Element*>::iterator itr;
 
-        ocx::Note*	 noteObject;
-        ocx::Chord*	 chordObject;
-        NoteTarget*	 NoteTargetObject;
-        ChordTarget* ChordTargetObject;
+        ocx::Note* noteObject;
+        //ocx::Chord*	 chordObject;
+        NoteTarget* NoteTargetObject;
+        //ChordTarget* ChordTargetObject;
 
         for ( itr = elements.begin(); itr != elements.end(); ++itr ) {
             if ( ( *itr )->m_type == NOTE ) {
-                NoteTargetObject = new NoteTarget();
                 noteObject		 = dynamic_cast<ocx::Note *>( *itr );
+                NoteTargetObject = new NoteTarget( noteObject->getString(), noteObject->getFret(), noteObject->getTimePosition() );
+
 
                 NoteTargetObject->m_noteTargetEntity = m_sceneMgr->createEntity( "cube.mesh" );
                 switch ( noteObject->getString() ) {
@@ -99,7 +107,8 @@ class Targets {
             }
         }
     }
-    void loadTargets();
+
+    void loadTargets() {}
 };
 
 #endif // TARGETS_H

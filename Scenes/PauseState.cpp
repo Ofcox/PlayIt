@@ -27,13 +27,13 @@ void PauseState::enter()
 {
     OgreFramework::getSingletonPtr()->m_pLog->logMessage("Entering PauseState...");
 
-    m_pSceneMgr = OgreFramework::getSingletonPtr()->m_pRoot->createSceneManager(ST_GENERIC, "PauseSceneMgr");
-    m_pSceneMgr->setAmbientLight(Ogre::ColourValue(0.7f, 0.7f, 0.7f));
+    m_sceneMgr = OgreFramework::getSingletonPtr()->m_pRoot->createSceneManager(ST_GENERIC, "PauseSceneMgr");
+    m_sceneMgr->setAmbientLight(Ogre::ColourValue(0.7f, 0.7f, 0.7f));
 
-    m_pSceneMgr->addRenderQueueListener(OgreFramework::getSingletonPtr()->m_pOverlaySystem);
+    m_sceneMgr->addRenderQueueListener(OgreFramework::getSingletonPtr()->m_pOverlaySystem);
 
     // Bude lepší mít pro hlavní scénu a pro pauzu stejnou kameru, aby měl hráč dojem že pořád může hrát.
-    m_pCamera = m_pSceneMgr->createCamera("PauseCam");
+    m_pCamera = m_sceneMgr->createCamera("PauseCam");
     m_pCamera->setPosition(Vector3(0, 25, -50));
     m_pCamera->lookAt(Vector3(0, 0, 0));
     m_pCamera->setNearClipDistance(1);
@@ -67,9 +67,9 @@ void PauseState::exit()
 {
     OgreFramework::getSingletonPtr()->m_pLog->logMessage("Leaving PauseState...");
 
-    m_pSceneMgr->destroyCamera(m_pCamera);
-    if(m_pSceneMgr)
-        OgreFramework::getSingletonPtr()->m_pRoot->destroySceneManager(m_pSceneMgr);
+    m_sceneMgr->destroyCamera(m_pCamera);
+    if(m_sceneMgr)
+        OgreFramework::getSingletonPtr()->m_pRoot->destroySceneManager(m_sceneMgr);
 
     OgreFramework::getSingletonPtr()->m_pTrayMgr->clearAllTrays();
     OgreFramework::getSingletonPtr()->m_pTrayMgr->destroyAllWidgets();

@@ -10,6 +10,7 @@
 #include "PerformanceScene/fretguide.h"
 #include "PerformanceScene/strings.h"
 #include "PerformanceScene/Staff.h"
+#include "PerformanceScene/Neck.h"
 
 #include "PerformanceScene/NotationFileParser.h"
 
@@ -77,12 +78,12 @@ private:
     Ogre::Vector3 m_direction;
 
     Ogre::SceneNode* m_fretLinesNode;
-    Ogre::SceneNode* m_stringsNode;
+    Ogre::SceneNode* m_neckNode;
     Ogre::SceneNode* m_staffNode;
 
-    FretGuide* m_pFretGuides;
-    Strings*   m_pStrings;
+    FretGuide* m_fretGuides;
     Staff*	   m_staff;
+    Neck*	   m_neck;
 
     NotationFileParser* m_notationFileParser;
 };
