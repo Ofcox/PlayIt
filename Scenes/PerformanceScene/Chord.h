@@ -107,6 +107,7 @@ public:
         m_notes[3]->m_noteNode->setVisible( isVisible );
     }
 
+    virtual Ogre::SceneNode* getNode() { return m_chordNode; }
     std::string getName() {return m_name; }
     std::string getGermanName() {return m_germanName; }
     int getBeginFret() {return m_beginFret; }

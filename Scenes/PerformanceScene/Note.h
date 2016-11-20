@@ -27,6 +27,7 @@ public:
 
     virtual void setVisibility( bool isVisible ) { }
     virtual float getTimePosition() {return m_timePosition; }
+    virtual Ogre::SceneNode* getNode() {return nullptr; }
 };
 
 class ocx::Note : public Element
@@ -58,6 +59,7 @@ public:
     virtual void setVisibility( bool isVisible ) {
         m_noteNode->setVisible( isVisible );
     }
+    virtual Ogre::SceneNode* getNode() {return m_noteNode; }
 };
 
 #endif // NOTE_H

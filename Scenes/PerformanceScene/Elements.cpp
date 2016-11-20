@@ -21,61 +21,27 @@ void Elements::loadElements( NotationFileParser * pNotationFileParser ) {
 }
 
 bool Elements::elementHasReachedTarget() {
-    ocx::Note*	NoteObject;
-    ocx::Chord* ChordObject;
-    float		noteWorldPosition  = 0;
-    float		chordWorldPosition = 0;
+    float elementWorldPosition = 0;
 
-    if ( m_elements[m_currentElement]->m_type == NOTE ) {
-        NoteObject		  = dynamic_cast<ocx::Note *>( m_elements[m_currentElement] );
-        noteWorldPosition = m_staffNode->getPosition().z + NoteObject->m_noteNode->getPosition().z;
+    elementWorldPosition = m_staffNode->getPosition().z + m_elements[m_currentElement]->getNode()->getPosition().z;
 
-        if ( noteWorldPosition < 0 ) {
-            return false;
-        } else if ( noteWorldPosition >= 0 ) {
-            return true;
-        }
-    }
-
-    if ( m_elements[m_currentElement]->m_type == CHORD ) {
-        ChordObject		   = dynamic_cast<ocx::Chord *>( m_elements[m_currentElement] );
-        chordWorldPosition = m_staffNode->getPosition().z + ChordObject->m_chordNode->getPosition().z;
-
-        if ( chordWorldPosition < 0 ) {
-            return false;
-        } else if ( chordWorldPosition >= 0 ) {
-            return true;
-        }
+    if ( elementWorldPosition < 0 ) {
+        return false;
+    } else if ( elementWorldPosition >= 0 ) {
+        return true;
     }
 }
 
 bool Elements::elementIsInStringsRange( Element *element ) {
-    ocx::Note*	NoteObject;
-    ocx::Chord* ChordObject;
-    int			range = 280;
-    float		noteWorldPosition;
-    float		chordWorldPosition;
+    int	  range = 280;
+    float elementWorldPosition;
 
-    if ( element->m_type == NOTE ) {
-        NoteObject		  = dynamic_cast<ocx::Note *>( element );
-        noteWorldPosition = m_staffNode->getPosition().z + NoteObject->m_noteNode->getPosition().z;
+    elementWorldPosition = m_staffNode->getPosition().z + element->getNode()->getPosition().z;
 
-        if ( noteWorldPosition <= 0 && noteWorldPosition > -range ) {
-            return true;
-        } else { //if (noteWorldPosition > 0)
-            return false;
-        }
-    }
-
-    if ( element->m_type == CHORD ) {
-        ChordObject		   = dynamic_cast<ocx::Chord *>( element );
-        chordWorldPosition = m_staffNode->getPosition().z + ChordObject->m_chordNode->getPosition().z;
-
-        if ( chordWorldPosition <= 0 && chordWorldPosition > -range ) {
-            return true;
-        } else { //if (chordWorldPosition > 0)
-            return false;
-        }
+    if ( elementWorldPosition <= 0 && elementWorldPosition > -range ) {
+        return true;
+    } else {     //if (chordWorldPosition > 0)
+        return false;
     }
 }
 
