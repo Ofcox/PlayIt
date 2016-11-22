@@ -21,10 +21,12 @@ protected:
     bool		m_hasReached = false;
     // Because dynamic casting is expensive, I rather use this array. For notes there will be waste of four ints, but it's
     // still much cheaper. [0] represents string and [1] is for fret.
-    int m_strings[4];
+    int m_strings[4] = {0,0,0,0};
 
 public:
     ElementType m_type;
+    int			m_string;
+    int			m_fret;
 
     Element() {}
     virtual ~Element() {}
@@ -37,14 +39,15 @@ public:
     virtual int getString2() {return m_strings[1]; }
     virtual int getString3() {return m_strings[2]; }
     virtual int getString4() {return m_strings[3]; }
+    virtual int getString() {return m_fret; }
+    virtual int getFret() {return m_string; }
+    virtual int getFretAt( int string ) {return m_strings[( string - 1 )]; }
 };
 
 class ocx::Note : public Element
 {
 private:
     bool m_isNullFret;
-    int	 m_string;
-    int	 m_fret;
 
 public:
     Ogre::Entity*	 m_noteEntity;
