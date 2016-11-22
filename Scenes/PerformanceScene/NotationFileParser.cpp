@@ -92,7 +92,7 @@ void NotationFileParser::createElementsModels( std::vector<Element*>& elements, 
             NoteObject->m_noteNode->attachObject( NoteObject->m_noteEntity );
             NoteObject->m_noteNode->setPosition( ( NoteObject->getFret() * SceneSettings::fretSpacing ) - ( SceneSettings::fretSpacing / 2 ),
                                                  ( NoteObject->getString() * SceneSettings::stringSpacing ),
-                                                 -NoteObject->getTimePosition() * SceneSettings::barScale );
+                                                 NoteObject->getTimePosition() * SceneSettings::barScale );
             NoteObject->m_noteNode->setScale( 8, 4, 4 );
 
         } else if ( ( *itr )->m_type == CHORD ) {
@@ -123,10 +123,10 @@ void NotationFileParser::createElementsModels( std::vector<Element*>& elements, 
                                                                    0 );
 
                 if ( !ChordObject->m_notes[i]->getIsNullFret() ) {
-                    ChordObject->m_chordNode->setPosition( 0, 0, -ChordObject->getTimePosition() * SceneSettings::barScale );
+                    ChordObject->m_chordNode->setPosition( 0, 0, ChordObject->getTimePosition() * SceneSettings::barScale );
                     ChordObject->m_notes[i]->m_noteNode->setScale( 8, 4, 4 );
                 } else {
-                    ChordObject->m_chordNode->setPosition( 0, 0, -ChordObject->getTimePosition() * SceneSettings::barScale );
+                    ChordObject->m_chordNode->setPosition( 0, 0, ChordObject->getTimePosition() * SceneSettings::barScale );
                     ChordObject->m_notes[i]->m_noteNode->setPosition( ( /*7.5+15 + */ ( ChordObject->getBeginFret() * SceneSettings::fretSpacing ) + ( SceneSettings::fretSpacing ) /* position from finger guide class */ ),
                                                                       ( ChordObject->m_notes[i]->getString() * SceneSettings::stringSpacing ),
                                                                       0 );

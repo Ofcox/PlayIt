@@ -27,7 +27,7 @@ bool Staff::elementHasReachedTarget() {
 
     elementWorldPosition = m_staffNode->getPosition().z + m_elements->m_elements[m_currentElement]->getNode()->getPosition().z;
 
-    if ( elementWorldPosition <= 0 ) {
+    if ( elementWorldPosition > 0 ) {
         return false;
     } else {
         return true;
@@ -40,7 +40,7 @@ bool Staff::elementIsInStringsRange() {
 
     elementWorldPosition = m_staffNode->getPosition().z + m_elements->m_elements[m_upcomingElement]->getNode()->getPosition().z;
 
-    if ( elementWorldPosition >= -range ) {
+    if ( elementWorldPosition <= range ) {
         return true;
     } else {
         return false;

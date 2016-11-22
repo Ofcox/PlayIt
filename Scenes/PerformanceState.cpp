@@ -40,8 +40,8 @@ void PerformanceState::enter() {
 
     //Camera
     m_pCamera = m_sceneMgr->createCamera( "GameCamera" );
-    m_pCamera->setPosition( Vector3( 0, 30, 100 ) );
-    m_pCamera->lookAt( Vector3( 0, 20, 50 ) );
+    m_pCamera->setPosition( Vector3( 0, 30, -100 ) );
+    m_pCamera->lookAt( Vector3( 0, 20, -50 ) );
     m_pCamera->setNearClipDistance( 5 );
     m_pCamera->setFarClipDistance( 2000 );
 
