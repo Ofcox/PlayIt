@@ -62,6 +62,11 @@ ocx::Chord::Chord( ChordPattern *chordDefinition, float timePosition, std::strin
     note2 = new Note( 2, chordDefinition->m_fretOnString2, m_timePosition, chordDefinition->m_fretOnString2 == 0 ? true : false );
     note1 = new Note( 1, chordDefinition->m_fretOnString1, m_timePosition, chordDefinition->m_fretOnString1 == 0 ? true : false );
 
+    m_strings[0] = chordDefinition->m_fretOnString1;
+    m_strings[1] = chordDefinition->m_fretOnString2;
+    m_strings[2] = chordDefinition->m_fretOnString3;
+    m_strings[3] = chordDefinition->m_fretOnString4;
+
     m_notes.push_back( note4 );
     m_notes.push_back( note3 );
     m_notes.push_back( note2 );

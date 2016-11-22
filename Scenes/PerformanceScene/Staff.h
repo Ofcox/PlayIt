@@ -3,15 +3,16 @@
 #include "NotationFileParser.h"
 
 #include "SceneSettings.h"
-#include "strings.h"
+#include "Elements.h"
+#include "Neck.h"
 
 /*
 ===============================================================================
 
-    Loads staff elements
-    Notes
-    Chords
-    Targets?
+    Loads
+            Staff elements
+                Notes
+                Chords
 
 ===============================================================================
 */
@@ -19,38 +20,34 @@
 class Staff
 {
 private:
-    Strings* m_strings;
+
+    // Position informations of all notes and chords
+    Elements* m_elements;
+
+    // Pointer of scene node
+    Ogre::SceneNode* m_staffNode;
+
+    Ogre::SceneManager* m_sceneMgr;
+    NotationFileParser* m_notationFileParser;
+
+    Neck* m_neck;
 
     // Number of the last element that passed through strings
     int m_lastPassedElement;
     int m_currentElement;
     // Number of next element that passing through strings
-    int m_nextElement;
-
-    // Position informations of all notes and chords
-    std::vector<Element*> elements;
-
-    // Pointer of scene node
-    Ogre::SceneNode* m_staffNode;
-
-    Ogre::SceneManager* m_pSceneMgr;
-    NotationFileParser* m_pNotationFileParser;
-
-    void showTarget();
-    bool elementHasReachedTarget();
-    bool elementIsInStringsRange( Element *element );
+    int m_upcomingElement;
 
 public:
-    Staff( Ogre::SceneManager* pSceneMgr, Ogre::SceneNode* pStaffNode );
+    Staff( Ogre::SceneManager* pSceneMgr, Ogre::SceneNode* pStaffNode, Neck* pNeck );
     ~Staff();
 
     void loadElements();
-
-    //void setSringsObject(Strings* pStringsObject){m_strings = pStringsObject;}
+    bool elementHasReachedTarget();
+    bool elementIsInStringsRange();
 
     void update();
-    void load();
-    void unload();
+
 };
 
 #endif // STAFF_H

@@ -33,17 +33,17 @@ PerformanceState::~PerformanceState() {
 void PerformanceState::enter() {
     OgreFramework::getSingletonPtr()->m_pLog->logMessage( "Entering GameState..." );
 
-    m_pSceneMgr = OgreFramework::getSingletonPtr()->m_pRoot->createSceneManager( ST_GENERIC, "PerformanceSceneMgr" );
-    m_pSceneMgr->setAmbientLight( Ogre::ColourValue( 0.9f, 0.9f, 0.9f ) );
+    m_sceneMgr = OgreFramework::getSingletonPtr()->m_pRoot->createSceneManager( ST_GENERIC, "PerformanceSceneMgr" );
+    m_sceneMgr->setAmbientLight( Ogre::ColourValue( 0.9f, 0.9f, 0.9f ) );
 
-    m_pSceneMgr->addRenderQueueListener( OgreFramework::getSingletonPtr()->m_pOverlaySystem );
+    m_sceneMgr->addRenderQueueListener( OgreFramework::getSingletonPtr()->m_pOverlaySystem );
 
     //Camera
-    m_pCamera = m_pSceneMgr->createCamera( "GameCamera" );
-    m_pCamera->setPosition( Vector3( 0, 30, 100 ) );
-    m_pCamera->lookAt( Vector3( 0, 20, 50 ) );
+    m_pCamera = m_sceneMgr->createCamera( "GameCamera" );
+    m_pCamera->setPosition( Vector3( 0, 30, -100 ) );
+    m_pCamera->lookAt( Vector3( 0, 20, -50 ) );
     m_pCamera->setNearClipDistance( 5 );
-    //m_pCamera->setFarClipDistance(1000);
+    m_pCamera->setFarClipDistance( 2000 );
 
     m_pCamera->setAspectRatio( Real( OgreFramework::getSingletonPtr()->m_pViewport->getActualWidth() ) /
                                Real( OgreFramework::getSingletonPtr()->m_pViewport->getActualHeight() ) );
@@ -59,39 +59,26 @@ void PerformanceState::enter() {
 void PerformanceState::createScene() {
 
     ///Create the objects of scene
-    m_pFretGuides = new FretGuide( m_pSceneMgr );
-    m_pStrings	  = new Strings( m_pSceneMgr );
-
-    ////////////////////////////////////////////////////
-
-    //Uzel, který obsahuje pohybující se i statické uzly
-    //Hierarchie:
-    //rootSceneNode
-    //      perfSceneNode
-    //          fretGuide
-    //          staffNode
-    //              notes
-
+    m_fretGuides = new FretGuide( m_sceneMgr );
 
     //Uzel sceny
     Ogre::SceneNode* m_perfSceneNode;
-    m_perfSceneNode = m_pSceneMgr->getRootSceneNode()->createChildSceneNode( "PerfSceneNode" );
+    m_perfSceneNode = m_sceneMgr->getRootSceneNode()->createChildSceneNode( "PerfSceneNode" );
 
     //Uzel prazcu
     m_fretLinesNode = m_perfSceneNode->createChildSceneNode( "FretLinesNode" );
-    m_pFretGuides->load( m_fretLinesNode );
+    m_fretGuides->load( m_fretLinesNode );
     m_fretLinesNode->setPosition( 0, 0, 0 );
 
-    // Uzel strun
-    m_stringsNode = m_perfSceneNode->createChildSceneNode( "StringsNode" );
-    m_pStrings->load( m_stringsNode );
-    m_stringsNode->setPosition( 0, 0, 0 );
+    // Uzel Krku
+    m_neckNode = m_perfSceneNode->createChildSceneNode( "NeckNode" );
+    m_neck	   = new Neck( m_sceneMgr, m_neckNode );
+    m_neckNode->setPosition( 0, 0, 0 );
 
     //Uzel osnovy, ta se bude pohybovat
     m_staffNode = m_perfSceneNode->createChildSceneNode( "StaffNode" );
     m_staffNode->setPosition( 0, 0, 0 );
-    m_staff = new Staff( m_pSceneMgr, m_staffNode );
-    //m_staffLoader->setSringsObject(m_pStrings);
+    m_staff = new Staff( m_sceneMgr, m_staffNode, m_neck );
 
     m_staff->loadElements();
 
@@ -101,11 +88,11 @@ void PerformanceState::createScene() {
 
 void PerformanceState::exit() {
     OgreFramework::getSingletonPtr()->m_pLog->logMessage( "Leaving PerformanceState..." );
-    m_pSceneMgr->destroyCamera( m_pCamera );
+    m_sceneMgr->destroyCamera( m_pCamera );
     //m_pSceneMgr->destroyQuery(m_pRSQ);
-    m_pFretGuides->unload();
-    if ( m_pSceneMgr ) {
-        OgreFramework::getSingletonPtr()->m_pRoot->destroySceneManager( m_pSceneMgr );
+    m_fretGuides->unload();
+    if ( m_sceneMgr ) {
+        OgreFramework::getSingletonPtr()->m_pRoot->destroySceneManager( m_sceneMgr );
     }
 }
 
@@ -252,7 +239,7 @@ bool PerformanceState::mousePressed( const OIS::MouseEvent &evt, OIS::MouseButto
     if ( id == OIS::MB_Left ) {
         onLeftPressed( evt );
         m_bLMouseDown = true;
-    } else if ( id == OIS::MB_Right )      {
+    } else if ( id == OIS::MB_Right ) {
         m_bRMouseDown = true;
     }
 
@@ -266,7 +253,7 @@ bool PerformanceState::mouseReleased( const OIS::MouseEvent &evt, OIS::MouseButt
 
     if ( id == OIS::MB_Left ) {
         m_bLMouseDown = false;
-    } else if ( id == OIS::MB_Right )      {
+    } else if ( id == OIS::MB_Right ) {
         m_bRMouseDown = false;
     }
 
@@ -318,6 +305,7 @@ void PerformanceState::update( double timeSinceLastFrame ) {
     m_staffNode->translate( ( SceneSettings::direction / SongInfo::getTempoMultiplier() ) * timeSinceLastFrame, Ogre::Node::TS_LOCAL );
 
     m_staff->update();
+    //m_neck->update();
 
     m_MoveScale = m_MoveSpeed   * timeSinceLastFrame;
     m_RotScale	= m_RotateSpeed * timeSinceLastFrame;

@@ -15,27 +15,39 @@ enum ElementType { NOTE, CHORD };
 
 class Element {
 protected:
-    float m_timePosition;
-    bool  m_hit		   = false;
-    bool  m_hasReached = false;
+    std::string m_name;
+    float		m_timePosition;
+    bool		m_hit		 = false;
+    bool		m_hasReached = false;
+    // Because dynamic casting is expensive, I rather use this array. For notes there will be waste of four ints, but it's
+    // still much cheaper. [0] represents string and [1] is for fret.
+    int m_strings[4] = {0,0,0,0};
 
 public:
     ElementType m_type;
+    int			m_string;
+    int			m_fret;
 
     Element() {}
     virtual ~Element() {}
 
     virtual void setVisibility( bool isVisible ) { }
     virtual float getTimePosition() {return m_timePosition; }
+    virtual Ogre::SceneNode* getNode() {return nullptr; }
+    virtual std::string getName() {return m_name; }
+    virtual int getString1() {return m_strings[0]; }
+    virtual int getString2() {return m_strings[1]; }
+    virtual int getString3() {return m_strings[2]; }
+    virtual int getString4() {return m_strings[3]; }
+    virtual int getString() {return m_fret; }
+    virtual int getFret() {return m_string; }
+    virtual int getFretAt( int string ) {return m_strings[( string - 1 )]; }
 };
 
 class ocx::Note : public Element
 {
 private:
-    bool		m_isNullFret;
-    std::string m_name;
-    int			m_string;
-    int			m_fret;
+    bool m_isNullFret;
 
 public:
     Ogre::Entity*	 m_noteEntity;
@@ -46,7 +58,6 @@ public:
 
     int getFret() { return m_fret; }
     int getString() { return m_string; }
-    std::string getName() {return m_name; }
     bool getIsNullFret() {return m_isNullFret; }
 
     //Simple dependency injection
@@ -58,6 +69,7 @@ public:
     virtual void setVisibility( bool isVisible ) {
         m_noteNode->setVisible( isVisible );
     }
+    virtual Ogre::SceneNode* getNode() {return m_noteNode; }
 };
 
 #endif // NOTE_H

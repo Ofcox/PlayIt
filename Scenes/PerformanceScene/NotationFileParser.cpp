@@ -1,30 +1,33 @@
 #include "NotationFileParser.h"
 
-NotationFileParser::NotationFileParser( std::string fileName, std::vector<Element *> &elements ) {
+NotationFileParser::NotationFileParser( std::string fileName ) {
     /// Alternative way to read the xml file into a vector
 //    ifstream notationFile("notation.xml");
 //    vector<char> buffer((istreambuf_iterator<char>(notationFile)), istreambuf_iterator<char>());
 //    buffer.push_back('\0');
 //    notationFile.close();
+    m_fileName = fileName;
 
-    std::ifstream	  file( fileName );
+}
+
+void NotationFileParser::loadElements( std::vector<Element *> &elements ) {
+    std::ifstream	  file( m_fileName );
     std::stringstream buffer;
     buffer << file.rdbuf();
     file.close();
     std::string content( buffer.str() );
 
     // Parse the buffer using the xml file parsing library into doc
-    doc.parse<0>( &content[0] );
-
+    m_doc.parse<0>( &content[0] );
     // Find our root node
-    root_node = doc.first_node( "song" );
+    m_rootNode = m_doc.first_node( "song" );
 
     m_chordList = new ChordList();
     loadChordList( m_chordList );
-    m_FingerPositions = new FingerPositions( root_node, m_chordList );
+    m_FingerPositions = new FingerPositions( m_rootNode, m_chordList );
 
     //loop variable
-    xml_node<>* currentBarNode = root_node->first_node( "staff" )->first_node( "bar" );
+    xml_node<>* currentBarNode = m_rootNode->first_node( "staff" )->first_node( "bar" );
 
     //loop through all bars
     while ( currentBarNode != NULL ) {
@@ -59,10 +62,7 @@ NotationFileParser::NotationFileParser( std::string fileName, std::vector<Elemen
     }
 }
 
-/*
-    REMOVE
-*/
-void NotationFileParser::loadElements( std::vector<Element*>& elements, Ogre::SceneManager* m_pSceneMgr, Ogre::SceneNode* m_staffNode ) {
+void NotationFileParser::createElementsModels( std::vector<Element*>& elements, Ogre::SceneManager* pSceneMgr, Ogre::SceneNode* pStaffNode ) {
     std::vector<Element*>::iterator itr;
 
     ocx::Note*	NoteObject;
@@ -72,7 +72,7 @@ void NotationFileParser::loadElements( std::vector<Element*>& elements, Ogre::Sc
 
         if ( ( *itr )->m_type == NOTE ) {
             NoteObject				 = dynamic_cast<ocx::Note *>( *itr );
-            NoteObject->m_noteEntity = m_pSceneMgr->createEntity( "cube.mesh" );
+            NoteObject->m_noteEntity = pSceneMgr->createEntity( "cube.mesh" );
             switch ( NoteObject->getString() ) {
             case 1:
                 NoteObject->m_noteEntity->setMaterialName( "Fret/String1Mat" );
@@ -88,17 +88,17 @@ void NotationFileParser::loadElements( std::vector<Element*>& elements, Ogre::Sc
                 break;
             }
 
-            NoteObject->m_noteNode = m_staffNode->createChildSceneNode();
+            NoteObject->m_noteNode = pStaffNode->createChildSceneNode();
             NoteObject->m_noteNode->attachObject( NoteObject->m_noteEntity );
             NoteObject->m_noteNode->setPosition( ( NoteObject->getFret() * SceneSettings::fretSpacing ) - ( SceneSettings::fretSpacing / 2 ),
                                                  ( NoteObject->getString() * SceneSettings::stringSpacing ),
-                                                 -NoteObject->getTimePosition() * SceneSettings::barScale );
+                                                 NoteObject->getTimePosition() * SceneSettings::barScale );
             NoteObject->m_noteNode->setScale( 8, 4, 4 );
 
         } else if ( ( *itr )->m_type == CHORD ) {
             ChordObject = dynamic_cast<ocx::Chord *>( *itr );
             for ( int i = 0; i <= 3; ++i ) {
-                ChordObject->m_notes[i]->m_noteEntity = m_pSceneMgr->createEntity( "cube.mesh" );
+                ChordObject->m_notes[i]->m_noteEntity = pSceneMgr->createEntity( "cube.mesh" );
 
                 switch ( ChordObject->m_notes[i]->getString() ) {
                 case 1:
@@ -115,7 +115,7 @@ void NotationFileParser::loadElements( std::vector<Element*>& elements, Ogre::Sc
                     break;
                 }
 
-                ChordObject->m_chordNode			= m_staffNode->createChildSceneNode();
+                ChordObject->m_chordNode			= pStaffNode->createChildSceneNode();
                 ChordObject->m_notes[i]->m_noteNode = ChordObject->m_chordNode->createChildSceneNode();
                 ChordObject->m_notes[i]->m_noteNode->attachObject( ChordObject->m_notes[i]->m_noteEntity );
                 ChordObject->m_notes[i]->m_noteNode->setPosition(  ( ChordObject->m_notes[i]->getFret() * SceneSettings::fretSpacing ) - ( SceneSettings::fretSpacing / 2 ),
@@ -123,10 +123,10 @@ void NotationFileParser::loadElements( std::vector<Element*>& elements, Ogre::Sc
                                                                    0 );
 
                 if ( !ChordObject->m_notes[i]->getIsNullFret() ) {
-                    ChordObject->m_chordNode->setPosition( 0, 0, -ChordObject->getTimePosition() * SceneSettings::barScale );
+                    ChordObject->m_chordNode->setPosition( 0, 0, ChordObject->getTimePosition() * SceneSettings::barScale );
                     ChordObject->m_notes[i]->m_noteNode->setScale( 8, 4, 4 );
                 } else {
-                    ChordObject->m_chordNode->setPosition( 0, 0, -ChordObject->getTimePosition() * SceneSettings::barScale );
+                    ChordObject->m_chordNode->setPosition( 0, 0, ChordObject->getTimePosition() * SceneSettings::barScale );
                     ChordObject->m_notes[i]->m_noteNode->setPosition( ( /*7.5+15 + */ ( ChordObject->getBeginFret() * SceneSettings::fretSpacing ) + ( SceneSettings::fretSpacing ) /* position from finger guide class */ ),
                                                                       ( ChordObject->m_notes[i]->getString() * SceneSettings::stringSpacing ),
                                                                       0 );
@@ -145,7 +145,7 @@ void NotationFileParser::loadElements( std::vector<Element*>& elements, Ogre::Sc
 }
 
 void NotationFileParser::loadChordList( ChordList *chordList ) {
-    xml_node<>* currentNode = root_node->first_node( "chordList" )->first_node( "chordPattern" );
+    xml_node<>* currentNode = m_rootNode->first_node( "chordList" )->first_node( "chordPattern" );
     while ( currentNode != NULL ) {
 
         chordList->chordPatterns.push_back( new ChordPattern(  currentNode->first_attribute( "name" )->value(),

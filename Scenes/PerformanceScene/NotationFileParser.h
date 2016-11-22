@@ -35,22 +35,21 @@ private:
     ChordList*		 m_chordList;
     ChordPattern*	 m_currentChord;
     FingerPositions* m_FingerPositions;
+    std::string		 m_fileName;
+
+    xml_document<> m_doc;
+    xml_node<>*	   m_rootNode;
 
 public:
-    Ogre::SceneManager* m_pSceneMgr;
-    Ogre::SceneNode*	m_staffNode;
-
-    xml_document<> doc;
-    xml_node<>*	   root_node;
-
-    NotationFileParser( std::string fileName, std::vector<Element*> &elements );
+    NotationFileParser( std::string fileName );
     ~NotationFileParser() {
         delete m_chordList;
     }
 
     // converts a relative position to bars to an actual position on staff
     float actualPosition( float position ) { return m_barNumber + ( position / 4 ); }
-    void loadElements( std::vector<Element*>& elements, Ogre::SceneManager* m_pSceneMgr, Ogre::SceneNode* m_staffNode );
+    void loadElements( std::vector<Element *> &elements );
+    void createElementsModels( std::vector<Element*>& elements, Ogre::SceneManager* pSceneMgr, Ogre::SceneNode* pStaffNode );
     void loadChordList( ChordList *chordList );
     void loadTargets();
 

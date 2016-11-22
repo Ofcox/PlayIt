@@ -1,114 +1,97 @@
 #include "Staff.h"
 
-Staff::Staff( Ogre::SceneManager *pSceneMgr, Ogre::SceneNode *pStaffNode ) {
-    m_pSceneMgr			= pSceneMgr;
-    m_staffNode			= pStaffNode;
+Staff::Staff( Ogre::SceneManager *pSceneMgr, Ogre::SceneNode *pStaffNode, Neck *pNeck ) {
+    m_sceneMgr	= pSceneMgr;
+    m_staffNode = pStaffNode;
+    m_neck		= pNeck;
+
     m_lastPassedElement = 0;
-    m_nextElement		= 0;
+    m_upcomingElement	= 0;
     m_currentElement	= 0;
 
-    m_pNotationFileParser = new NotationFileParser( "notation.xml", elements );
+    m_elements			 = new Elements( m_sceneMgr, m_staffNode );
+    m_notationFileParser = new NotationFileParser( "notation.xml" );
 }
 
 Staff::~Staff() {
     m_staffNode->removeAndDestroyAllChildren();
-    delete m_pNotationFileParser;
-
-    while ( !elements.empty() ) {
-        delete elements.back();
-        elements.pop_back();
-    }
+    delete m_notationFileParser;
 }
 
 void Staff::loadElements() {
-    m_pNotationFileParser->loadElements( elements, m_pSceneMgr, m_staffNode );
+    m_elements->loadElements( m_notationFileParser );
 }
 
 bool Staff::elementHasReachedTarget() {
-    ocx::Note*	NoteObject;
-    ocx::Chord* ChordObject;
-    float		noteWorldPosition;
-    float		chordWorldPosition;
+    float elementWorldPosition = 0;
 
-    if ( elements[m_currentElement]->m_type == NOTE ) {
-        NoteObject		  = dynamic_cast<ocx::Note *>( elements[m_currentElement] );
-        noteWorldPosition = m_staffNode->getPosition().z + NoteObject->m_noteNode->getPosition().z;
+    elementWorldPosition = m_staffNode->getPosition().z + m_elements->m_elements[m_currentElement]->getNode()->getPosition().z;
 
-        if ( noteWorldPosition < 0 ) {
-            return false;
-        } else if ( noteWorldPosition >= 0 ) {
-            return true;
-        }
-    }
-
-    if ( elements[m_currentElement]->m_type == CHORD ) {
-        ChordObject		   = dynamic_cast<ocx::Chord *>( elements[m_currentElement] );
-        chordWorldPosition = m_staffNode->getPosition().z + ChordObject->m_chordNode->getPosition().z;
-
-        if ( chordWorldPosition < 0 ) {
-            return false;
-        } else if ( chordWorldPosition >= 0 ) {
-            return true;
-        }
+    if ( elementWorldPosition > 0 ) {
+        return false;
+    } else {
+        return true;
     }
 }
 
-bool Staff::elementIsInStringsRange( Element* element ) {
-    ocx::Note*	NoteObject;
-    ocx::Chord* ChordObject;
-    int			range = 280;
-    float		noteWorldPosition;
-    float		chordWorldPosition;
+bool Staff::elementIsInStringsRange() {
+    int	  range = 180; // If next element is closer than this distance, the actual target will not show
+    float elementWorldPosition;
 
-    if ( element->m_type == NOTE ) {
-        NoteObject		  = dynamic_cast<ocx::Note *>( element );
-        noteWorldPosition = m_staffNode->getPosition().z + NoteObject->m_noteNode->getPosition().z;
+    elementWorldPosition = m_staffNode->getPosition().z + m_elements->m_elements[m_upcomingElement]->getNode()->getPosition().z;
 
-        if ( noteWorldPosition <= 0 && noteWorldPosition > -range ) {
-            return true;
-        } else { //if (noteWorldPosition > 0)
-            return false;
-        }
-    }
-
-    if ( element->m_type == CHORD ) {
-        ChordObject		   = dynamic_cast<ocx::Chord *>( element );
-        chordWorldPosition = m_staffNode->getPosition().z + ChordObject->m_chordNode->getPosition().z;
-
-        if ( chordWorldPosition <= 0 && chordWorldPosition > -range ) {
-            return true;
-        } else { //if (chordWorldPosition > 0)
-            return false;
-        }
+    if ( elementWorldPosition <= range ) {
+        return true;
+    } else {
+        return false;
     }
 }
 
+//Not optimal yet, but it works
 void Staff::update() {
-    Element* element;
 
-    //Kontrola, jestli je dalsi element v dosahu
-    if ( elements[m_nextElement] != element ) {
-        element = elements[m_nextElement];
-    }
+    if ( m_elements->m_elements[m_upcomingElement] != NULL  &&  elementIsInStringsRange() ) {
 
-    if ( elementIsInStringsRange( element ) ) {
+        if ( m_elements->m_elements[m_upcomingElement]->m_type == NOTE ) {
+            m_neck->getTargets()->showTargetAt( m_elements->m_elements[m_upcomingElement]->getString(),
+                                                m_elements->m_elements[m_upcomingElement]->getFret() );
 
-        if ( m_nextElement < ( elements.size() - 1 ) ) {
-            ++m_nextElement;
+        } else if ( m_elements->m_elements[m_upcomingElement]->m_type == CHORD ) {
+            for ( int i = 1; i <= 4; ++i ) {
+                if ( m_elements->m_elements[m_upcomingElement]->getFretAt( i ) != 0 ) {
+                    m_neck->getTargets()->showTargetAt( i, m_elements->m_elements[m_upcomingElement]->getFretAt( i ) );
+                }
+            }
         }
 
+        if ( m_upcomingElement < ( m_elements->m_elements.size() - 1 ) ) {
+            ++m_upcomingElement;
+        }
     }
-
-    //check if next element reached the target
+//    bool hideTarget = false;
     if ( elementHasReachedTarget() ) {
-        elements[m_currentElement]->setVisibility( false );
-        if ( m_currentElement < ( elements.size() - 1 ) ) {
+        m_elements->m_elements[m_currentElement]->setVisibility( false );
+
+        if ( m_elements->m_elements[m_currentElement]->m_type == NOTE ) {
+//            for ( int i = 1; i <= 5; ++i ) {
+//                if(m_elements->m_elements[m_currentElement]->getString() )
+//                    hideTarget
+//            }
+            //if ( m_elements->m_elements[m_currentElement]->getString1() != m_elements->m_elements[m_currentElement + 1]->getString1() )
+            // Pokud je alespoň jeden následujících x elementů shodných a je v dosahu
+            m_neck->getTargets()->hideTargetAt( m_elements->m_elements[m_currentElement]->getString(),
+                                                m_elements->m_elements[m_currentElement]->getFret() );
+
+        } else if ( m_elements->m_elements[m_currentElement]->m_type == CHORD ) {
+            for ( int i = 1; i <= 4; ++i ) {
+                if ( m_elements->m_elements[m_currentElement]->getFretAt( i ) != m_elements->m_elements[m_currentElement + 1]->getFretAt( i ) ) {
+                    m_neck->getTargets()->hideTargetAt( i, m_elements->m_elements[m_currentElement]->getFretAt( i ) );
+                }
+            }
+        }
+
+        if ( m_currentElement < ( m_elements->m_elements.size() - 1 ) ) {
             ++m_currentElement;
         }
     }
-}
-
-void Staff::load() {
-    // Loads all chords and notes
-    //m_pNotationFileParser->loadElements( elements, m_pSceneMgr, m_staffNode );
 }

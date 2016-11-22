@@ -16,7 +16,7 @@ public:
     SceneSettings();
 
     void setScale( Ogre::Real value /* basic 0.7 /*, float tempo = 60 /* basic 60 bpm*/ ) {
-        direction.z = value / 10;
+        direction.z = value / -10;
         barScale	= value * 400;
     }
 };
