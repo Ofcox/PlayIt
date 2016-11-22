@@ -20,52 +20,44 @@ void Elements::loadElements( NotationFileParser * pNotationFileParser ) {
     pNotationFileParser->createElementsModels( m_elements, m_sceneMgr, m_staffNode );
 }
 
-bool Elements::elementHasReachedTarget() {
-    float elementWorldPosition = 0;
+//bool Elements::elementHasReachedTarget() {
+//    float elementWorldPosition = 0;
 
-    elementWorldPosition = m_staffNode->getPosition().z + m_elements[m_currentElement]->getNode()->getPosition().z;
+//    elementWorldPosition = m_staffNode->getPosition().z + m_elements[m_currentElement]->getNode()->getPosition().z;
 
-    if ( elementWorldPosition < 0 ) {
-        return false;
-    } else if ( elementWorldPosition >= 0 ) {
-        return true;
-    }
-}
+//    if ( elementWorldPosition <= 0 ) {
+//        return false;
+//    } else {
+//        return true;
+//    }
+//}
 
-bool Elements::elementIsInStringsRange( Element *element ) {
-    int	  range = 280;
-    float elementWorldPosition;
+//bool Elements::elementIsInStringsRange() {
+//    int	  range = 280;
+//    float elementWorldPosition;
 
-    elementWorldPosition = m_staffNode->getPosition().z + element->getNode()->getPosition().z;
+//    elementWorldPosition = m_staffNode->getPosition().z + m_elements[m_nextElement]->getNode()->getPosition().z;
 
-    if ( elementWorldPosition <= 0 && elementWorldPosition > -range ) {
-        return true;
-    } else {     //if (chordWorldPosition > 0)
-        return false;
-    }
-}
+//    if ( elementWorldPosition >= -range ) {
+//        return true;
+//    } else {
+//        return false;
+//    }
+//}
 
-void Elements::update() {
-    Element* element;
+//void Elements::update() {
 
-    //Kontrola, jestli je dalsi element v dosahu
-    if ( m_elements[m_nextElement] != element ) {
-        element = m_elements[m_nextElement];
-    }
+//    if ( m_elements[m_nextElement] != NULL  &&  elementIsInStringsRange() ) {
 
-    if ( elementIsInStringsRange( element ) ) {
+//        if ( m_nextElement < ( m_elements.size() - 1 ) ) {
+//            ++m_nextElement;
+//        }
+//    }
 
-        if ( m_nextElement < ( m_elements.size() - 1 ) ) {
-            ++m_nextElement;
-        }
-
-    }
-
-    //check if next element reached the target
-    if ( elementHasReachedTarget() ) {
-        m_elements[m_currentElement]->setVisibility( false );
-        if ( m_currentElement < ( m_elements.size() - 1 ) ) {
-            ++m_currentElement;
-        }
-    }
-}
+//    if ( elementHasReachedTarget() ) {
+//        m_elements[m_currentElement]->setVisibility( false );
+//        if ( m_currentElement < ( m_elements.size() - 1 ) ) {
+//            ++m_currentElement;
+//        }
+//    }
+//}

@@ -2,6 +2,7 @@
 #define ELEMENTS_H
 #include "Chord.h"
 #include "NotationFileParser.h"
+#include "Targets.h"
 
 class Elements
 {
@@ -16,13 +17,17 @@ public:
     Ogre::SceneManager* m_sceneMgr;
 
     std::vector<Element*> m_elements;
+
+    Targets* targets;
+
     Elements( Ogre::SceneManager *pSceneMgr, Ogre::SceneNode *pStaffNode );
     ~Elements();
     void loadElements( NotationFileParser* pNotationFileParser );
+    void setTargets( Targets* pTargets ) {targets = pTargets; }
 
-    bool elementHasReachedTarget();
-    bool elementIsInStringsRange( Element* element );
-    void update();
+//    bool elementHasReachedTarget();
+//    bool elementIsInStringsRange();
+//    void update();
 };
 
 #endif // ELEMENTS_H

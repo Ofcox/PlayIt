@@ -19,96 +19,69 @@ public:
 
 class NoteTarget : public Target {
 public:
-    int	  m_string;
-    int	  m_fret;
-    float m_timePosition;
+    int m_string;
+    int m_fret;
 
     Ogre::Entity*	 m_noteTargetEntity;
     Ogre::SceneNode* m_noteTargetNode;
 
-    NoteTarget( int string, int fret, float timePosition ) {
-        m_string	   = string;
-        m_fret		   = fret;
-        m_timePosition = timePosition;
+    NoteTarget( int string, int fret ) {
+        m_string = string;
+        m_fret	 = fret;
     }
 
     int getFret() { return m_fret; }
     int getString() { return m_string; }
-    float GetTimePosition() { return m_timePosition; }
     virtual void setVisibility( bool isVisible ) {
         m_noteTargetNode->setVisible( isVisible );
     }
 };
 
-class ChordTarget : public Target {
-public:
-    std::vector<Ogre::Entity*> m_chordTargetEntity;
-
-    NoteTarget* string4;
-    NoteTarget* string3;
-    NoteTarget* string2;
-    NoteTarget* string1;
-    ChordTarget();
-
-    virtual void setVisibility( bool isVisible ) {
-        string4->m_noteTargetNode->setVisible( isVisible );
-        string3->m_noteTargetNode->setVisible( isVisible );
-        string2->m_noteTargetNode->setVisible( isVisible );
-        string1->m_noteTargetNode->setVisible( isVisible );
-    }
-};
-
 class Targets {
 public:
-    std::vector<Target*> targets;
-    Ogre::SceneManager*	 m_sceneMgr;
-    Ogre::SceneNode*	 m_stringsNode;
+    Ogre::SceneManager* m_sceneMgr;
+    Ogre::SceneNode*	m_sceneNode;
 
-    Targets( std::vector<Element*>& elements, Ogre::SceneManager* pSceneMgr, Ogre::SceneNode* pNeckNode ) {
-        m_sceneMgr	  = pSceneMgr;
-        m_stringsNode = pNeckNode;
+    NoteTarget* m_targets[4][24];
 
-        std::vector<Element*>::iterator itr;
+    Targets( Ogre::SceneManager* pSceneMgr, Ogre::SceneNode* pNeckNode ) {
+        m_sceneNode = pNeckNode;
+        m_sceneMgr	= pSceneMgr;
+        for ( int y = 0; y <= 3; ++y ) {
+            for ( int x = 0; x < 23; ++x ) {
 
-        ocx::Note* noteObject;
-        //ocx::Chord*	 chordObject;
-        NoteTarget* NoteTargetObject;
-        //ChordTarget* ChordTargetObject;
+                m_targets[y][x] = new NoteTarget( y + 1, x );
 
-        for ( itr = elements.begin(); itr != elements.end(); ++itr ) {
-            if ( ( *itr )->m_type == NOTE ) {
-                noteObject		 = dynamic_cast<ocx::Note *>( *itr );
-                NoteTargetObject = new NoteTarget( noteObject->getString(), noteObject->getFret(), noteObject->getTimePosition() );
-
-
-                NoteTargetObject->m_noteTargetEntity = m_sceneMgr->createEntity( "cube.mesh" );
-                switch ( noteObject->getString() ) {
+                m_targets[y][x]->m_noteTargetEntity = m_sceneMgr->createEntity( "cube.mesh" );
+                switch ( y ) {
+                case 0:
+                    m_targets[y][x]->m_noteTargetEntity->setMaterialName( "Fret/String1Mat" );
+                    break;
                 case 1:
-                    NoteTargetObject->m_noteTargetEntity->setMaterialName( "Fret/String1Mat" );
+                    m_targets[y][x]->m_noteTargetEntity->setMaterialName( "Fret/String2Mat" );
                     break;
                 case 2:
-                    NoteTargetObject->m_noteTargetEntity->setMaterialName( "Fret/String2Mat" );
+                    m_targets[y][x]->m_noteTargetEntity->setMaterialName( "Fret/String3Mat" );
                     break;
                 case 3:
-                    NoteTargetObject->m_noteTargetEntity->setMaterialName( "Fret/String3Mat" );
-                    break;
-                case 4:
-                    NoteTargetObject->m_noteTargetEntity->setMaterialName( "Fret/String4Mat" );
+                    m_targets[y][x]->m_noteTargetEntity->setMaterialName( "Fret/String4Mat" );
                     break;
                 }
 
-                NoteTargetObject->m_noteTargetNode = m_stringsNode->createChildSceneNode();
-                NoteTargetObject->m_noteTargetNode->attachObject( NoteTargetObject->m_noteTargetEntity );
-                NoteTargetObject->m_noteTargetNode->setPosition( ( noteObject->getFret() * SceneSettings::fretSpacing ) - ( SceneSettings::fretSpacing / 2 ),
-                                                                 ( noteObject->getString() * SceneSettings::stringSpacing ),
-                                                                 0 );
-                NoteTargetObject->m_noteTargetNode->setScale( 8, 4, 1 );
-                targets.push_back( NoteTargetObject );
+                m_targets[y][x]->m_noteTargetNode = m_sceneNode->createChildSceneNode();
+                m_targets[y][x]->m_noteTargetNode->attachObject( m_targets[y][x]->m_noteTargetEntity );
+                m_targets[y][x]->m_noteTargetNode->setPosition( ( x * SceneSettings::fretSpacing ) -( SceneSettings::fretSpacing / 2 ),
+                                                                ( ( y + 1 ) * SceneSettings::stringSpacing ),
+                                                                0 );
+                m_targets[y][x]->m_noteTargetNode->setScale( 8, 4, 1 );
+
+                m_targets[y][x]->setVisibility( false );
             }
         }
     }
 
-    void loadTargets() {}
+    void showTargetAt( int string, int fret ) {m_targets[string - 1][fret]->setVisibility( true ); }
+    void hideTargetAt( int string, int fret ) {m_targets[string - 1][fret]->setVisibility( false ); }
 };
 
 #endif // TARGETS_H

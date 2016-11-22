@@ -80,7 +80,6 @@ public:
 class ocx::Chord : public Element
 {
 private:
-    std::string m_name;
     std::string m_germanName;
     int			m_beginFret;
     int			m_endFret;
@@ -89,7 +88,6 @@ public:
     std::vector<ocx::Note*>	   m_notes;
     std::vector<Ogre::Entity*> m_chordEntity;
     Ogre::SceneNode*		   m_chordNode;
-    //?? možná FingerPattern?
 
     ocx::Note* note4;
     ocx::Note* note3;
@@ -108,7 +106,6 @@ public:
     }
 
     virtual Ogre::SceneNode* getNode() { return m_chordNode; }
-    std::string getName() {return m_name; }
     std::string getGermanName() {return m_germanName; }
     int getBeginFret() {return m_beginFret; }
     int getEngFret() {return m_endFret; }

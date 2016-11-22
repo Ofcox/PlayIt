@@ -3,8 +3,8 @@
 #include "NotationFileParser.h"
 
 #include "SceneSettings.h"
-#include "Strings.h"
 #include "Elements.h"
+#include "Neck.h"
 
 /*
 ===============================================================================
@@ -30,12 +30,21 @@ private:
     Ogre::SceneManager* m_sceneMgr;
     NotationFileParser* m_notationFileParser;
 
+    Neck* m_neck;
+
+    // Number of the last element that passed through strings
+    int m_lastPassedElement;
+    int m_currentElement;
+    // Number of next element that passing through strings
+    int m_upcomingElement;
+
 public:
-    Staff( Ogre::SceneManager* pSceneMgr, Ogre::SceneNode* pStaffNode );
+    Staff( Ogre::SceneManager* pSceneMgr, Ogre::SceneNode* pStaffNode, Neck* pNeck );
     ~Staff();
 
     void loadElements();
-    Elements* getElements() { return m_elements; }
+    bool elementHasReachedTarget();
+    bool elementIsInStringsRange();
 
     void update();
 

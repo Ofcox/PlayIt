@@ -70,18 +70,17 @@ void PerformanceState::createScene() {
     m_fretGuides->load( m_fretLinesNode );
     m_fretLinesNode->setPosition( 0, 0, 0 );
 
+    // Uzel Krku
+    m_neckNode = m_perfSceneNode->createChildSceneNode( "NeckNode" );
+    m_neck	   = new Neck( m_sceneMgr, m_neckNode );
+    m_neckNode->setPosition( 0, 0, 0 );
+
     //Uzel osnovy, ta se bude pohybovat
     m_staffNode = m_perfSceneNode->createChildSceneNode( "StaffNode" );
     m_staffNode->setPosition( 0, 0, 0 );
-    m_staff = new Staff( m_sceneMgr, m_staffNode );
+    m_staff = new Staff( m_sceneMgr, m_staffNode, m_neck );
 
     m_staff->loadElements();
-
-
-    // Uzel Krku
-    m_neckNode = m_perfSceneNode->createChildSceneNode( "NeckNode" );
-    m_neck	   = new Neck( m_sceneMgr, m_neckNode, m_staff );
-    m_neckNode->setPosition( 0, 0, 0 );
 
     /////////////////////////////////////////////////////
 
@@ -306,6 +305,7 @@ void PerformanceState::update( double timeSinceLastFrame ) {
     m_staffNode->translate( ( SceneSettings::direction / SongInfo::getTempoMultiplier() ) * timeSinceLastFrame, Ogre::Node::TS_LOCAL );
 
     m_staff->update();
+    //m_neck->update();
 
     m_MoveScale = m_MoveSpeed   * timeSinceLastFrame;
     m_RotScale	= m_RotateSpeed * timeSinceLastFrame;
