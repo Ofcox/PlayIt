@@ -44,8 +44,7 @@ void NotationFileParser::loadElements( std::vector<Element *> &elements ) {
             if ( m_type == "chord" ) {
                 m_currentChord = m_chordList->getChordPatternByName( currentElementNode->first_attribute( "name" )->value() );
                 ocx::Chord* ChordObject = new ocx::Chord(  m_currentChord,
-                                                           actualPosition( std::stof( currentElementNode->first_attribute( "position" )->value() ) ),
-                                                           m_currentChord->getGermanName() ) ;
+                                                           actualPosition( std::stof( currentElementNode->first_attribute( "position" )->value() ) ) ) ;
 
                 elements.push_back( ChordObject );
             } else if ( m_type == "note" ) {
@@ -67,6 +66,11 @@ void NotationFileParser::createElementsModels( std::vector<Element*>& elements, 
 
     ocx::Note*	NoteObject;
     ocx::Chord* ChordObject;
+
+//    m_plane = new MovablePlane( Ogre::Vector3::UNIT_Z, 0 );
+//    MeshManager::getSingleton().createPlane( "planeLabel", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+//                                             *m_plane, 30, 30, 1, 1, true, 1, 1, 1, Vector3::UNIT_Y );
+
 
     for ( itr = elements.begin(); itr != elements.end(); ++itr ) {
 
@@ -96,7 +100,9 @@ void NotationFileParser::createElementsModels( std::vector<Element*>& elements, 
             NoteObject->m_noteNode->setScale( 8, 4, 4 );
 
         } else if ( ( *itr )->m_type == CHORD ) {
-            ChordObject = dynamic_cast<ocx::Chord *>( *itr );
+            ChordObject				 = dynamic_cast<ocx::Chord *>( *itr );
+            ChordObject->m_chordNode = pStaffNode->createChildSceneNode();
+
             for ( int i = 0; i <= 3; ++i ) {
                 ChordObject->m_notes[i]->m_noteEntity = pSceneMgr->createEntity( "cube.mesh" );
 
@@ -114,8 +120,6 @@ void NotationFileParser::createElementsModels( std::vector<Element*>& elements, 
                     ChordObject->m_notes[i]->m_noteEntity->setMaterialName( "Fret/String4Mat" );
                     break;
                 }
-
-                ChordObject->m_chordNode			= pStaffNode->createChildSceneNode();
                 ChordObject->m_notes[i]->m_noteNode = ChordObject->m_chordNode->createChildSceneNode();
                 ChordObject->m_notes[i]->m_noteNode->attachObject( ChordObject->m_notes[i]->m_noteEntity );
                 ChordObject->m_notes[i]->m_noteNode->setPosition(  ( ChordObject->m_notes[i]->getFret() * SceneSettings::fretSpacing ) - ( SceneSettings::fretSpacing / 2 ),
@@ -133,6 +137,19 @@ void NotationFileParser::createElementsModels( std::vector<Element*>& elements, 
                     ChordObject->m_notes[i]->m_noteNode->setScale( SceneSettings::fretSpacing * 4, 1, 1 );
                 }
             }
+
+            ChordObject->m_labelEntity = pSceneMgr->createEntity( "plane.mesh" );
+            ChordObject->m_labelNode   = ChordObject->m_chordNode->createChildSceneNode();
+            ChordObject->m_labelNode->attachObject( ChordObject->m_labelEntity );
+            ChordObject->m_labelNode->setScale( 10,10,0 );
+            ChordObject->m_labelNode->setPosition( ( ChordObject->getBeginFret() * SceneSettings::fretSpacing ) + 20, SceneSettings::stringSpacing * 4, 0 );
+
+            //std::string fret = std::to_string(m_materialNum);
+            ChordObject->m_labelTexture = new LabelTexture( ChordObject->getGermanName() );
+            ChordObject->m_labelEntity->setMaterial(ChordObject->m_labelTexture->getMaterial());
+
+
+
             /* Chord Frame */
 
             ////            ChordObject->m_chordEntity.push_back(m_pSceneMgr->createEntity("cube.mesh"));

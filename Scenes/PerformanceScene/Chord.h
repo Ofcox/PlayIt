@@ -4,6 +4,8 @@
 #include "Note.h"
 
 #include "../../dependencies/rapidxml/rapidxml.hpp"
+#include <OgreMeshManager.h>
+#include "LabelTexture.h"
 
 using namespace rapidxml;
 
@@ -81,32 +83,34 @@ class ocx::Chord : public Element
 {
 private:
     std::string m_germanName;
+    std::string m_englishName;
     int			m_beginFret;
     int			m_endFret;
 
 public:
-    std::vector<ocx::Note*>	   m_notes;
-    std::vector<Ogre::Entity*> m_chordEntity;
-    Ogre::SceneNode*		   m_chordNode;
+    std::vector<ocx::Note*> m_notes;
+    Ogre::SceneNode* m_chordNode;
+    LabelTexture*	 m_labelTexture;
+
+    Ogre::Entity*	 m_labelEntity;
+    Ogre::SceneNode* m_labelNode;
 
     ocx::Note* note4;
     ocx::Note* note3;
     ocx::Note* note2;
     ocx::Note* note1;
 
-    ocx::Chord( ChordPattern* chordDefinition, float timePosition, std::string germanName );
+    ocx::Chord(ChordPattern* chordDefinition, float timePosition);
     virtual ~Chord();
 
     // Sets visibility of chords
     virtual void setVisibility( bool isVisible ) {
-        m_notes[0]->m_noteNode->setVisible( isVisible );
-        m_notes[1]->m_noteNode->setVisible( isVisible );
-        m_notes[2]->m_noteNode->setVisible( isVisible );
-        m_notes[3]->m_noteNode->setVisible( isVisible );
+        m_chordNode->setVisible( isVisible );
     }
 
     virtual Ogre::SceneNode* getNode() { return m_chordNode; }
     std::string getGermanName() {return m_germanName; }
+    std::string getEnglishName() {return m_englishName; }
     int getBeginFret() {return m_beginFret; }
     int getEngFret() {return m_endFret; }
 };

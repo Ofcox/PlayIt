@@ -20,7 +20,7 @@ protected:
     bool		m_hit		 = false;
     bool		m_hasReached = false;
     // Because dynamic casting is expensive, I rather use this array. For notes there will be waste of four ints, but it's
-    // still much cheaper. [0] represents string and [1] is for fret.
+    // still much cheaper.
     int m_strings[4] = {0,0,0,0};
 
 public:
@@ -35,10 +35,6 @@ public:
     virtual float getTimePosition() {return m_timePosition; }
     virtual Ogre::SceneNode* getNode() {return nullptr; }
     virtual std::string getName() {return m_name; }
-    virtual int getString1() {return m_strings[0]; }
-    virtual int getString2() {return m_strings[1]; }
-    virtual int getString3() {return m_strings[2]; }
-    virtual int getString4() {return m_strings[3]; }
     virtual int getString() {return m_fret; }
     virtual int getFret() {return m_string; }
     virtual int getFretAt( int string ) {return m_strings[( string - 1 )]; }

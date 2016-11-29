@@ -50,10 +50,11 @@ ChordList::~ChordList() {
     Chords definition
 ===============================================================================
 */
-ocx::Chord::Chord( ChordPattern *chordDefinition, float timePosition, std::string germanName ) {
+ocx::Chord::Chord( ChordPattern *chordDefinition, float timePosition) {
     m_type		   = CHORD;
     m_timePosition = timePosition;
-    m_germanName   = germanName;
+    m_germanName   = chordDefinition->getGermanName();
+    m_englishName  = chordDefinition->getEnglishName();
     m_beginFret	   = chordDefinition->getBeginFret();
     m_endFret	   = chordDefinition->getEndFret();
 

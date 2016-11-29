@@ -72,6 +72,10 @@ material Fret/String2Mat
 			specular 1 1 1 50
 			ambient 0.0588 0.2941 1.0
 			diffuse 0.0588 0.2941 1.0
+			texture_unit
+			{
+				texture rockwall.tga
+			}
 		}
 	}
 }
@@ -85,6 +89,11 @@ material Fret/String1Mat
 			ambient 0.9098 0.1961 0.1882
 			diffuse 0.9098 0.1961 0.1882
 			specular 1 1 1 50
+			texture_unit
+			{
+				texture rockwall.tga
+			}
 		}
 	}
 }
+
