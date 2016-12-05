@@ -3,8 +3,7 @@
 
 #include "AppState.hpp"
 
-class MenuState : public AppState
-{
+class MenuState : public AppState{
 public:
     MenuState(AppStateListener* AppStateManager);
     ~MenuState();

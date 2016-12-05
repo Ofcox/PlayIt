@@ -34,8 +34,7 @@
 ===============================================================================
 */
 
-class PerformanceState : public AppState
-{
+class PerformanceState : public AppState{
 public:
     PerformanceState( AppStateListener* AppStateManager );
     ~PerformanceState();
@@ -77,6 +76,7 @@ private:
 
     Ogre::Vector3 m_direction;
 
+    Ogre::SceneNode* m_perfSceneNode;
     Ogre::SceneNode* m_fretLinesNode;
     Ogre::SceneNode* m_neckNode;
     Ogre::SceneNode* m_staffNode;

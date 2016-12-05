@@ -1,7 +1,7 @@
 #include "PlayIt.hpp"
 
 PlayIt::PlayIt() {
-    m_pAppStateManager = 0;
+    m_pAppStateManager = nullptr;
 }
 
 PlayIt::~PlayIt() {
@@ -11,11 +11,11 @@ PlayIt::~PlayIt() {
 
 void PlayIt::start() {
     new OgreFramework();
-    if ( !OgreFramework::getSingletonPtr()->initOgre( "Project Uketard pre-aplha 0.000001", 0, 0 ) ) {
+    if ( !OgreFramework::getSingletonPtr()->initOgre( "Project Uketard pre-aplha 0.00001", 0, 0 ) ) {
         return;
     }
 
-    OgreFramework::getSingletonPtr()->m_pLog->logMessage( "Demo initialized!" );
+    OgreFramework::getSingletonPtr()->m_pLog->logMessage( "Project Uketard initialized!" );
 
     m_pAppStateManager = new AppStateManager();
 
@@ -24,10 +24,11 @@ void PlayIt::start() {
     mySongListState    = new SongListState( m_pAppStateManager );
     myPerformanceState = new PerformanceState( m_pAppStateManager );
 
-    m_pAppStateManager->manageAppState( "MenuState", myMenuState );
-    m_pAppStateManager->manageAppState( "PauseState", myPauseState );
-    m_pAppStateManager->manageAppState( "SongListState", mySongListState );
-    m_pAppStateManager->manageAppState( "PerformanceState", myPerformanceState );
+    // Must be sorted same as the GameStates enum
+    m_pAppStateManager->manageAppState( myMenuState );
+    m_pAppStateManager->manageAppState( myPauseState );
+    m_pAppStateManager->manageAppState( mySongListState );
+    m_pAppStateManager->manageAppState( myPerformanceState );
 
-    m_pAppStateManager->start( m_pAppStateManager->findByName( "MenuState" ) );
+    m_pAppStateManager->start( m_pAppStateManager->getAppState( GS_MenuState ) );
 }

@@ -21,7 +21,7 @@ PerformanceState::~PerformanceState() {
 }
 
 void PerformanceState::enter() {
-    OgreFramework::getSingletonPtr()->m_pLog->logMessage( "Entering GameState..." );
+    OgreFramework::getSingletonPtr()->m_pLog->logMessage( "Entering PerformanceState..." );
 
     m_sceneMgr = OgreFramework::getSingletonPtr()->m_pRoot->createSceneManager( ST_GENERIC, "PerformanceSceneMgr" );
     m_sceneMgr->setAmbientLight( Ogre::ColourValue( 0.9f, 0.9f, 0.9f ) );
@@ -51,7 +51,6 @@ void PerformanceState::createScene() {
     m_fretGuides = new FretGuide( m_sceneMgr );
 
     // Scene node
-    Ogre::SceneNode* m_perfSceneNode;
     m_perfSceneNode = m_sceneMgr->getRootSceneNode()->createChildSceneNode( "PerfSceneNode" );
 
     // Fret node
@@ -87,7 +86,7 @@ bool PerformanceState::pause() {
 }
 
 void PerformanceState::resume() {
-    OgreFramework::getSingletonPtr()->m_pLog->logMessage( "Resuming GameState..." );
+    OgreFramework::getSingletonPtr()->m_pLog->logMessage( "Resuming PerformanceState..." );
 
     buildGUI();
 
@@ -121,7 +120,7 @@ void PerformanceState::getInput() {
 void PerformanceState::buildGUI() {
     OgreFramework::getSingletonPtr()->m_pTrayMgr->showFrameStats( OgreBites::TL_BOTTOMLEFT );
     //OgreFramework::getSingletonPtr()->m_pTrayMgr->showLogo( OgreBites::TL_BOTTOMRIGHT );
-    OgreFramework::getSingletonPtr()->m_pTrayMgr->createLabel( OgreBites::TL_TOP, "GameLbl", "Performance", 250 );
+    //OgreFramework::getSingletonPtr()->m_pTrayMgr->createLabel( OgreBites::TL_TOP, "GameLbl", "Performance", 250 );
     OgreFramework::getSingletonPtr()->m_pTrayMgr->showCursor();
 
     Ogre::StringVector items;
@@ -160,7 +159,7 @@ bool PerformanceState::keyPressed( const OIS::KeyEvent &keyEventRef ) {
     }
 
     if ( OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown( OIS::KC_ESCAPE ) ) {
-        pushAppState( findByName( "PauseState" ) );
+        pushAppState( getAppState( GS_PauseState ) );
         return true;
     }
 

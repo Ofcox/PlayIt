@@ -31,7 +31,7 @@ void MenuState::enter() {
 
     OgreFramework::getSingletonPtr()->m_pTrayMgr->destroyAllWidgets();
     OgreFramework::getSingletonPtr()->m_pTrayMgr->showFrameStats( OgreBites::TL_BOTTOMLEFT );
-    OgreFramework::getSingletonPtr()->m_pTrayMgr->showLogo( OgreBites::TL_BOTTOMRIGHT );
+//    OgreFramework::getSingletonPtr()->m_pTrayMgr->showLogo( OgreBites::TL_BOTTOMRIGHT );
     OgreFramework::getSingletonPtr()->m_pTrayMgr->showCursor();
     OgreFramework::getSingletonPtr()->m_pTrayMgr->createButton( OgreBites::TL_BOTTOMLEFT, "PickBtn", "Pick", 250 );
     OgreFramework::getSingletonPtr()->m_pTrayMgr->createButton( OgreBites::TL_BOTTOMLEFT, "TunerBtn", "/Tuner/", 250 );
@@ -44,7 +44,7 @@ void MenuState::enter() {
     Ogre::String infoText;
     infoText.append( "Lorem ipsum dolor sit amet, \n" );
     infoText.append( "consectetuer adipiscing elit. \n" );
-    OgreBites::TextBox* WelcomeInfo = OgreFramework::getSingletonPtr()->m_pTrayMgr->createTextBox( OgreBites::TL_CENTER, "InfoPanel", infoTitle, 300, 220 );
+    OgreBites::TextBox* WelcomeInfo = OgreFramework::getSingletonPtr()->m_pTrayMgr->createTextBox( OgreBites::TL_CENTER, "InfoPanel", infoTitle, 300, 220);
     WelcomeInfo->setText( infoText );
 
 //    TextAreaOverlayElement* textArea = new TextAreaOverlayElement(infoText);
@@ -131,8 +131,8 @@ void MenuState::buttonHit( OgreBites::Button *button ) {
     if ( button->getName() == "ExitBtn" ) {
         m_bQuit = true;
     } else if ( button->getName() == "PickBtn" ) {
-        changeAppState( findByName( "SongListState" ) );
+        changeAppState( getAppState( GS_SongListState ) );
     } else if ( button->getName() == "TunerBtn" ) {
-        changeAppState( findByName( "GameState" ) );
+        changeAppState( getAppState( GS_PerformanceState ) );
     }
 }

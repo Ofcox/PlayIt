@@ -20,8 +20,7 @@
 
 #include <SdkTrays.h>
 
-class OgreFramework : public Ogre::Singleton<OgreFramework>, OIS::KeyListener, OIS::MouseListener
-{
+class OgreFramework : public Ogre::Singleton<OgreFramework>, OIS::KeyListener, OIS::MouseListener{
 public:
     OgreFramework();
     ~OgreFramework();

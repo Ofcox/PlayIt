@@ -35,7 +35,7 @@ bool Staff::elementHasReachedTarget() {
 }
 
 bool Staff::elementIsInStringsRange() {
-    int   range = 180; // If next element is closer than this distance, the actual target will not show
+    int   range = 380; // If next element is closer than this distance, the actual target will not show
     float elementWorldPosition;
 
     elementWorldPosition = m_staffNode->getPosition().z + m_elements->m_elements[m_upcomingElement]->getNode()->getPosition().z;
@@ -73,11 +73,6 @@ void Staff::update() {
         m_elements->m_elements[m_currentElement]->setVisibility( false );
 
         if ( m_elements->m_elements[m_currentElement]->m_type == NOTE ) {
-//            for ( int i = 1; i <= 5; ++i ) {
-//                if(m_elements->m_elements[m_currentElement]->getString() )
-//                    hideTarget
-//            }
-            //if ( m_elements->m_elements[m_currentElement]->getString1() != m_elements->m_elements[m_currentElement + 1]->getString1() )
             // Pokud je alespoň jeden následujících x elementů shodných a je v dosahu
             m_neck->getTargets()->hideTargetAt( m_elements->m_elements[m_currentElement]->getString(),
                                                 m_elements->m_elements[m_currentElement]->getFret() );

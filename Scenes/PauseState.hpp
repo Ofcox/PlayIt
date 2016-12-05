@@ -3,8 +3,7 @@
 
 #include "AppState.hpp"
 
-class PauseState : public AppState
-{
+class PauseState : public AppState{
 public:
     PauseState(AppStateListener* AppStateManager);
     ~PauseState();

@@ -10,8 +10,7 @@
 #include "scenes/SongListState.hpp"
 #include "scenes/PerformanceState.hpp"
 
-class PlayIt
-{
+class PlayIt{
 public:
     PlayIt();
     ~PlayIt();
@@ -21,22 +20,22 @@ public:
 private:
     AppStateManager* m_pAppStateManager;
 
-    AppState*   findByName( Ogre::String stateName ) {
-        return m_pParent->findByName( stateName );
+    AppState* findByName( GameState gameState ) {
+        return m_pParent->getAppState( gameState );
     }
-    void        changeAppState( AppState* state ) {
+    void changeAppState( AppState* state ) {
         m_pParent->changeAppState( state );
     }
-    bool        pushAppState( AppState* state ) {
+    bool pushAppState( AppState* state ) {
         return m_pParent->pushAppState( state );
     }
-    void        popAppState() {
+    void popAppState() {
         m_pParent->popAppState();
     }
-    void        shutdown() {
+    void shutdown() {
         m_pParent->shutdown();
     }
-    void        popAllAndPushAppState( AppState* state ) {
+    void popAllAndPushAppState( AppState* state ) {
         m_pParent->popAllAndPushAppState( state );
     }
 

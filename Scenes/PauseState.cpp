@@ -111,7 +111,7 @@ void PauseState::buttonHit(OgreBites::Button *button){
     else if(button->getName() == "BackToGameBtn")
         m_bQuit = true;
     else if(button->getName() == "BackToMenuBtn")
-        popAllAndPushAppState(findByName("MenuState") );
+        popAllAndPushAppState(getAppState(GS_MenuState) );
 }
 
 void PauseState::yesNoDialogClosed(const Ogre::DisplayString& question, bool yesHit){

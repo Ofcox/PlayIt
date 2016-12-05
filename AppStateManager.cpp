@@ -7,7 +7,6 @@ AppStateManager::AppStateManager() {
 }
 
 AppStateManager::~AppStateManager() {
-    state_info si;
 
     while( !m_ActiveStateStack.empty() ) {
         m_ActiveStateStack.back()->exit();
@@ -15,36 +14,33 @@ AppStateManager::~AppStateManager() {
     }
 
     while( !m_States.empty() ) {
-        si = m_States.back();
-        si.state->destroy();
-        //m_States.erase(m_States.end());
+        m_States.back()->destroy();
         m_States.pop_back();
     }
 }
 
-//TODO: Make it less painful. We could replace the string bullshit with an editable enumeration
-void AppStateManager::manageAppState(Ogre::String stateName, AppState* state) {
-    try{
-        state_info new_state_info;
-        new_state_info.name  = stateName;
-        new_state_info.state = state;
-        m_States.push_back(new_state_info);
-    }
-    catch( std::exception& e ) {
-        delete state;
-        throw Ogre::Exception(Ogre::Exception::ERR_INTERNAL_ERROR, "Error while trying to manage a new AppState\n" + Ogre::String(e.what() ), "AppStateManager.cpp (39)");
-    }
+void AppStateManager::manageAppState( AppState* state) {
+        m_States.push_back(state);
 }
 
-AppState* AppStateManager::findByName(Ogre::String stateName) {
-    std::vector<state_info>::iterator itr;
-
-    for( itr = m_States.begin(); itr != m_States.end(); itr++ ) {
-        if( itr->name == stateName )
-            return itr->state;
+AppState* AppStateManager::getAppState(GameState gameState) {
+    switch (gameState) {
+    case GS_MenuState:
+        return m_States[0];
+        break;
+    case GS_PauseState:
+        return m_States[1];
+        break;
+    case GS_SongListState:
+        return m_States[2];
+        break;
+    case GS_PerformanceState:
+        return m_States[3];
+        break;
+    default:
+        return NULL;
+        break;
     }
-
-    return 0;
 }
 
 void AppStateManager::start(AppState* state) {
@@ -117,8 +113,7 @@ void AppStateManager::popAppState() {
     if( !m_ActiveStateStack.empty() ) {
         init(m_ActiveStateStack.back() );
         m_ActiveStateStack.back()->resume();
-    }
-    else
+    } else
         shutdown();
 }
 

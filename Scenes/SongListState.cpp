@@ -18,7 +18,7 @@ void SongListState::enter() {
     m_sceneMgr->addRenderQueueListener( OgreFramework::getSingletonPtr()->m_pOverlaySystem );
 
     m_pCamera = m_sceneMgr->createCamera( "SongListCam" );
-    m_pCamera->setPosition( Vector3( 0, 25, -50 ) );
+    m_pCamera->setPosition( Vector3( 0, 25, 50 ) );
     m_pCamera->lookAt( Vector3( 0, 0, 0 ) );
     m_pCamera->setNearClipDistance( 1 );
 
@@ -38,7 +38,6 @@ void SongListState::enter() {
 
     m_pSongInfo = new SongInfo( "notation.xml" );
 
-    //Ogre::String infoText = "Vitejte\n\n";
     Ogre::String infoTitle = ( "Info" );
     Ogre::String infoText  = m_pSongInfo->m_songName;
     infoText.append( "\n" );
@@ -71,7 +70,7 @@ void SongListState::exit() {
 
 bool SongListState::keyPressed( const OIS::KeyEvent &keyEventRef ) {
     if ( OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown( OIS::KC_ESCAPE ) ) {
-        pushAppState( findByName( "SongListState" ) );
+        pushAppState( getAppState( GS_SongListState ) );
         return true;
     }
 }
@@ -104,9 +103,9 @@ bool SongListState::mouseReleased( const OIS::MouseEvent &evt, OIS::MouseButtonI
 
 void SongListState::buttonHit( OgreBites::Button *button ) {
     if ( button->getName() == "BackBtn" ) {
-        changeAppState( findByName( "MenuState" ) );
+        changeAppState( getAppState( GS_MenuState ) );
     } else if ( button->getName() == "PlayBtn" )      {
-        changeAppState( findByName( "PerformanceState" ) );
+        changeAppState( getAppState( GS_PerformanceState ) );
     }
 }
 

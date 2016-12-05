@@ -24,8 +24,7 @@ namespace Ogre
     class TerrainGlobalOptions;
 }
 
-class nodeProperty
-{
+class nodeProperty {
 public:
     Ogre::String nodeName;
     Ogre::String propertyNm;
@@ -37,8 +36,7 @@ public:
     }
 };
 
-class DotSceneLoader
-{
+class DotSceneLoader {
 public:
     Ogre::TerrainGlobalOptions *mTerrainGlobalOptions;
 

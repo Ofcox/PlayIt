@@ -4,8 +4,8 @@ int LabelTexture::m_objectCount = 0;
 
 LabelTexture::LabelTexture( String text ) {
 
-    m_materialName = "mat_";
-    m_textureName  = "tex_";
+    m_materialName = text;
+    m_textureName  = text;
     m_objectCount++;
 
     m_materialName.append(Ogre::StringConverter::toString(m_objectCount) );
@@ -13,7 +13,7 @@ LabelTexture::LabelTexture( String text ) {
     m_font = FontManager::getSingleton().getByName( "SdkTrays/Caption" ).getPointer();
 
     // Make sure the texture is not WRITE_ONLY, we need to read the buffer to do the blending with the font (get the alpha for example)
-    m_destTexture = TextureManager::getSingleton().createManual( m_textureName.c_str() /*"LabelTexture"*/,"General",TEX_TYPE_2D, 512, 512, MIP_UNLIMITED, PF_X8R8G8B8, Ogre::TU_STATIC | Ogre::TU_AUTOMIPMAP ) /*.getPointer()*/;
+    m_destTexture = TextureManager::getSingleton().createManual( m_textureName.c_str() /*"LabelTexture"*/,"General",TEX_TYPE_2D, 1024, 1024, MIP_UNLIMITED, PF_X8R8G8B8, Ogre::TU_STATIC | Ogre::TU_AUTOMIPMAP ) /*.getPointer()*/;
 
     WriteToTexture( text.c_str(), Image::Box( 50,50,150,150 ),m_font,ColourValue( 1.0,1.0,1.0,1.0 ),'c' );
 
