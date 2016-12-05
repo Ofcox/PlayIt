@@ -1,21 +1,13 @@
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
 #include "PlayIt.hpp"
-
-//|||||||||||||||||||||||||||||||||||||||||||||||
 
 PlayIt::PlayIt() {
     m_pAppStateManager = 0;
 }
 
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
 PlayIt::~PlayIt() {
     delete m_pAppStateManager;
     delete OgreFramework::getSingletonPtr();
 }
-
-//|||||||||||||||||||||||||||||||||||||||||||||||
 
 void PlayIt::start() {
     new OgreFramework();
@@ -27,9 +19,9 @@ void PlayIt::start() {
 
     m_pAppStateManager = new AppStateManager();
 
-    myMenuState		   = new MenuState( m_pAppStateManager );
-    myPauseState	   = new PauseState( m_pAppStateManager );
-    mySongListState	   = new SongListState( m_pAppStateManager );
+    myMenuState        = new MenuState( m_pAppStateManager );
+    myPauseState       = new PauseState( m_pAppStateManager );
+    mySongListState    = new SongListState( m_pAppStateManager );
     myPerformanceState = new PerformanceState( m_pAppStateManager );
 
     m_pAppStateManager->manageAppState( "MenuState", myMenuState );
@@ -37,8 +29,5 @@ void PlayIt::start() {
     m_pAppStateManager->manageAppState( "SongListState", mySongListState );
     m_pAppStateManager->manageAppState( "PerformanceState", myPerformanceState );
 
-
     m_pAppStateManager->start( m_pAppStateManager->findByName( "MenuState" ) );
 }
-
-//|||||||||||||||||||||||||||||||||||||||||||||||

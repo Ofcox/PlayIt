@@ -1,13 +1,7 @@
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
 #ifndef PAUSE_STATE_HPP
 #define PAUSE_STATE_HPP
 
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
 #include "AppState.hpp"
-
-//|||||||||||||||||||||||||||||||||||||||||||||||
 
 class PauseState : public AppState
 {
@@ -32,12 +26,8 @@ public:
     void update(double timeSinceLastFrame);
 
 private:
-    bool                        m_bQuit;
-    bool                        m_bQuestionActive;
+    bool m_bQuit;
+    bool m_bQuestionActive;
 };
 
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
-#endif
-
-//|||||||||||||||||||||||||||||||||||||||||||||||
+#endif // PAUSE_STATE_HPP

@@ -97,3 +97,21 @@ material Fret/String1Mat
 	}
 }
 
+material Frame/ChordMat
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0.5 0.5 0.5
+			diffuse 0.5 0.5 0.5
+			specular 1 1 1 50
+			texture_unit
+			{
+				texture tusk.jpg
+			}
+		}
+	}
+}
+

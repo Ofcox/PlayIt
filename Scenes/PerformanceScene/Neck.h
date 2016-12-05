@@ -2,7 +2,13 @@
 #define NECK_H
 #include "Strings.h"
 #include "Targets.h"
+/*
+   ===============================================================================
 
+    This class holds all elements bound to the neck like strings or targets
+
+   ===============================================================================
+ */
 class Neck
 {
 private:
@@ -11,7 +17,9 @@ private:
 
 public:
     Neck( Ogre::SceneManager *pSceneMgr, Ogre::SceneNode *pNeckNode );
-    Targets* getTargets() {return m_targets; }
+    Targets* getTargets() {
+        return m_targets;
+    }
 };
 
 #endif // NECK_H

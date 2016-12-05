@@ -75,7 +75,7 @@ void NotationFileParser::createElementsModels( std::vector<Element*>& elements, 
     for ( itr = elements.begin(); itr != elements.end(); ++itr ) {
 
         if ( ( *itr )->m_type == NOTE ) {
-            NoteObject				 = dynamic_cast<ocx::Note *>( *itr );
+            NoteObject				 = dynamic_cast<ocx::Note*>( *itr );
             NoteObject->m_noteEntity = pSceneMgr->createEntity( "cube.mesh" );
             switch ( NoteObject->getString() ) {
             case 1:
@@ -96,11 +96,11 @@ void NotationFileParser::createElementsModels( std::vector<Element*>& elements, 
             NoteObject->m_noteNode->attachObject( NoteObject->m_noteEntity );
             NoteObject->m_noteNode->setPosition( ( NoteObject->getFret() * SceneSettings::fretSpacing ) - ( SceneSettings::fretSpacing / 2 ),
                                                  ( NoteObject->getString() * SceneSettings::stringSpacing ),
-                                                 NoteObject->getTimePosition() * SceneSettings::barScale );
+                                                 -NoteObject->getTimePosition() * SceneSettings::barScale );
             NoteObject->m_noteNode->setScale( 8, 4, 4 );
 
         } else if ( ( *itr )->m_type == CHORD ) {
-            ChordObject				 = dynamic_cast<ocx::Chord *>( *itr );
+            ChordObject				 = dynamic_cast<ocx::Chord*>( *itr );
             ChordObject->m_chordNode = pStaffNode->createChildSceneNode();
 
             for ( int i = 0; i <= 3; ++i ) {
@@ -127,10 +127,10 @@ void NotationFileParser::createElementsModels( std::vector<Element*>& elements, 
                                                                    0 );
 
                 if ( !ChordObject->m_notes[i]->getIsNullFret() ) {
-                    ChordObject->m_chordNode->setPosition( 0, 0, ChordObject->getTimePosition() * SceneSettings::barScale );
+                    ChordObject->m_chordNode->setPosition( 0, 0, -ChordObject->getTimePosition() * SceneSettings::barScale );
                     ChordObject->m_notes[i]->m_noteNode->setScale( 8, 4, 4 );
                 } else {
-                    ChordObject->m_chordNode->setPosition( 0, 0, ChordObject->getTimePosition() * SceneSettings::barScale );
+                    ChordObject->m_chordNode->setPosition( 0, 0, -ChordObject->getTimePosition() * SceneSettings::barScale );
                     ChordObject->m_notes[i]->m_noteNode->setPosition( ( /*7.5+15 + */ ( ChordObject->getBeginFret() * SceneSettings::fretSpacing ) + ( SceneSettings::fretSpacing ) /* position from finger guide class */ ),
                                                                       ( ChordObject->m_notes[i]->getString() * SceneSettings::stringSpacing ),
                                                                       0 );
@@ -138,11 +138,19 @@ void NotationFileParser::createElementsModels( std::vector<Element*>& elements, 
                 }
             }
 
+            ChordObject->m_frameEntity = pSceneMgr->createEntity( "frame.mesh" );
+            ChordObject->m_frameNode   = ChordObject->m_chordNode->createChildSceneNode();
+            ChordObject->m_frameNode->attachObject( ChordObject->m_frameEntity );
+            ChordObject->m_frameNode->setScale( 20,20,0 );
+            ChordObject->m_frameNode->setPosition( ( ChordObject->getBeginFret() * SceneSettings::fretSpacing ) - ( SceneSettings::fretSpacing ), 0, 0 );
+
+            ChordObject->m_frameEntity->setMaterialName( "Frame/ChordMat" );
+
             ChordObject->m_labelEntity = pSceneMgr->createEntity( "plane.mesh" );
             ChordObject->m_labelNode   = ChordObject->m_chordNode->createChildSceneNode();
             ChordObject->m_labelNode->attachObject( ChordObject->m_labelEntity );
             ChordObject->m_labelNode->setScale( 10,10,0 );
-            ChordObject->m_labelNode->setPosition( ( ChordObject->getBeginFret() * SceneSettings::fretSpacing ) + 20, SceneSettings::stringSpacing * 4, 0 );
+            ChordObject->m_labelNode->setPosition( ( ChordObject->getBeginFret() * SceneSettings::fretSpacing ) -20, SceneSettings::stringSpacing * 5, 0 );
 
             //std::string fret = std::to_string(m_materialNum);
             ChordObject->m_labelTexture = new LabelTexture( ChordObject->getGermanName() );

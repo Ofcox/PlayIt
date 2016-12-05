@@ -1,15 +1,15 @@
 #include "Staff.h"
 
 Staff::Staff( Ogre::SceneManager *pSceneMgr, Ogre::SceneNode *pStaffNode, Neck *pNeck ) {
-    m_sceneMgr	= pSceneMgr;
+    m_sceneMgr  = pSceneMgr;
     m_staffNode = pStaffNode;
-    m_neck		= pNeck;
+    m_neck      = pNeck;
 
     m_lastPassedElement = 0;
-    m_upcomingElement	= 0;
-    m_currentElement	= 0;
+    m_upcomingElement   = 0;
+    m_currentElement    = 0;
 
-    m_elements			 = new Elements( m_sceneMgr, m_staffNode );
+    m_elements           = new Elements( m_sceneMgr, m_staffNode );
     m_notationFileParser = new NotationFileParser( "notation.xml" );
 }
 
@@ -27,7 +27,7 @@ bool Staff::elementHasReachedTarget() {
 
     elementWorldPosition = m_staffNode->getPosition().z + m_elements->m_elements[m_currentElement]->getNode()->getPosition().z;
 
-    if ( elementWorldPosition > 0 ) {
+    if ( elementWorldPosition <= 0 ) {
         return false;
     } else {
         return true;
@@ -35,12 +35,12 @@ bool Staff::elementHasReachedTarget() {
 }
 
 bool Staff::elementIsInStringsRange() {
-    int	  range = 180; // If next element is closer than this distance, the actual target will not show
+    int   range = 180; // If next element is closer than this distance, the actual target will not show
     float elementWorldPosition;
 
     elementWorldPosition = m_staffNode->getPosition().z + m_elements->m_elements[m_upcomingElement]->getNode()->getPosition().z;
 
-    if ( elementWorldPosition <= range ) {
+    if ( elementWorldPosition >= -range ) {
         return true;
     } else {
         return false;

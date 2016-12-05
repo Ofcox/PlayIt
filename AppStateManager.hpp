@@ -1,13 +1,7 @@
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
 #ifndef APP_STATE_MANAGER_HPP
 #define APP_STATE_MANAGER_HPP
 
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
 #include "scenes/AppState.hpp"
-
-//|||||||||||||||||||||||||||||||||||||||||||||||
 
 class AppStateManager : public AppStateListener
 {
@@ -15,7 +9,7 @@ public:
     typedef struct
     {
         Ogre::String name;
-        AppState* state;
+        AppState*    state;
     } state_info;
 
     AppStateManager();
@@ -46,13 +40,9 @@ public:
 protected:
     void init( AppState *state );
 
-    std::vector<AppState*>	m_ActiveStateStack;
+    std::vector<AppState*>  m_ActiveStateStack;
     std::vector<state_info> m_States;
-    bool					m_bShutdown;
+    bool                    m_bShutdown;
 };
 
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
-#endif
-
-//|||||||||||||||||||||||||||||||||||||||||||||||
+#endif // APP_STATE_MANAGER_HPP

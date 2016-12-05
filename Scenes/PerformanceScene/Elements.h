@@ -24,10 +24,6 @@ public:
     ~Elements();
     void loadElements( NotationFileParser* pNotationFileParser );
     void setTargets( Targets* pTargets ) {targets = pTargets; }
-
-//    bool elementHasReachedTarget();
-//    bool elementIsInStringsRange();
-//    void update();
 };
 
 #endif // ELEMENTS_H

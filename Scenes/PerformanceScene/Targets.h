@@ -7,13 +7,26 @@
 #include "Chord.h"
 #include "SceneSettings.h"
 
+/*
+   ===============================================================================
+
+    This class defines targets for upcoming notes
+
+    TODO:   Make it simplier, beacuse it's based on the old design decisions
+
+   ===============================================================================
+ */
+
 class Target
 {
 public:
     std::string m_type;
-    Target() {}
-    virtual ~Target() {}
-    virtual void setVisibility( bool isVisible ) {}
+    Target() {
+    }
+    virtual ~Target() {
+    }
+    virtual void setVisibility( bool isVisible ) {
+    }
 
 };
 
@@ -22,16 +35,20 @@ public:
     int m_string;
     int m_fret;
 
-    Ogre::Entity*	 m_noteTargetEntity;
+    Ogre::Entity*    m_noteTargetEntity;
     Ogre::SceneNode* m_noteTargetNode;
 
     NoteTarget( int string, int fret ) {
         m_string = string;
-        m_fret	 = fret;
+        m_fret   = fret;
     }
 
-    int getFret() { return m_fret; }
-    int getString() { return m_string; }
+    int getFret() {
+        return m_fret;
+    }
+    int getString() {
+        return m_string;
+    }
     virtual void setVisibility( bool isVisible ) {
         m_noteTargetNode->setVisible( isVisible );
     }
@@ -40,13 +57,13 @@ public:
 class Targets {
 public:
     Ogre::SceneManager* m_sceneMgr;
-    Ogre::SceneNode*	m_sceneNode;
+    Ogre::SceneNode*    m_sceneNode;
 
     NoteTarget* m_targets[4][24];
 
     Targets( Ogre::SceneManager* pSceneMgr, Ogre::SceneNode* pNeckNode ) {
         m_sceneNode = pNeckNode;
-        m_sceneMgr	= pSceneMgr;
+        m_sceneMgr  = pSceneMgr;
         for ( int y = 0; y <= 3; ++y ) {
             for ( int x = 0; x < 23; ++x ) {
 
@@ -80,8 +97,12 @@ public:
         }
     }
 
-    void showTargetAt( int string, int fret ) {m_targets[string - 1][fret]->setVisibility( true ); }
-    void hideTargetAt( int string, int fret ) {m_targets[string - 1][fret]->setVisibility( false ); }
+    void showTargetAt( int string, int fret ) {
+        m_targets[string - 1][fret]->setVisibility( true );
+    }
+    void hideTargetAt( int string, int fret ) {
+        m_targets[string - 1][fret]->setVisibility( false );
+    }
 };
 
 #endif // TARGETS_H

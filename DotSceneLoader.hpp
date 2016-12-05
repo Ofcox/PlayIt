@@ -1,11 +1,6 @@
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
 #ifndef DOT_SCENELOADER_HPP
 #define DOT_SCENELOADER_HPP
 
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
-// Includes
 #include <OgreString.h>
 #include <OgreVector3.h>
 #include <OgreQuaternion.h>
@@ -14,11 +9,10 @@
 
 #include "dependencies/rapidxml/rapidxml.hpp"
 
-//|||||||||||||||||||||||||||||||||||||||||||||||
 enum QueryFlags
 {
     OGRE_HEAD_MASK = 1 << 0,
-    CUBE_MASK	   = 1 << 1
+    CUBE_MASK      = 1 << 1
 };
 
 // Forward declarations
@@ -30,8 +24,6 @@ namespace Ogre
     class TerrainGlobalOptions;
 }
 
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
 class nodeProperty
 {
 public:
@@ -41,10 +33,9 @@ public:
     Ogre::String typeName;
 
     nodeProperty( const Ogre::String &node, const Ogre::String &propertyName, const Ogre::String &value, const Ogre::String &type )
-        : nodeName( node ), propertyNm( propertyName ), valueName( value ), typeName( type ) {}
+        : nodeName( node ), propertyNm( propertyName ), valueName( value ), typeName( type ) {
+    }
 };
-
-//|||||||||||||||||||||||||||||||||||||||||||||||
 
 class DotSceneLoader
 {
@@ -57,7 +48,9 @@ public:
     void parseDotScene( const Ogre::String &SceneName, const Ogre::String &groupName, Ogre::SceneManager *yourSceneMgr, Ogre::SceneNode *pAttachNode = NULL, const Ogre::String &sPrependNode = "" );
     Ogre::String getProperty( const Ogre::String &ndNm, const Ogre::String &prop );
 
-    Ogre::TerrainGroup* getTerrainGroup() { return mTerrainGroup; }
+    Ogre::TerrainGroup* getTerrainGroup() {
+        return mTerrainGroup;
+    }
 
     std::vector<nodeProperty> nodeProperties;
     std::vector<Ogre::String> staticObjects;
@@ -104,16 +97,12 @@ protected:
     Ogre::ColourValue parseColour( rapidxml::xml_node<>* XMLNode );
 
     Ogre::SceneManager *mSceneMgr;
-    Ogre::SceneNode *	mAttachNode;
-    Ogre::String		m_sGroupName;
-    Ogre::String		m_sPrependNode;
+    Ogre::SceneNode *   mAttachNode;
+    Ogre::String        m_sGroupName;
+    Ogre::String        m_sPrependNode;
     Ogre::TerrainGroup* mTerrainGroup;
-    Ogre::Vector3		mTerrainPosition;
-    Ogre::Vector3		mLightDirection;
+    Ogre::Vector3       mTerrainPosition;
+    Ogre::Vector3       mLightDirection;
 };
 
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
-#endif
-
-//|||||||||||||||||||||||||||||||||||||||||||||||
+#endif // DOT_SCENELOADER_HPP

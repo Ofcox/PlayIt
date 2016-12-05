@@ -5,23 +5,22 @@ int LabelTexture::m_objectCount = 0;
 LabelTexture::LabelTexture( String text ) {
 
     m_materialName = "mat_";
+    m_textureName  = "tex_";
     m_objectCount++;
 
-    m_textureName = "tex_";
-
-    m_materialName.append(Ogre::StringConverter::toString(m_objectCount));
-    m_textureName.append(Ogre::StringConverter::toString(m_objectCount));
-    m_font	   = FontManager::getSingleton().getByName( "SdkTrays/Caption" ).getPointer();
+    m_materialName.append(Ogre::StringConverter::toString(m_objectCount) );
+    m_textureName.append(Ogre::StringConverter::toString(m_objectCount) );
+    m_font = FontManager::getSingleton().getByName( "SdkTrays/Caption" ).getPointer();
 
     // Make sure the texture is not WRITE_ONLY, we need to read the buffer to do the blending with the font (get the alpha for example)
-    m_destTexture = TextureManager::getSingleton().createManual( m_textureName.c_str()/*"LabelTexture"*/,"General",TEX_TYPE_2D, 512, 512, MIP_UNLIMITED, PF_X8R8G8B8, Ogre::TU_STATIC | Ogre::TU_AUTOMIPMAP ) /*.getPointer()*/;
+    m_destTexture = TextureManager::getSingleton().createManual( m_textureName.c_str() /*"LabelTexture"*/,"General",TEX_TYPE_2D, 512, 512, MIP_UNLIMITED, PF_X8R8G8B8, Ogre::TU_STATIC | Ogre::TU_AUTOMIPMAP ) /*.getPointer()*/;
 
     WriteToTexture( text.c_str(), Image::Box( 50,50,150,150 ),m_font,ColourValue( 1.0,1.0,1.0,1.0 ),'c' );
 
-    m_material = MaterialManager::getSingleton().create(m_materialName.c_str()/*"LabelMaterial"*/, ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+    m_material = MaterialManager::getSingleton().create(m_materialName.c_str() /*"LabelMaterial"*/, ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
     m_material->getTechnique(0)->getPass(0)->setSceneBlending(SBT_ADD);
     m_material->getTechnique(0)->getPass(0)->setDepthWriteEnabled(false);
-    m_material->getTechnique(0)->getPass(0)->createTextureUnitState(m_textureName.c_str()/*"LabelTexture"*/);
+    m_material->getTechnique(0)->getPass(0)->createTextureUnitState(m_textureName.c_str() /*"LabelTexture"*/);
 }
 
 void LabelTexture::WriteToTexture( const String &str, Image::Box destRectangle, Font *font, const ColourValue &color, char justify, bool wordwrap ) {
@@ -47,7 +46,7 @@ void LabelTexture::WriteToTexture( const String &str, Image::Box destRectangle, 
 
     // create a buffer
     size_t nBuffSize = fontBuffer->getSizeInBytes();
-    uint8* buffer	 = (uint8*)calloc( nBuffSize, sizeof( uint8 ) );
+    uint8* buffer    = (uint8*)calloc( nBuffSize, sizeof( uint8 ) );
 
     // create pixel box using the copy of the buffer
     PixelBox fontPb( fontBuffer->getWidth(), fontBuffer->getHeight(),fontBuffer->getDepth(), fontBuffer->getFormat(), buffer );
@@ -66,16 +65,16 @@ void LabelTexture::WriteToTexture( const String &str, Image::Box destRectangle, 
     GlyphTexCoords = new Box[str.size()];
 
     Font::UVRect glypheTexRect;
-    size_t		 charheight = 0;
-    size_t		 charwidth	= 0;
+    size_t       charheight = 0;
+    size_t       charwidth  = 0;
 
     for ( unsigned int i = 0; i < str.size(); i++ )
     {
         if ( ( str[i] != '\t' ) && ( str[i] != '\n' ) && ( str[i] != ' ' ) ) {
-            glypheTexRect			 = font->getGlyphTexCoords( str[i] );
-            GlyphTexCoords[i].left	 = glypheTexRect.left * fontTexture->getSrcWidth();
-            GlyphTexCoords[i].top	 = glypheTexRect.top * fontTexture->getSrcHeight();
-            GlyphTexCoords[i].right	 = glypheTexRect.right * fontTexture->getSrcWidth();
+            glypheTexRect            = font->getGlyphTexCoords( str[i] );
+            GlyphTexCoords[i].left   = glypheTexRect.left * fontTexture->getSrcWidth();
+            GlyphTexCoords[i].top    = glypheTexRect.top * fontTexture->getSrcHeight();
+            GlyphTexCoords[i].right  = glypheTexRect.right * fontTexture->getSrcWidth();
             GlyphTexCoords[i].bottom = glypheTexRect.bottom * fontTexture->getSrcHeight();
 
             if ( GlyphTexCoords[i].getHeight() > charheight ) {
@@ -88,10 +87,11 @@ void LabelTexture::WriteToTexture( const String &str, Image::Box destRectangle, 
 
     }
 
-    size_t cursorX		 = 0;
-    size_t cursorY		 = 0;
-    size_t lineend		 = destRectangle.getWidth();
-    bool   carriagreturn = true;
+    size_t cursorX = 0;
+    size_t cursorY = 0;
+    size_t lineend = destRectangle.getWidth();
+
+    bool carriagreturn = true;
     for ( unsigned int strindex = 0; strindex < str.size(); strindex++ )
     {
         switch ( str[strindex] )
@@ -103,13 +103,13 @@ void LabelTexture::WriteToTexture( const String &str, Image::Box destRectangle, 
         {
             //wrapping
             if ( ( cursorX + GlyphTexCoords[strindex].getWidth() > lineend ) && !carriagreturn ) {
-                cursorY		 += charheight;
+                cursorY      += charheight;
                 carriagreturn = true;
             }
 
             //justify
             if ( carriagreturn ) {
-                size_t l		 = strindex;
+                size_t l         = strindex;
                 size_t textwidth = 0;
                 size_t wordwidth = 0;
 
@@ -119,9 +119,9 @@ void LabelTexture::WriteToTexture( const String &str, Image::Box destRectangle, 
 
                     switch ( str[l] )
                     {
-                    case ' ': wordwidth	 = charwidth; ++l; break;
+                    case ' ': wordwidth  = charwidth; ++l; break;
                     case '\t': wordwidth = charwidth * 3; ++l; break;
-                    case '\n': l		 = str.size();
+                    case '\n': l         = str.size();
                     }
 
                     if ( wordwrap ) {
@@ -149,16 +149,16 @@ void LabelTexture::WriteToTexture( const String &str, Image::Box destRectangle, 
 
                 switch ( justify )
                 {
-                case 'c':    cursorX = ( destRectangle.getWidth() - textwidth ) / 2;
-                    lineend			 = destRectangle.getWidth() - cursorX;
+                case 'c': cursorX = ( destRectangle.getWidth() - textwidth ) / 2;
+                    lineend       = destRectangle.getWidth() - cursorX;
                     break;
 
-                case 'r':    cursorX = ( destRectangle.getWidth() - textwidth );
-                    lineend			 = destRectangle.getWidth();
+                case 'r': cursorX = ( destRectangle.getWidth() - textwidth );
+                    lineend       = destRectangle.getWidth();
                     break;
 
-                default:    cursorX = 0;
-                    lineend			= textwidth;
+                default: cursorX = 0;
+                    lineend      = textwidth;
                     break;
                 }
 
@@ -174,9 +174,10 @@ void LabelTexture::WriteToTexture( const String &str, Image::Box destRectangle, 
             for ( size_t i = 0; i < GlyphTexCoords[strindex].getHeight(); i++ )
                 for ( size_t j = 0; j < GlyphTexCoords[strindex].getWidth(); j++ )
                 {
-                    float		alpha	 =  color.a * ( fontData[( i + GlyphTexCoords[strindex].top ) * fontRowPitchBytes + ( j + GlyphTexCoords[strindex].left ) * fontPixelSize + 1 ] / 255.0 );
-                    float		invalpha = 1.0 - alpha;
-                    size_t		offset	 = ( i + cursorY ) * destRowPitchBytes + ( j + cursorX ) * destPixelSize;
+                    float  alpha    =  color.a * ( fontData[( i + GlyphTexCoords[strindex].top ) * fontRowPitchBytes + ( j + GlyphTexCoords[strindex].left ) * fontPixelSize + 1 ] / 255.0 );
+                    float  invalpha = 1.0 - alpha;
+                    size_t offset   = ( i + cursorY ) * destRowPitchBytes + ( j + cursorX ) * destPixelSize;
+
                     ColourValue pix;
                     PixelUtil::unpackColour( &pix,destPb.format,&destData[offset] );
                     pix = ( pix * invalpha ) + ( color * alpha );

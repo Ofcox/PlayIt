@@ -1,17 +1,12 @@
 #include "SongListState.hpp"
 
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
 using namespace Ogre;
-
-//|||||||||||||||||||||||||||||||||||||||||||||||
 
 SongListState::SongListState( AppStateListener* AppStateManager ) {
     m_pAppStateMgr = AppStateManager;
 }
 
 SongListState::~SongListState() {
-
 }
 
 void SongListState::enter() {
@@ -54,11 +49,9 @@ void SongListState::enter() {
     SongInfo->setText( infoText );
 
     createScene();
-
 }
 
 void SongListState::createScene() {
-
 }
 
 void SongListState::exit() {

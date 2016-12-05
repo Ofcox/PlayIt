@@ -2,40 +2,41 @@
 
 /*
     FingerPattern definition
-===============================================================================
-*/
+    NOTE: needs to rewrite because it contains a redundant code
+   ===============================================================================
+ */
 FingerPattern::FingerPattern( ChordPattern* pChordDefinition, std::string chordName, int fingerOnString4, int fingerOnString3, int fingerOnString2, int fingerOnString1 ) {
-    m_chordName	 = chordName;
+    m_chordName  = chordName;
     m_strings[3] = fingerOnString4;
     m_strings[2] = fingerOnString3;
     m_strings[1] = fingerOnString2;
     m_strings[0] = fingerOnString1;
 
-    chordStrings[3] = pChordDefinition->m_fretOnString4;
-    chordStrings[2] = pChordDefinition->m_fretOnString3;
-    chordStrings[1] = pChordDefinition->m_fretOnString2;
-    chordStrings[0] = pChordDefinition->m_fretOnString1;
+    m_chordStrings[3] = pChordDefinition->m_fretOnString4;
+    m_chordStrings[2] = pChordDefinition->m_fretOnString3;
+    m_chordStrings[1] = pChordDefinition->m_fretOnString2;
+    m_chordStrings[0] = pChordDefinition->m_fretOnString1;
 
     //loads fingers vector values
     for ( int i = 0; i <= 3; ++i ) {
         if ( m_strings[i] == 1 ) {
-            indexFingerFret = chordStrings[i];
-            fingers.push_back( {1, i, chordStrings[i]} );
+            indexFingerFret = m_chordStrings[i];
+            fingers.push_back( {1, i, m_chordStrings[i]} );
         }
         if ( m_strings[i] == 2 ) {
-            middleFingerFret = chordStrings[i];
-            fingers.push_back( {2, i, chordStrings[i]} );
+            middleFingerFret = m_chordStrings[i];
+            fingers.push_back( {2, i, m_chordStrings[i]} );
         }
         if ( m_strings[i] == 3 ) {
-            ringFingerFret = chordStrings[i];
-            fingers.push_back( {3, i, chordStrings[i]} );
+            ringFingerFret = m_chordStrings[i];
+            fingers.push_back( {3, i, m_chordStrings[i]} );
         }
         if ( m_strings[i] == 4 ) {
-            pinkyFingerFret = chordStrings[i];
-            fingers.push_back( {4, i, chordStrings[i]} );
+            pinkyFingerFret = m_chordStrings[i];
+            fingers.push_back( {4, i, m_chordStrings[i]} );
         }
         if ( m_strings[i] == 5 ) {
-            fingers.push_back( {5, i, chordStrings[i]} );
+            fingers.push_back( {5, i, m_chordStrings[i]} );
         }
     }
     calculateBeginAndEnd();
@@ -74,8 +75,8 @@ void FingerPattern::calculateBeginAndEnd() {
 
 /*
     FingerPositions definition
-===============================================================================
-*/
+   ===============================================================================
+ */
 FingerPositions::FingerPositions( xml_node<>* pRootNode, ChordList* pChordList ) {
     xml_node<>* currentNode = pRootNode->first_node( "fingerPatterns" )->first_node( "fingers" );
     while ( currentNode != NULL ) {
