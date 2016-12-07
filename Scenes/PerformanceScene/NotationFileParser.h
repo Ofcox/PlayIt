@@ -16,7 +16,7 @@
 #include "FingerPlacement.h"
 #include "Chord.h"
 #include "SceneSettings.h"
-#include "LabelTexture.h"
+#include "LabelMaterial.h"
 
 /*
 ===============================================================================

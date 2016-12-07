@@ -76,7 +76,7 @@ HEADERS += \
     Scenes/PerformanceScene/Targets.h \
     Scenes/PerformanceScene/Elements.h \
     Scenes/PerformanceScene/Neck.h \
-    Scenes/PerformanceScene/LabelTexture.h
+    Scenes/PerformanceScene/LabelMaterial.h
 
 
 SOURCES += \
@@ -102,4 +102,4 @@ SOURCES += \
     Scenes/PerformanceScene/Targets.cpp \
     Scenes/PerformanceScene/Elements.cpp \
     Scenes/PerformanceScene/Neck.cpp \
-    Scenes/PerformanceScene/LabelTexture.cpp
+    Scenes/PerformanceScene/LabelMaterial.cpp

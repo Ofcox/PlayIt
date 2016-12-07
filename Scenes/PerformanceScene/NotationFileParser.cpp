@@ -153,8 +153,9 @@ void NotationFileParser::createElementsModels( std::vector<Element*>& elements, 
             ChordObject->m_labelNode->setPosition( ( ChordObject->getBeginFret() * SceneSettings::fretSpacing ) -20, SceneSettings::stringSpacing * 5, 0 );
 
             //std::string fret = std::to_string(m_materialNum);
-            ChordObject->m_labelTexture = new LabelTexture( ChordObject->getGermanName() );
-            ChordObject->m_labelEntity->setMaterial(ChordObject->m_labelTexture->getMaterial());
+            //ChordObject->m_labelTexture = new LabelTexture( ChordObject->getGermanName() );
+            //ChordObject->m_labelEntity->setMaterial(ChordObject->m_labelTexture->getMaterial());
+            ChordObject->m_labelEntity->setMaterialName( ChordObject->getGermanName().c_str() );
 
 
 
@@ -180,6 +181,7 @@ void NotationFileParser::loadChordList( ChordList *chordList ) {
                                                                std::stoi( currentNode->first_attribute( "string3" )->value() ),
                                                                std::stoi( currentNode->first_attribute( "string2" )->value() ),
                                                                std::stoi( currentNode->first_attribute( "string1" )->value() ) ) );
+        chordList->chordPatterns.back()->m_labelTexture = new LabelMaterial( currentNode->first_attribute( "germanName" )->value() );
         // jump to next element
         currentNode = currentNode->next_sibling();
     }

@@ -5,7 +5,7 @@
 
 #include "../../dependencies/rapidxml/rapidxml.hpp"
 #include <OgreMeshManager.h>
-#include "LabelTexture.h"
+#include "LabelMaterial.h"
 
 using namespace rapidxml;
 
@@ -21,7 +21,7 @@ class FingerPattern;
     Basic structure for chord patterns
 
    ===============================================================================
- */
+*/
 
 class ChordPattern
 {
@@ -37,6 +37,8 @@ public:
     int m_fretOnString3;
     int m_fretOnString2;
     int m_fretOnString1;
+
+    LabelMaterial* m_labelTexture;
 
     ChordPattern( std::string name, std::string englishName, std::string germanName, int fretOnString4, int fretOnString3, int fretOnString2, int fretOnString1 );
     ~ChordPattern() {
@@ -64,7 +66,6 @@ public:
     std::string getGermanName() {
         return m_germanName;
     }
-
 };
 
 /*
@@ -104,7 +105,6 @@ private:
 public:
     std::vector<ocx::Note*> m_notes;
     Ogre::SceneNode*        m_chordNode;
-    LabelTexture*           m_labelTexture;
 
     Ogre::Entity*    m_labelEntity;
     Ogre::SceneNode* m_labelNode;
