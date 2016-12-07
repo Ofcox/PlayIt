@@ -6,18 +6,24 @@
 #include "SceneSettings.h"
 
 /*
-   ===============================================================================
+===============================================================================
 
     This class shows how to put fingers on the neck by placing rectangles
     between fretlines on the staff
     TODO:   Implement this class, because it's crucial for automated camera
             Move to the Neck class
 
-   ===============================================================================
- */
+===============================================================================
+*/
 
-class FretGuide
-{
+class FretGuide {
+public:
+    FretGuide( Ogre::SceneManager *pSceneMgr );
+    ~FretGuide();
+
+    void load( Ogre::SceneNode* fretLinesNode );
+    void unload();
+
 private:
     static const int    NUM_FRETLINES = 25;
     Ogre::Entity*       m_fretLinesEntity[NUM_FRETLINES];
@@ -27,12 +33,6 @@ private:
     Ogre::SceneManager* m_pSceneMgr;
     Ogre::SceneNode*    m_pFretLinesNode;
     int                 m_width;
-public:
-    FretGuide( Ogre::SceneManager *pSceneMgr );
-    ~FretGuide();
-
-    void load( Ogre::SceneNode* fretLinesNode );
-    void unload();
 };
 
 #endif // FRETGUIDE_H

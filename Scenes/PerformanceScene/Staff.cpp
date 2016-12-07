@@ -73,7 +73,6 @@ void Staff::update() {
         m_elements->m_elements[m_currentElement]->setVisibility( false );
 
         if ( m_elements->m_elements[m_currentElement]->m_type == NOTE ) {
-            // Pokud je alespoň jeden následujících x elementů shodných a je v dosahu
             m_neck->getTargets()->hideTargetAt( m_elements->m_elements[m_currentElement]->getString(),
                                                 m_elements->m_elements[m_currentElement]->getFret() );
 

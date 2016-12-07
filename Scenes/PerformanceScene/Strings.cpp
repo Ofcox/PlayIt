@@ -5,7 +5,6 @@ Strings::Strings( Ogre::SceneManager *pSceneMgr ) {
 }
 
 Strings::~Strings() {
-
 }
 
 void Strings::load( Ogre::SceneNode *stringsNode ) {
@@ -29,11 +28,10 @@ void Strings::load( Ogre::SceneNode *stringsNode ) {
             break;
         }
 
-        y				+= SceneSettings::stringSpacing;
+        y += SceneSettings::stringSpacing;
         m_stringsNode[i] = stringsNode->createChildSceneNode();
         m_stringsNode[i]->attachObject( m_stringsEntity[i] );
         m_stringsNode[i]->setPosition( 200, y, 0 );
         m_stringsNode[i]->setScale( 400, 0.5, 0.5 );
     }
-
 }

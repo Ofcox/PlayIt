@@ -7,14 +7,11 @@ FretGuide::FretGuide( Ogre::SceneManager* pSceneMgr ) {
 }
 
 FretGuide::~FretGuide() {
-
 }
 
 void FretGuide::load( Ogre::SceneNode *fretLinesNode ) {
     OgreFramework::getSingletonPtr()->m_pLog->logMessage( "Loading performance scene..." );
     m_pFretLinesNode = fretLinesNode;
-
-    //fretLinesNode = sceneMgr->getRootSceneNode()->createChildSceneNode();
 
     int x = 0;
     for ( int i = 0; i < NUM_FRETLINES; i++ )

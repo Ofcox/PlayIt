@@ -1,6 +1,5 @@
 #include "bars.h"
 
-Bars::Bars()
-{
+Bars::Bars(){
 
 }

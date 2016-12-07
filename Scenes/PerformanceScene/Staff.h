@@ -7,20 +7,25 @@
 #include "Neck.h"
 
 /*
-   ===============================================================================
+===============================================================================
 
-    Contains
-            Staff elements
-                Notes
-                Chords
+    This class holds all objects that are on staff
 
-   ===============================================================================
- */
+===============================================================================
+*/
 
-class Staff
-{
+class Staff {
+public:
+    Staff( Ogre::SceneManager* pSceneMgr, Ogre::SceneNode* pStaffNode, Neck* pNeck );
+    ~Staff();
+
+    void loadElements();
+    bool elementHasReachedTarget();
+    bool elementIsInStringsRange();
+
+    void update();
+
 private:
-
     // Position informations of all notes and chords
     Elements* m_elements;
 
@@ -37,17 +42,6 @@ private:
     int m_currentElement;
     // Number of next element that passing through strings
     int m_upcomingElement;
-
-public:
-    Staff( Ogre::SceneManager* pSceneMgr, Ogre::SceneNode* pStaffNode, Neck* pNeck );
-    ~Staff();
-
-    void loadElements();
-    bool elementHasReachedTarget();
-    bool elementIsInStringsRange();
-
-    void update();
-
 };
 
 #endif // STAFF_H

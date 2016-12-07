@@ -4,15 +4,14 @@
 #include <OgreSceneManager.h>
 #include "../SongListScene/SongInfo.h"
 /*
-   ===============================================================================
+===============================================================================
 
     This class contains a basic scene settings
 
-   ===============================================================================
- */
+===============================================================================
+*/
 
-class SceneSettings
-{
+class SceneSettings {
 public:
     static float         stringSpacing;
     static int           fretSpacing;

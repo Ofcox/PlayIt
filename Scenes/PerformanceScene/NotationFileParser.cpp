@@ -1,13 +1,7 @@
 #include "NotationFileParser.h"
 
 NotationFileParser::NotationFileParser( std::string fileName ) {
-    /// Alternative way to read the xml file into a vector
-//    ifstream notationFile("notation.xml");
-//    vector<char> buffer((istreambuf_iterator<char>(notationFile)), istreambuf_iterator<char>());
-//    buffer.push_back('\0');
-//    notationFile.close();
     m_fileName = fileName;
-
 }
 
 void NotationFileParser::loadElements( std::vector<Element *> &elements ) {
@@ -66,11 +60,6 @@ void NotationFileParser::createElementsModels( std::vector<Element*>& elements, 
 
     ocx::Note*	NoteObject;
     ocx::Chord* ChordObject;
-
-//    m_plane = new MovablePlane( Ogre::Vector3::UNIT_Z, 0 );
-//    MeshManager::getSingleton().createPlane( "planeLabel", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-//                                             *m_plane, 30, 30, 1, 1, true, 1, 1, 1, Vector3::UNIT_Y );
-
 
     for ( itr = elements.begin(); itr != elements.end(); ++itr ) {
 
@@ -152,20 +141,7 @@ void NotationFileParser::createElementsModels( std::vector<Element*>& elements, 
             ChordObject->m_labelNode->setScale( 10,10,0 );
             ChordObject->m_labelNode->setPosition( ( ChordObject->getBeginFret() * SceneSettings::fretSpacing ) -20, SceneSettings::stringSpacing * 5, 0 );
 
-            //std::string fret = std::to_string(m_materialNum);
-            //ChordObject->m_labelTexture = new LabelTexture( ChordObject->getGermanName() );
-            //ChordObject->m_labelEntity->setMaterial(ChordObject->m_labelTexture->getMaterial());
             ChordObject->m_labelEntity->setMaterialName( ChordObject->getGermanName().c_str() );
-
-
-
-            /* Chord Frame */
-
-            ////            ChordObject->m_chordEntity.push_back(m_pSceneMgr->createEntity("cube.mesh"));
-            ////            ChordObject->m_chordEntity.back()->setMaterialName("Fret/StringMat");
-            ////            ChordObject->m_chordNode = m_staffNode->createChildSceneNode();
-            ////            ChordObject->m_chordNode = ChordObject->m_chordNode->createChildSceneNode();
-            ////            ChordObject->m_chordNode->attachObject(ChordObject->m_chordEntity.back());
         }
     }
 }

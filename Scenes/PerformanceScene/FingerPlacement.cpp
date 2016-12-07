@@ -4,7 +4,7 @@
     FingerPattern definition
     NOTE: needs to rewrite because it contains a redundant code
    ===============================================================================
- */
+*/
 FingerPattern::FingerPattern( ChordPattern* pChordDefinition, std::string chordName, int fingerOnString4, int fingerOnString3, int fingerOnString2, int fingerOnString1 ) {
     m_chordName  = chordName;
     m_strings[3] = fingerOnString4;
@@ -48,35 +48,31 @@ FingerPattern::FingerPattern( ChordPattern* pChordDefinition, std::string chordN
 //claculates range of fingers on chord
 void FingerPattern::calculateBeginAndEnd() {
     int chordWidthBegin = indexFingerFret;
-    if ( indexFingerFret == 0 && ( middleFingerFret != 0 ) ) {
+
+    if ( indexFingerFret == 0 && ( middleFingerFret != 0 ) )
         chordWidthBegin = middleFingerFret - 1;
-    }
-    if ( middleFingerFret == 0 && ( ringFingerFret != 0 ) ) {
+    if ( middleFingerFret == 0 && ( ringFingerFret != 0 ) )
         chordWidthBegin = ringFingerFret - 2;
-    }
-    if ( ringFingerFret == 0 && ( pinkyFingerFret != 0 ) ) {
+    if ( ringFingerFret == 0 && ( pinkyFingerFret != 0 ) )
         chordWidthBegin = pinkyFingerFret - 3;
-    }
     m_beginFret = chordWidthBegin;
 
     int chordWidthEnd = indexFingerFret;
-    if ( middleFingerFret > chordWidthEnd ) {
-        chordWidthEnd = middleFingerFret;
-    }
-    if ( ringFingerFret > chordWidthEnd ) {
-        chordWidthEnd = pinkyFingerFret;
-    }
 
-    if ( chordWidthEnd < ( chordWidthBegin + 3 ) ) {
+    if ( middleFingerFret > chordWidthEnd )
+        chordWidthEnd = middleFingerFret;
+    if ( ringFingerFret > chordWidthEnd )
+        chordWidthEnd = pinkyFingerFret;
+    if ( chordWidthEnd < ( chordWidthBegin + 3 ) )
         chordWidthEnd = chordWidthBegin + 3;
-    }
+
     m_endFret = chordWidthEnd;
 }
 
 /*
     FingerPositions definition
    ===============================================================================
- */
+*/
 FingerPositions::FingerPositions( xml_node<>* pRootNode, ChordList* pChordList ) {
     xml_node<>* currentNode = pRootNode->first_node( "fingerPatterns" )->first_node( "fingers" );
     while ( currentNode != NULL ) {
