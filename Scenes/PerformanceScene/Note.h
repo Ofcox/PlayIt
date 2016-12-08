@@ -53,18 +53,21 @@ class ocx::Note : public Element {
 public:
     Ogre::Entity*    m_noteEntity;
     Ogre::SceneNode* m_noteNode;
+    Ogre::SceneManager* m_sceneMgr;
 
     ocx::Note( int string, int fret, float timePosition );
     ocx::Note( int string, int fret, float timePosition, bool isNullFret );
+    virtual ~Note();
 
     int getFret() { return m_fret; }
     int getString() { return m_string; }
     bool getIsNullFret() { return m_isNullFret; }
 
     //Simple dependency injection
-    void setEntityAndSceneNode( Ogre::Entity* noteEntity, Ogre::SceneNode* noteNode ) {
+    void setEntityAndSceneNode( Ogre::Entity* noteEntity, Ogre::SceneNode* noteNode, Ogre::SceneManager* sceneMgr ) {
         m_noteEntity = noteEntity;
         m_noteNode   = noteNode;
+        m_sceneMgr   = sceneMgr;
     }
 
     virtual void setVisibility( bool isVisible ) { m_noteNode->setVisible( isVisible ); }

@@ -24,6 +24,8 @@ public:
         m_string = string;
         m_fret   = fret;
     }
+    ~NoteTarget(){
+    }
 
     int getFret() { return m_fret; }
     int getString() { return m_string; }

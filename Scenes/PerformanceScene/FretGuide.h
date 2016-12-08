@@ -22,7 +22,6 @@ public:
     ~FretGuide();
 
     void load( Ogre::SceneNode* fretLinesNode );
-    void unload();
 
 private:
     static const int    NUM_FRETLINES = 25;

@@ -3,7 +3,7 @@
 using namespace Ogre;
 
 PerformanceState::PerformanceState( AppStateListener *AppStateManager ) :
-    m_direction( Vector3::ZERO ) { // samo se to nevynuluje
+    m_direction( Vector3::ZERO ) { // DO NOT FORGET
     m_MoveSpeed   = 0.1f;
     m_RotateSpeed = 0.3f;
 
@@ -18,6 +18,8 @@ PerformanceState::PerformanceState( AppStateListener *AppStateManager ) :
 }
 
 PerformanceState::~PerformanceState() {
+//    if ( m_sceneMgr )
+//        OgreFramework::getSingletonPtr()->m_pRoot->destroySceneManager( m_sceneMgr );
 }
 
 void PerformanceState::enter() {
@@ -69,13 +71,23 @@ void PerformanceState::createScene() {
     m_staff = new Staff( m_sceneMgr, m_staffNode, m_neck );
 
     m_staff->loadElements();
+
 }
 
 void PerformanceState::exit() {
     OgreFramework::getSingletonPtr()->m_pLog->logMessage( "Leaving PerformanceState..." );
+
     m_sceneMgr->destroyCamera( m_pCamera );
     //m_pSceneMgr->destroyQuery(m_pRSQ);
-    m_fretGuides->unload();
+    //m_fretGuides->unload();
+
+    if(m_staff)
+        delete m_staff;
+    if (m_neck)
+        delete m_neck;
+    if (m_fretGuides)
+        delete m_fretGuides;
+
     if ( m_sceneMgr )
         OgreFramework::getSingletonPtr()->m_pRoot->destroySceneManager( m_sceneMgr );
 }
@@ -271,10 +283,10 @@ void PerformanceState::update( double timeSinceLastFrame ) {
         }
     }
     //1s = 1000
+    if(m_staffNode)
     m_staffNode->translate( ( SceneSettings::direction / SongInfo::getTempoMultiplier() ) * timeSinceLastFrame, Ogre::Node::TS_LOCAL );
 
     m_staff->update();
-    //m_neck->update();
 
     m_MoveScale = m_MoveSpeed   * timeSinceLastFrame;
     m_RotScale  = m_RotateSpeed * timeSinceLastFrame;

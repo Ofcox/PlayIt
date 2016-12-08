@@ -14,8 +14,9 @@ Staff::Staff( Ogre::SceneManager *pSceneMgr, Ogre::SceneNode *pStaffNode, Neck *
 }
 
 Staff::~Staff() {
-    m_staffNode->removeAndDestroyAllChildren();
+    //m_staffNode->removeAndDestroyAllChildren();
     delete m_notationFileParser;
+    delete m_elements;
 }
 
 void Staff::loadElements() {
@@ -49,43 +50,54 @@ bool Staff::elementIsInStringsRange() {
 
 //Not optimal yet, but it works
 void Staff::update() {
+    if (!m_elements->m_elements.empty()){
+        if ( m_elements->m_elements[m_upcomingElement] != NULL  &&  elementIsInStringsRange() ) {
 
-    if ( m_elements->m_elements[m_upcomingElement] != NULL  &&  elementIsInStringsRange() ) {
+            if ( m_elements->m_elements[m_upcomingElement]->m_type == NOTE ) {
+                m_neck->getTargets()->showTargetAt( m_elements->m_elements[m_upcomingElement]->getString(),
+                                                    m_elements->m_elements[m_upcomingElement]->getFret() );
 
-        if ( m_elements->m_elements[m_upcomingElement]->m_type == NOTE ) {
-            m_neck->getTargets()->showTargetAt( m_elements->m_elements[m_upcomingElement]->getString(),
-                                                m_elements->m_elements[m_upcomingElement]->getFret() );
-
-        } else if ( m_elements->m_elements[m_upcomingElement]->m_type == CHORD ) {
-            for ( int i = 1; i <= 4; ++i ) {
-                if ( m_elements->m_elements[m_upcomingElement]->getFretAt( i ) != 0 ) {
-                    m_neck->getTargets()->showTargetAt( i, m_elements->m_elements[m_upcomingElement]->getFretAt( i ) );
+            } else if ( m_elements->m_elements[m_upcomingElement]->m_type == CHORD ) {
+                for ( int i = 1; i <= 4; ++i ) {
+                    if ( m_elements->m_elements[m_upcomingElement]->getFretAt( i ) != 0 ) {
+                        m_neck->getTargets()->showTargetAt( i, m_elements->m_elements[m_upcomingElement]->getFretAt( i ) );
+                    }
                 }
             }
-        }
 
-        if ( m_upcomingElement < ( m_elements->m_elements.size() - 1 ) ) {
-            ++m_upcomingElement;
-        }
-    }
-//    bool hideTarget = false;
-    if ( elementHasReachedTarget() ) {
-        m_elements->m_elements[m_currentElement]->setVisibility( false );
-
-        if ( m_elements->m_elements[m_currentElement]->m_type == NOTE ) {
-            m_neck->getTargets()->hideTargetAt( m_elements->m_elements[m_currentElement]->getString(),
-                                                m_elements->m_elements[m_currentElement]->getFret() );
-
-        } else if ( m_elements->m_elements[m_currentElement]->m_type == CHORD ) {
-            for ( int i = 1; i <= 4; ++i ) {
-                if ( m_elements->m_elements[m_currentElement]->getFretAt( i ) != m_elements->m_elements[m_currentElement + 1]->getFretAt( i ) ) {
-                    m_neck->getTargets()->hideTargetAt( i, m_elements->m_elements[m_currentElement]->getFretAt( i ) );
-                }
+            if ( m_upcomingElement < ( m_elements->m_elements.size() - 1 ) ) {
+                ++m_upcomingElement;
             }
         }
+        // If element has reached taret
+        if ( elementHasReachedTarget() ) {
+            m_elements->m_elements[m_currentElement]->setVisibility( false );
 
-        if ( m_currentElement < ( m_elements->m_elements.size() - 1 ) ) {
-            ++m_currentElement;
+            if ( m_elements->m_elements[m_currentElement]->m_type == NOTE ) {
+                m_neck->getTargets()->hideTargetAt( m_elements->m_elements[m_currentElement]->getString(),
+                                                    m_elements->m_elements[m_currentElement]->getFret() );
+
+            } else if ( m_elements->m_elements[m_currentElement]->m_type == CHORD ) {
+                // if the next element does exists
+                if( m_currentElement < ( m_elements->m_elements.size() - 1 ) ){
+                    for ( int i = 1; i <= 4; ++i ) {
+                        if ( m_elements->m_elements[m_currentElement]->getFretAt( i ) != (m_elements->m_elements[m_currentElement + 1]->getFretAt( i ) ) ){
+                            m_neck->getTargets()->hideTargetAt( i, m_elements->m_elements[m_currentElement]->getFretAt( i ) );
+                        }
+                    }
+                    //if the next element does not exist, then clear all notes
+                } else {
+                    for ( int i = 1; i <= 4; ++i ) {
+                        m_neck->getTargets()->hideTargetAt( i, m_elements->m_elements[m_currentElement]->getFretAt( i ) );
+                    }
+
+                    // TODO: End of track
+                }
+            }
+
+            if ( m_currentElement < ( m_elements->m_elements.size() - 1 ) ) {
+                ++m_currentElement;
+            }
         }
     }
 }

@@ -24,10 +24,11 @@ public:
     bool elementIsInStringsRange();
 
     void update();
+    Elements* m_elements;
 
 private:
     // Position informations of all notes and chords
-    Elements* m_elements;
+
 
     // Pointer of scene node
     Ogre::SceneNode* m_staffNode;

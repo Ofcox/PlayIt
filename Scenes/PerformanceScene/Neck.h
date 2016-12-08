@@ -14,6 +14,7 @@
 class Neck {
 public:
     Neck( Ogre::SceneManager* pSceneMgr, Ogre::SceneNode* pNeckNode );
+    ~Neck();
     Targets* getTargets() { return m_targets; }
 
 private:

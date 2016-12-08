@@ -7,6 +7,23 @@ FretGuide::FretGuide( Ogre::SceneManager* pSceneMgr ) {
 }
 
 FretGuide::~FretGuide() {
+    for ( int i = 0; i < NUM_FRETLINES; i++ ) {
+        Ogre::SceneNode* parent = m_fretLinesEntity[i]->getParentSceneNode();
+        parent->detachObject(m_fretLinesEntity[i]);
+        m_pSceneMgr->destroyEntity(m_fretLinesEntity[i]->getName());
+        // entity is now destroyed, don't try to use the pointer anymore!
+
+        // optionally destroy node
+        m_pSceneMgr->destroySceneNode(m_fretLinesNode[i]->getName());
+
+        Ogre::SceneNode* parent_2 = m_fretsEntity[i]->getParentSceneNode();
+        parent_2->detachObject(m_fretsEntity[i]);
+        m_pSceneMgr->destroyEntity(m_fretsEntity[i]->getName());
+        // entity is now destroyed, don't try to use the pointer anymore!
+
+        // optionally destroy node
+        m_pSceneMgr->destroySceneNode(m_fretsNode[i]->getName());
+    }
 }
 
 void FretGuide::load( Ogre::SceneNode *fretLinesNode ) {
@@ -14,8 +31,7 @@ void FretGuide::load( Ogre::SceneNode *fretLinesNode ) {
     m_pFretLinesNode = fretLinesNode;
 
     int x = 0;
-    for ( int i = 0; i < NUM_FRETLINES; i++ )
-    {
+    for ( int i = 0; i < NUM_FRETLINES; i++ ) {
         m_fretLinesEntity[i] = m_pSceneMgr->createEntity( "cube.mesh" );
 
         m_fretLinesNode[i] = fretLinesNode->createChildSceneNode();
@@ -32,18 +48,4 @@ void FretGuide::load( Ogre::SceneNode *fretLinesNode ) {
 
         x += SceneSettings::fretSpacing;
     }
-}
-
-void FretGuide::unload() {
-    OgreFramework::getSingletonPtr()->m_pLog->logMessage( "Unloading performance scene..." );
-//    for (int i = 0; i < NUM_FRETLINES; i++)
-//    {
-//        m_pSceneMgr->destroyEntity(m_fretLinesEntity[i]);
-//        //m_pFretLinesNode->removeAndDestroyChild(m_fretLinesNode[i]);
-//        m_pSceneMgr->destroyEntity(m_fretsEntity[i]);
-//        //m_pFretLinesNode->removeAndDestroyChild(m_fretsNode[i]);
-
-//    }
-//    m_pFretLinesNode->removeAllChildren();
-    m_pFretLinesNode->removeAndDestroyAllChildren();
 }

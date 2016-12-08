@@ -80,6 +80,8 @@ public:
 */
 class ocx::Chord : public Element {
 public:
+    Ogre::SceneManager* m_sceneMgr;
+
     std::vector<ocx::Note*> m_notes;
     Ogre::SceneNode*        m_chordNode;
 
@@ -99,6 +101,7 @@ public:
     std::string getEnglishName() { return m_englishName; }
     int getBeginFret() { return m_beginFret; }
     int getEngFret() { return m_endFret; }
+
 
 private:
     std::string m_germanName;

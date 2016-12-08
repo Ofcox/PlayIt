@@ -39,7 +39,13 @@ Targets::Targets(Ogre::SceneManager *pSceneMgr, Ogre::SceneNode *pNeckNode) {
 Targets::~Targets() {
     for ( int y = 0; y <= 3; ++y ) {
         for ( int x = 0; x < 23; ++x ) {
-            delete m_targets[y][x];
+            Ogre::SceneNode* parent = m_targets[y][x]->m_noteTargetEntity->getParentSceneNode();
+            parent->detachObject(m_targets[y][x]->m_noteTargetEntity);
+            m_sceneMgr->destroyEntity(m_targets[y][x]->m_noteTargetEntity->getName());
+            // entity is now destroyed, don't try to use the pointer anymore!
+
+            // optionally destroy node
+            m_sceneMgr->destroySceneNode(m_targets[y][x]->m_noteTargetNode->getName());
         }
     }
 }

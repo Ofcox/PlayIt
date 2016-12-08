@@ -65,6 +65,7 @@ void NotationFileParser::createElementsModels( std::vector<Element*>& elements, 
 
         if ( ( *itr )->m_type == NOTE ) {
             NoteObject				 = dynamic_cast<ocx::Note*>( *itr );
+            NoteObject->m_sceneMgr = pSceneMgr;
             NoteObject->m_noteEntity = pSceneMgr->createEntity( "cube.mesh" );
             switch ( NoteObject->getString() ) {
             case 1:
@@ -90,9 +91,11 @@ void NotationFileParser::createElementsModels( std::vector<Element*>& elements, 
 
         } else if ( ( *itr )->m_type == CHORD ) {
             ChordObject				 = dynamic_cast<ocx::Chord*>( *itr );
+            ChordObject->m_sceneMgr = pSceneMgr;
             ChordObject->m_chordNode = pStaffNode->createChildSceneNode();
 
             for ( int i = 0; i <= 3; ++i ) {
+                ChordObject->m_notes[i]->m_sceneMgr = pSceneMgr;
                 ChordObject->m_notes[i]->m_noteEntity = pSceneMgr->createEntity( "cube.mesh" );
 
                 switch ( ChordObject->m_notes[i]->getString() ) {

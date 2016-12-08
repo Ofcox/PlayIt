@@ -76,16 +76,16 @@ private:
 
     Ogre::Vector3 m_direction;
 
-    Ogre::SceneNode* m_perfSceneNode;
-    Ogre::SceneNode* m_fretLinesNode;
-    Ogre::SceneNode* m_neckNode;
-    Ogre::SceneNode* m_staffNode;
+    Ogre::SceneNode* m_perfSceneNode = nullptr;
+    Ogre::SceneNode* m_fretLinesNode = nullptr;
+    Ogre::SceneNode* m_neckNode = nullptr;
+    Ogre::SceneNode* m_staffNode = nullptr;
 
-    FretGuide* m_fretGuides;
-    Staff*	   m_staff;
-    Neck*	   m_neck;
+    FretGuide* m_fretGuides = nullptr;
+    Staff*	   m_staff = nullptr;
+    Neck*	   m_neck = nullptr;
 
-    NotationFileParser* m_notationFileParser;
+    NotationFileParser* m_notationFileParser = nullptr;
 };
 
 #endif // PERFORMANCESTATE_H
