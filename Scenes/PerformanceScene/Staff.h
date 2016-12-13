@@ -9,20 +9,26 @@
 /*
 ===============================================================================
 
-    Loads
-            Staff elements
-                Notes
-                Chords
+    This class holds all objects that are on staff
 
 ===============================================================================
 */
 
-class Staff
-{
-private:
+class Staff {
+public:
+    Staff( Ogre::SceneManager* pSceneMgr, Ogre::SceneNode* pStaffNode, Neck* pNeck );
+    ~Staff();
 
-    // Position informations of all notes and chords
+    void loadElements();
+    bool elementHasReachedTarget();
+    bool elementIsInStringsRange();
+
+    void update();
     Elements* m_elements;
+
+private:
+    // Position informations of all notes and chords
+
 
     // Pointer of scene node
     Ogre::SceneNode* m_staffNode;
@@ -37,17 +43,6 @@ private:
     int m_currentElement;
     // Number of next element that passing through strings
     int m_upcomingElement;
-
-public:
-    Staff( Ogre::SceneManager* pSceneMgr, Ogre::SceneNode* pStaffNode, Neck* pNeck );
-    ~Staff();
-
-    void loadElements();
-    bool elementHasReachedTarget();
-    bool elementIsInStringsRange();
-
-    void update();
-
 };
 
 #endif // STAFF_H

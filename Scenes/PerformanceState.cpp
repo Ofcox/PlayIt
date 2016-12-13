@@ -1,37 +1,29 @@
 #include "PerformanceState.hpp"
 
-
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
 using namespace Ogre;
 
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
 PerformanceState::PerformanceState( AppStateListener *AppStateManager ) :
-    m_direction( Vector3::ZERO ) { // samo se to nevynuluje
-    m_MoveSpeed	  = 0.1f;
+    m_direction( Vector3::ZERO ) { // DO NOT FORGET
+    m_MoveSpeed   = 0.1f;
     m_RotateSpeed = 0.3f;
 
-    m_bLMouseDown	= false;
-    m_bRMouseDown	= false;
-    m_bQuit			= false;
+    m_bLMouseDown   = false;
+    m_bRMouseDown   = false;
+    m_bQuit         = false;
     m_bSettingsMode = false;
-
     m_pDetailsPanel = 0;
 
-
-    m_direction.z = SceneSettings::direction.z;
-
+    m_direction.z  = SceneSettings::direction.z;
     m_pAppStateMgr = AppStateManager;
-
 }
 
 PerformanceState::~PerformanceState() {
-
+//    if ( m_sceneMgr )
+//        OgreFramework::getSingletonPtr()->m_pRoot->destroySceneManager( m_sceneMgr );
 }
 
 void PerformanceState::enter() {
-    OgreFramework::getSingletonPtr()->m_pLog->logMessage( "Entering GameState..." );
+    OgreFramework::getSingletonPtr()->m_pLog->logMessage( "Entering PerformanceState..." );
 
     m_sceneMgr = OgreFramework::getSingletonPtr()->m_pRoot->createSceneManager( ST_GENERIC, "PerformanceSceneMgr" );
     m_sceneMgr->setAmbientLight( Ogre::ColourValue( 0.9f, 0.9f, 0.9f ) );
@@ -40,8 +32,8 @@ void PerformanceState::enter() {
 
     //Camera
     m_pCamera = m_sceneMgr->createCamera( "GameCamera" );
-    m_pCamera->setPosition( Vector3( 0, 30, -100 ) );
-    m_pCamera->lookAt( Vector3( 0, 20, -50 ) );
+    m_pCamera->setPosition( Vector3( 0, 30, 100 ) );
+    m_pCamera->lookAt( Vector3( 0, 20, 50 ) );
     m_pCamera->setNearClipDistance( 5 );
     m_pCamera->setFarClipDistance( 2000 );
 
@@ -49,7 +41,6 @@ void PerformanceState::enter() {
                                Real( OgreFramework::getSingletonPtr()->m_pViewport->getActualHeight() ) );
 
     OgreFramework::getSingletonPtr()->m_pViewport->setCamera( m_pCamera );
-
 
     buildGUI();
 
@@ -61,49 +52,53 @@ void PerformanceState::createScene() {
     ///Create the objects of scene
     m_fretGuides = new FretGuide( m_sceneMgr );
 
-    //Uzel sceny
-    Ogre::SceneNode* m_perfSceneNode;
+    // Scene node
     m_perfSceneNode = m_sceneMgr->getRootSceneNode()->createChildSceneNode( "PerfSceneNode" );
 
-    //Uzel prazcu
+    // Fret node
     m_fretLinesNode = m_perfSceneNode->createChildSceneNode( "FretLinesNode" );
     m_fretGuides->load( m_fretLinesNode );
     m_fretLinesNode->setPosition( 0, 0, 0 );
 
-    // Uzel Krku
+    // Neck node
     m_neckNode = m_perfSceneNode->createChildSceneNode( "NeckNode" );
-    m_neck	   = new Neck( m_sceneMgr, m_neckNode );
+    m_neck     = new Neck( m_sceneMgr, m_neckNode );
     m_neckNode->setPosition( 0, 0, 0 );
 
-    //Uzel osnovy, ta se bude pohybovat
+    // Staff node
     m_staffNode = m_perfSceneNode->createChildSceneNode( "StaffNode" );
     m_staffNode->setPosition( 0, 0, 0 );
     m_staff = new Staff( m_sceneMgr, m_staffNode, m_neck );
 
     m_staff->loadElements();
 
-    /////////////////////////////////////////////////////
-
 }
 
 void PerformanceState::exit() {
     OgreFramework::getSingletonPtr()->m_pLog->logMessage( "Leaving PerformanceState..." );
+
     m_sceneMgr->destroyCamera( m_pCamera );
     //m_pSceneMgr->destroyQuery(m_pRSQ);
-    m_fretGuides->unload();
-    if ( m_sceneMgr ) {
+    //m_fretGuides->unload();
+
+    if(m_staff)
+        delete m_staff;
+    if (m_neck)
+        delete m_neck;
+    if (m_fretGuides)
+        delete m_fretGuides;
+
+    if ( m_sceneMgr )
         OgreFramework::getSingletonPtr()->m_pRoot->destroySceneManager( m_sceneMgr );
-    }
 }
 
 bool PerformanceState::pause() {
     OgreFramework::getSingletonPtr()->m_pLog->logMessage( "Pausing PerformanceState..." );
-
     return true;
 }
 
 void PerformanceState::resume() {
-    OgreFramework::getSingletonPtr()->m_pLog->logMessage( "Resuming GameState..." );
+    OgreFramework::getSingletonPtr()->m_pLog->logMessage( "Resuming PerformanceState..." );
 
     buildGUI();
 
@@ -112,36 +107,32 @@ void PerformanceState::resume() {
 }
 
 void PerformanceState::moveCamera() {
-    if ( OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown( OIS::KC_LSHIFT ) ) {
+    if ( OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown( OIS::KC_LSHIFT ) )
         m_pCamera->moveRelative( m_TranslateVector );
-    }
+
     m_pCamera->moveRelative( m_TranslateVector / 10 );
 }
 
 void PerformanceState::getInput() {
     if ( m_bSettingsMode == false ) {
-        if ( OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown( OIS::KC_A ) ) {
+        if ( OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown( OIS::KC_A ) )
             m_TranslateVector.x = -m_MoveScale;
-        }
 
-        if ( OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown( OIS::KC_D ) ) {
+        if ( OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown( OIS::KC_D ) )
             m_TranslateVector.x = m_MoveScale;
-        }
 
-        if ( OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown( OIS::KC_W ) ) {
+        if ( OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown( OIS::KC_W ) )
             m_TranslateVector.z = -m_MoveScale;
-        }
 
-        if ( OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown( OIS::KC_S ) ) {
+        if ( OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown( OIS::KC_S ) )
             m_TranslateVector.z = m_MoveScale;
-        }
     }
 }
 
 void PerformanceState::buildGUI() {
     OgreFramework::getSingletonPtr()->m_pTrayMgr->showFrameStats( OgreBites::TL_BOTTOMLEFT );
-    OgreFramework::getSingletonPtr()->m_pTrayMgr->showLogo( OgreBites::TL_BOTTOMRIGHT );
-    OgreFramework::getSingletonPtr()->m_pTrayMgr->createLabel( OgreBites::TL_TOP, "GameLbl", "Performance", 250 );
+    //OgreFramework::getSingletonPtr()->m_pTrayMgr->showLogo( OgreBites::TL_BOTTOMRIGHT );
+    //OgreFramework::getSingletonPtr()->m_pTrayMgr->createLabel( OgreBites::TL_TOP, "GameLbl", "Performance", 250 );
     OgreFramework::getSingletonPtr()->m_pTrayMgr->showCursor();
 
     Ogre::StringVector items;
@@ -168,21 +159,19 @@ bool PerformanceState::keyPressed( const OIS::KeyEvent &keyEventRef ) {
     if ( m_bSettingsMode == true ) {
         if ( OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown( OIS::KC_S ) ) {
             OgreBites::SelectMenu* pMenu = (OgreBites::SelectMenu*)OgreFramework::getSingletonPtr()->m_pTrayMgr->getWidget( "DisplayModeSelMenu" );
-            if ( pMenu->getSelectionIndex() + 1 < (int)pMenu->getNumItems() ) {
+            if ( pMenu->getSelectionIndex() + 1 < (int)pMenu->getNumItems() )
                 pMenu->selectItem( pMenu->getSelectionIndex() + 1 );
-            }
         }
 
         if ( OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown( OIS::KC_W ) ) {
             OgreBites::SelectMenu* pMenu = (OgreBites::SelectMenu*)OgreFramework::getSingletonPtr()->m_pTrayMgr->getWidget( "DisplayModeSelMenu" );
-            if ( pMenu->getSelectionIndex() - 1 >= 0 ) {
+            if ( pMenu->getSelectionIndex() - 1 >= 0 )
                 pMenu->selectItem( pMenu->getSelectionIndex() - 1 );
-            }
         }
     }
 
     if ( OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown( OIS::KC_ESCAPE ) ) {
-        pushAppState( findByName( "PauseState" ) );
+        pushAppState( getAppState( GS_PauseState ) );
         return true;
     }
 
@@ -190,8 +179,7 @@ bool PerformanceState::keyPressed( const OIS::KeyEvent &keyEventRef ) {
         if ( m_pDetailsPanel->getTrayLocation() == OgreBites::TL_NONE ) {
             OgreFramework::getSingletonPtr()->m_pTrayMgr->moveWidgetToTray( m_pDetailsPanel, OgreBites::TL_TOPLEFT, 0 );
             m_pDetailsPanel->show();
-        } else
-        {
+        } else {
             OgreFramework::getSingletonPtr()->m_pTrayMgr->removeWidgetFromTray( m_pDetailsPanel );
             m_pDetailsPanel->hide();
         }
@@ -203,12 +191,10 @@ bool PerformanceState::keyPressed( const OIS::KeyEvent &keyEventRef ) {
     }
 
     if ( m_bSettingsMode && OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown( OIS::KC_RETURN ) ||
-         OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown( OIS::KC_NUMPADENTER ) ) {
-    }
+         OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown( OIS::KC_NUMPADENTER ) )
 
-    if ( !m_bSettingsMode || ( m_bSettingsMode && !OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown( OIS::KC_O ) ) ) {
-        OgreFramework::getSingletonPtr()->keyPressed( keyEventRef );
-    }
+        if ( !m_bSettingsMode || ( m_bSettingsMode && !OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown( OIS::KC_O ) ) )
+            OgreFramework::getSingletonPtr()->keyPressed( keyEventRef );
 
     return true;
 }
@@ -219,9 +205,8 @@ bool PerformanceState::keyReleased( const OIS::KeyEvent &keyEventRef ) {
 }
 
 bool PerformanceState::mouseMoved( const OIS::MouseEvent &evt ) {
-    if ( OgreFramework::getSingletonPtr()->m_pTrayMgr->injectMouseMove( evt ) ) {
+    if ( OgreFramework::getSingletonPtr()->m_pTrayMgr->injectMouseMove( evt ) )
         return true;
-    }
 
     if ( m_bRMouseDown ) {
         m_pCamera->yaw( Degree( evt.state.X.rel * -0.1f ) );
@@ -232,9 +217,8 @@ bool PerformanceState::mouseMoved( const OIS::MouseEvent &evt ) {
 }
 
 bool PerformanceState::mousePressed( const OIS::MouseEvent &evt, OIS::MouseButtonID id ) {
-    if ( OgreFramework::getSingletonPtr()->m_pTrayMgr->injectMouseDown( evt, id ) ) {
+    if ( OgreFramework::getSingletonPtr()->m_pTrayMgr->injectMouseDown( evt, id ) )
         return true;
-    }
 
     if ( id == OIS::MB_Left ) {
         onLeftPressed( evt );
@@ -247,9 +231,8 @@ bool PerformanceState::mousePressed( const OIS::MouseEvent &evt, OIS::MouseButto
 }
 
 bool PerformanceState::mouseReleased( const OIS::MouseEvent &evt, OIS::MouseButtonID id ) {
-    if ( OgreFramework::getSingletonPtr()->m_pTrayMgr->injectMouseUp( evt, id ) ) {
+    if ( OgreFramework::getSingletonPtr()->m_pTrayMgr->injectMouseUp( evt, id ) )
         return true;
-    }
 
     if ( id == OIS::MB_Left ) {
         m_bLMouseDown = false;
@@ -261,12 +244,10 @@ bool PerformanceState::mouseReleased( const OIS::MouseEvent &evt, OIS::MouseButt
 }
 
 void PerformanceState::onLeftPressed( const OIS::MouseEvent &evt ) {
-
 }
 
 void PerformanceState::itemSelected( OgreBites::SelectMenu *menu ) {
-    switch ( menu->getSelectionIndex() )
-    {
+    switch ( menu->getSelectionIndex() ) {
     case 0:
         m_pCamera->setPolygonMode( Ogre::PM_SOLID ); break;
     case 1:
@@ -302,13 +283,13 @@ void PerformanceState::update( double timeSinceLastFrame ) {
         }
     }
     //1s = 1000
+    if(m_staffNode)
     m_staffNode->translate( ( SceneSettings::direction / SongInfo::getTempoMultiplier() ) * timeSinceLastFrame, Ogre::Node::TS_LOCAL );
 
     m_staff->update();
-    //m_neck->update();
 
     m_MoveScale = m_MoveSpeed   * timeSinceLastFrame;
-    m_RotScale	= m_RotateSpeed * timeSinceLastFrame;
+    m_RotScale  = m_RotateSpeed * timeSinceLastFrame;
 
     m_TranslateVector = Vector3::ZERO;
 

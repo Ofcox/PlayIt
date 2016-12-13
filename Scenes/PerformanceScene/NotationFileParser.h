@@ -16,6 +16,7 @@
 #include "FingerPlacement.h"
 #include "Chord.h"
 #include "SceneSettings.h"
+#include "LabelMaterial.h"
 
 /*
 ===============================================================================
@@ -29,17 +30,6 @@ using namespace rapidxml;
 
 //Load staff elements and saves them to NotationElements
 class NotationFileParser {
-private:
-    int				 m_barNumber;
-    std::string		 m_type;
-    ChordList*		 m_chordList;
-    ChordPattern*	 m_currentChord;
-    FingerPositions* m_FingerPositions;
-    std::string		 m_fileName;
-
-    xml_document<> m_doc;
-    xml_node<>*	   m_rootNode;
-
 public:
     NotationFileParser( std::string fileName );
     ~NotationFileParser() {
@@ -53,6 +43,16 @@ public:
     void loadChordList( ChordList *chordList );
     void loadTargets();
 
+private:
+    int				 m_barNumber;
+    std::string		 m_type;
+    ChordList*		 m_chordList;
+    ChordPattern*	 m_currentChord;
+    FingerPositions* m_FingerPositions;
+    std::string		 m_fileName;
+
+    xml_document<> m_doc;
+    xml_node<>*	   m_rootNode;
 };
 
 #endif // NOTATIONFILEPARSER_H

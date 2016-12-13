@@ -1,31 +1,18 @@
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
 #ifndef APP_STATE_MANAGER_HPP
 #define APP_STATE_MANAGER_HPP
 
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
 #include "scenes/AppState.hpp"
 
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
-class AppStateManager : public AppStateListener
-{
+class AppStateManager : public AppStateListener{
 public:
-    typedef struct
-    {
-        Ogre::String name;
-        AppState* state;
-    } state_info;
-
     AppStateManager();
     ~AppStateManager();
 
     //Registers a new application states
-    void manageAppState( Ogre::String stateName, AppState* state );
+    void manageAppState(AppState* state );
 
     //Returns the desired AppState
-    AppState* findByName( Ogre::String stateName );
+    AppState* getAppState( GameState gameState );
 
     //Starts an application with desired AppState
     void start( AppState* state );
@@ -46,13 +33,9 @@ public:
 protected:
     void init( AppState *state );
 
-    std::vector<AppState*>	m_ActiveStateStack;
-    std::vector<state_info> m_States;
-    bool					m_bShutdown;
+    std::vector<AppState*> m_ActiveStateStack;
+    std::vector<AppState*> m_States;
+    bool                   m_bShutdown;
 };
 
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
-#endif
-
-//|||||||||||||||||||||||||||||||||||||||||||||||
+#endif // APP_STATE_MANAGER_HPP

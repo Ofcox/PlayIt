@@ -4,6 +4,8 @@
 #include "Note.h"
 
 #include "../../dependencies/rapidxml/rapidxml.hpp"
+#include <OgreMeshManager.h>
+#include "LabelMaterial.h"
 
 using namespace rapidxml;
 
@@ -21,11 +23,10 @@ class FingerPattern;
 ===============================================================================
 */
 
-class ChordPattern
-{
+class ChordPattern {
 private:
-    int			m_beginFret;
-    int			m_endFret;
+    int         m_beginFret;
+    int         m_endFret;
     std::string m_name;
     std::string m_englishName;
     std::string m_germanName;
@@ -36,31 +37,31 @@ public:
     int m_fretOnString2;
     int m_fretOnString1;
 
+    LabelMaterial* m_labelTexture;
+
     ChordPattern( std::string name, std::string englishName, std::string germanName, int fretOnString4, int fretOnString3, int fretOnString2, int fretOnString1 );
-    ~ChordPattern() {}
+    ~ChordPattern() { }
 
     void setBeginFret( int& beginFret ) { m_beginFret = beginFret; }
     void setEndFret( int& endFret ) { m_endFret = endFret; }
     int getBeginFret() { return m_beginFret; }
     int getEndFret() { return m_endFret; }
 
-    std::string getName() {return m_name; }
-    std::string getEnglishName() {return m_englishName; }
-    std::string getGermanName() {return m_germanName; }
-
+    std::string getName() { return m_name; }
+    std::string getEnglishName() { return m_englishName; }
+    std::string getGermanName() { return m_germanName; }
 };
 
 /*
 ===============================================================================
 
-    Here are stored all needed chords and their finger placements
+    Here are stored all needed chords
 
 ===============================================================================
 */
 class ChordList {
 public:
     std::vector<ChordPattern*> chordPatterns;
-    //std::vector<FingerPattern*> fingerPatterns;
 
     ChordList();
     ~ChordList();
@@ -77,38 +78,41 @@ public:
 
 ===============================================================================
 */
-class ocx::Chord : public Element
-{
+class ocx::Chord : public Element {
+public:
+    Ogre::SceneManager* m_sceneMgr;
+
+    std::vector<ocx::Note*> m_notes;
+    Ogre::SceneNode*        m_chordNode;
+
+    Ogre::Entity*    m_labelEntity;
+    Ogre::SceneNode* m_labelNode;
+
+    Ogre::Entity*    m_frameEntity;
+    Ogre::SceneNode* m_frameNode;
+
+    ocx::Chord(ChordPattern* chordDefinition, float timePosition);
+    virtual ~Chord();
+
+    // Sets visibility of chords
+    virtual void setVisibility( bool isVisible ) { m_chordNode->setVisible( isVisible ); }
+    virtual Ogre::SceneNode* getNode() { return m_chordNode; }
+    std::string getGermanName() { return m_germanName; }
+    std::string getEnglishName() { return m_englishName; }
+    int getBeginFret() { return m_beginFret; }
+    int getEngFret() { return m_endFret; }
+
+
 private:
     std::string m_germanName;
-    int			m_beginFret;
-    int			m_endFret;
-
-public:
-    std::vector<ocx::Note*>	   m_notes;
-    std::vector<Ogre::Entity*> m_chordEntity;
-    Ogre::SceneNode*		   m_chordNode;
+    std::string m_englishName;
+    int         m_beginFret;
+    int         m_endFret;
 
     ocx::Note* note4;
     ocx::Note* note3;
     ocx::Note* note2;
     ocx::Note* note1;
-
-    ocx::Chord( ChordPattern* chordDefinition, float timePosition, std::string germanName );
-    virtual ~Chord();
-
-    // Sets visibility of chords
-    virtual void setVisibility( bool isVisible ) {
-        m_notes[0]->m_noteNode->setVisible( isVisible );
-        m_notes[1]->m_noteNode->setVisible( isVisible );
-        m_notes[2]->m_noteNode->setVisible( isVisible );
-        m_notes[3]->m_noteNode->setVisible( isVisible );
-    }
-
-    virtual Ogre::SceneNode* getNode() { return m_chordNode; }
-    std::string getGermanName() {return m_germanName; }
-    int getBeginFret() {return m_beginFret; }
-    int getEngFret() {return m_endFret; }
 };
 
 #endif // CHORD_H

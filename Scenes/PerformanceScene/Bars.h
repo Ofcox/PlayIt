@@ -1,9 +1,7 @@
 #ifndef BARS_H
 #define BARS_H
 
-
-class Bars
-{
+class Bars {
 public:
     Bars();
 };

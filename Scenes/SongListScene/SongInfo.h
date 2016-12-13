@@ -12,28 +12,27 @@
 using namespace rapidxml;
 
 /*
-===============================================================================
+   ===============================================================================
 
     Access to informations about song
 
-===============================================================================
-*/
+   ===============================================================================
+ */
 
-class SongInfo
-{
+class SongInfo {
 public:
 
-    std::string	 m_artistName;
-    std::string	 m_songName;
-    std::string	 m_albumName;
-    int			 m_albumYear;
-    std::string	 m_arrangement;
-    float		 m_songLength;
+    std::string  m_artistName;
+    std::string  m_songName;
+    std::string  m_albumName;
+    int          m_albumYear;
+    std::string  m_arrangement;
+    float        m_songLength;
     static float m_tempo;
-    std::string	 m_tuning;
+    std::string  m_tuning;
 
     xml_document<> doc;
-    xml_node<>*	   root_node;
+    xml_node<>*    root_node;
 
     SongInfo( std::string fileName );
     static float getTempoMultiplier();

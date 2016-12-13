@@ -6,3 +6,9 @@ Neck::Neck( Ogre::SceneManager *pSceneMgr, Ogre::SceneNode *pNeckNode ) {
 
     m_targets = new Targets( pSceneMgr, pNeckNode );
 }
+
+Neck::~Neck()
+{
+    delete m_strings;
+    delete m_targets;
+}

@@ -1,9 +1,5 @@
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
 #ifndef OGRE_FRAMEWORK_HPP
 #define OGRE_FRAMEWORK_HPP
-
-//|||||||||||||||||||||||||||||||||||||||||||||||
 
 #include <OgreCamera.h>
 #include <OgreEntity.h>
@@ -24,10 +20,7 @@
 
 #include <SdkTrays.h>
 
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
-class OgreFramework : public Ogre::Singleton<OgreFramework>, OIS::KeyListener, OIS::MouseListener
-{
+class OgreFramework : public Ogre::Singleton<OgreFramework>, OIS::KeyListener, OIS::MouseListener{
 public:
     OgreFramework();
     ~OgreFramework();
@@ -42,17 +35,17 @@ public:
     bool mousePressed( const OIS::MouseEvent &evt, OIS::MouseButtonID id );
     bool mouseReleased( const OIS::MouseEvent &evt, OIS::MouseButtonID id );
 
-    Ogre::Root*			m_pRoot;
+    Ogre::Root*         m_pRoot;
     Ogre::RenderWindow* m_pRenderWnd;
-    Ogre::Viewport*		m_pViewport;
-    Ogre::Log*			m_pLog;
-    Ogre::Timer*		m_pTimer;
+    Ogre::Viewport*     m_pViewport;
+    Ogre::Log*          m_pLog;
+    Ogre::Timer*        m_pTimer;
 
     OIS::InputManager* m_pInputMgr;
-    OIS::Keyboard*	   m_pKeyboard;
-    OIS::Mouse*		   m_pMouse;
+    OIS::Keyboard*     m_pKeyboard;
+    OIS::Mouse*        m_pMouse;
 
-    Ogre::OverlaySystem*	   m_pOverlaySystem;
+    Ogre::OverlaySystem*       m_pOverlaySystem;
     OgreBites::SdkTrayManager* m_pTrayMgr;
 
 private:
@@ -60,8 +53,4 @@ private:
     OgreFramework& operator=( const OgreFramework& );
 };
 
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
-#endif
-
-//|||||||||||||||||||||||||||||||||||||||||||||||
+#endif //OGRE_FRAMEWORK_HPP

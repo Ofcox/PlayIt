@@ -50,10 +50,11 @@ ChordList::~ChordList() {
     Chords definition
 ===============================================================================
 */
-ocx::Chord::Chord( ChordPattern *chordDefinition, float timePosition, std::string germanName ) {
+ocx::Chord::Chord( ChordPattern *chordDefinition, float timePosition) {
     m_type		   = CHORD;
     m_timePosition = timePosition;
-    m_germanName   = germanName;
+    m_germanName   = chordDefinition->getGermanName();
+    m_englishName  = chordDefinition->getEnglishName();
     m_beginFret	   = chordDefinition->getBeginFret();
     m_endFret	   = chordDefinition->getEndFret();
 
@@ -74,9 +75,29 @@ ocx::Chord::Chord( ChordPattern *chordDefinition, float timePosition, std::strin
 }
 
 ocx::Chord::~Chord() {
+
     while ( !m_notes.empty() )
     {
         delete m_notes.back();
         m_notes.pop_back();
     }
+
+    // Destroy labelEntity
+    Ogre::SceneNode* labelParent = m_labelEntity->getParentSceneNode();
+    labelParent->detachObject(m_labelEntity);
+    m_sceneMgr->destroyEntity(m_labelEntity->getName());
+
+    // Destroy frameEntity
+    Ogre::SceneNode* frameParent = m_frameEntity->getParentSceneNode();
+    frameParent->detachObject(m_frameEntity);
+    m_sceneMgr->destroyEntity(m_frameEntity->getName());
+
+    // Destroy labelNode
+    m_sceneMgr->destroySceneNode(m_labelNode->getName());
+
+    // Destroy frameNode
+    m_sceneMgr->destroySceneNode(m_frameNode->getName());
+
+    // Destroy chordNode
+    m_sceneMgr->destroySceneNode(m_chordNode->getName());
 }

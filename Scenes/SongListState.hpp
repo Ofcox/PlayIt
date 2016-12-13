@@ -4,8 +4,7 @@
 #include "AppState.hpp"
 #include "SongListScene/SongInfo.h"
 
-class SongListState : public AppState
-{
+class SongListState : public AppState{
 public:
     SongInfo* m_pSongInfo;
 
