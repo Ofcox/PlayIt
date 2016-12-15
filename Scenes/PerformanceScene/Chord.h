@@ -80,17 +80,6 @@ public:
 */
 class ocx::Chord : public Element {
 public:
-    Ogre::SceneManager* m_sceneMgr;
-
-    std::vector<ocx::Note*> m_notes;
-    Ogre::SceneNode*        m_chordNode;
-
-    Ogre::Entity*    m_labelEntity;
-    Ogre::SceneNode* m_labelNode;
-
-    Ogre::Entity*    m_frameEntity;
-    Ogre::SceneNode* m_frameNode;
-
     ocx::Chord(ChordPattern* chordDefinition, float timePosition);
     virtual ~Chord();
 
@@ -102,8 +91,20 @@ public:
     int getBeginFret() { return m_beginFret; }
     int getEngFret() { return m_endFret; }
 
+    void create( Ogre::SceneNode* staffNode, Ogre::SceneManager* sceneMgr );
 
 private:
+    Ogre::SceneNode*    m_chordNode;
+    Ogre::SceneManager* m_sceneMgr;
+
+    std::vector<ocx::Note*> m_notes;
+
+    Ogre::Entity*    m_labelEntity;
+    Ogre::SceneNode* m_labelNode;
+
+    Ogre::Entity*    m_frameEntity;
+    Ogre::SceneNode* m_frameNode;
+
     std::string m_germanName;
     std::string m_englishName;
     int         m_beginFret;

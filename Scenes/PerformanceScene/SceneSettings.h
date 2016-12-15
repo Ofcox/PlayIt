@@ -16,6 +16,7 @@ public:
     static float         stringSpacing;
     static int           fretSpacing;
     static float         barScale;
+    static int           barCount;
     static Ogre::Vector3 direction;
     static Ogre::Real    value;
 

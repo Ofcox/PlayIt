@@ -10,8 +10,6 @@ LabelMaterial::LabelMaterial(std::string text ) {
     m_textureName  = text;
     m_objectCount++;
 
-    //m_materialName.append(Ogre::StringConverter::toString(m_objectCount) );
-    //m_textureName.append(Ogre::StringConverter::toString(m_objectCount) );
     if (!isAlreadyCreated(text)){
         m_createdLabels.push_back(text);
 
@@ -207,7 +205,6 @@ stop:
 bool LabelMaterial::isAlreadyCreated(std::string& text)
 {
     bool isCreated = false;
-    //for (std::vector<std::string>::const_iterator itr = m_createdLabels.begin(); itr != m_createdLabels.end(); ++itr){
     for(std::string& iterator : m_createdLabels){
         if( iterator == text.c_str() )
             isCreated = true;

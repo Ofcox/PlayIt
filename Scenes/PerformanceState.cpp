@@ -50,14 +50,14 @@ void PerformanceState::enter() {
 void PerformanceState::createScene() {
 
     ///Create the objects of scene
-    m_fretGuides = new FretGuide( m_sceneMgr );
+    m_frets = new Frets( m_sceneMgr );
 
     // Scene node
     m_perfSceneNode = m_sceneMgr->getRootSceneNode()->createChildSceneNode( "PerfSceneNode" );
 
     // Fret node
     m_fretLinesNode = m_perfSceneNode->createChildSceneNode( "FretLinesNode" );
-    m_fretGuides->load( m_fretLinesNode );
+    m_frets->load( m_fretLinesNode );
     m_fretLinesNode->setPosition( 0, 0, 0 );
 
     // Neck node
@@ -85,8 +85,8 @@ void PerformanceState::exit() {
         delete m_staff;
     if (m_neck)
         delete m_neck;
-    if (m_fretGuides)
-        delete m_fretGuides;
+    if (m_frets)
+        delete m_frets;
 
     if ( m_sceneMgr )
         OgreFramework::getSingletonPtr()->m_pRoot->destroySceneManager( m_sceneMgr );

@@ -3,7 +3,7 @@
 /*
     FingerPattern definition
     NOTE: needs to rewrite because it contains a redundant code
-   ===============================================================================
+===============================================================================
 */
 FingerPattern::FingerPattern( ChordPattern* pChordDefinition, std::string chordName, int fingerOnString4, int fingerOnString3, int fingerOnString2, int fingerOnString1 ) {
     m_chordName  = chordName;
@@ -71,7 +71,7 @@ void FingerPattern::calculateBeginAndEnd() {
 
 /*
     FingerPositions definition
-   ===============================================================================
+===============================================================================
 */
 FingerPositions::FingerPositions( xml_node<>* pRootNode, ChordList* pChordList ) {
     xml_node<>* currentNode = pRootNode->first_node( "fingerPatterns" )->first_node( "fingers" );

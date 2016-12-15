@@ -6,6 +6,7 @@
 
 #include <OgreSceneManager.h>
 #include <OgreEntity.h>
+#include "SceneSettings.h"
 
 /*
 ===============================================================================
@@ -59,16 +60,11 @@ public:
     ocx::Note( int string, int fret, float timePosition, bool isNullFret );
     virtual ~Note();
 
+    void create( Ogre::SceneNode* staffNode, Ogre::SceneManager* sceneMgr );
+
     int getFret() { return m_fret; }
     int getString() { return m_string; }
     bool getIsNullFret() { return m_isNullFret; }
-
-    //Simple dependency injection
-    void setEntityAndSceneNode( Ogre::Entity* noteEntity, Ogre::SceneNode* noteNode, Ogre::SceneManager* sceneMgr ) {
-        m_noteEntity = noteEntity;
-        m_noteNode   = noteNode;
-        m_sceneMgr   = sceneMgr;
-    }
 
     virtual void setVisibility( bool isVisible ) { m_noteNode->setVisible( isVisible ); }
     virtual Ogre::SceneNode* getNode() { return m_noteNode; }

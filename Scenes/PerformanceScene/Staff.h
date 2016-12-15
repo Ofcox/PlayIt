@@ -5,6 +5,7 @@
 #include "SceneSettings.h"
 #include "Elements.h"
 #include "Neck.h"
+#include "FretGuide.h"
 
 /*
 ===============================================================================
@@ -24,19 +25,17 @@ public:
     bool elementIsInStringsRange();
 
     void update();
-    Elements* m_elements;
+    Elements* m_elements = nullptr;
 
 private:
-    // Position informations of all notes and chords
-
-
     // Pointer of scene node
-    Ogre::SceneNode* m_staffNode;
+    Ogre::SceneNode* m_staffNode = nullptr;
 
-    Ogre::SceneManager* m_sceneMgr;
-    NotationFileParser* m_notationFileParser;
+    Ogre::SceneManager* m_sceneMgr = nullptr;
+    NotationFileParser* m_notationFileParser = nullptr;
 
-    Neck* m_neck;
+    Neck* m_neck = nullptr;
+    FretGuide* m_fretGuide = nullptr;
 
     // Number of the last element that passed through strings
     int m_lastPassedElement;

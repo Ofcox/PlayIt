@@ -7,8 +7,8 @@
 #include <OgreMaterialManager.h>
 #include <vector>
 
-#include "PerformanceScene/fretguide.h"
-#include "PerformanceScene/strings.h"
+#include "PerformanceScene/Frets.h"
+#include "PerformanceScene/Strings.h"
 #include "PerformanceScene/Staff.h"
 #include "PerformanceScene/Neck.h"
 
@@ -81,7 +81,7 @@ private:
     Ogre::SceneNode* m_neckNode = nullptr;
     Ogre::SceneNode* m_staffNode = nullptr;
 
-    FretGuide* m_fretGuides = nullptr;
+    Frets* m_frets = nullptr;
     Staff*	   m_staff = nullptr;
     Neck*	   m_neck = nullptr;
 

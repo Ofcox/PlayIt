@@ -10,4 +10,4 @@ Building Ogre is time consuming, you can grab binaries from http://ogre3d.org/fo
 Included:
 Advanced Ogre Framework (modified to work without singletons)
 
-For the latest changes chceck the "labels" branch
+For the latest changes chceck the "targets" branch

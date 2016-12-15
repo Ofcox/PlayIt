@@ -6,12 +6,12 @@ Strings::Strings( Ogre::SceneManager *pSceneMgr ) {
 
 Strings::~Strings() {
     for ( int i = 0; i < NUM_STRINGS; i++ ){
+        // Destroy entity
         Ogre::SceneNode* parent = m_stringsEntity[i]->getParentSceneNode();
         parent->detachObject(m_stringsEntity[i]);
         m_sceneMgr->destroyEntity(m_stringsEntity[i]->getName());
-        // entity is now destroyed, don't try to use the pointer anymore!
 
-        // optionally destroy node
+        // Destroy node
         m_sceneMgr->destroySceneNode(m_stringsNode[i]->getName());
     }
 }

@@ -19,13 +19,14 @@ typedef struct {
 
 class FingerPattern {
 public:
-    // Container of all fingers holding current chord
-    std::vector<Finger> fingers;
 
     // Contructor sets begin and end fret of ChordDefinition
     FingerPattern( ChordPattern* pChordDefinition, std::string chordName, int fingerOnString4, int fingerOnString3, int fingerOnString2, int fingerOnString1 );
 
 private:
+    // Container of all fingers holding current chord
+    std::vector<Finger> fingers;
+
     std::string m_chordName;
     int         m_beginFret;
     int         m_endFret;

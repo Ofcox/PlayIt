@@ -4,11 +4,12 @@
 #include "../AdvancedOgreFramework.hpp"
 #include <iostream>
 
+//Have to be in exact order as initialized objects
 enum GameState {
     GS_MenuState,
     GS_PauseState,
     GS_SongListState,
-    GS_PerformanceState
+    GS_PerformanceState,
 };
 
 class AppState;

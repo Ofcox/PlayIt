@@ -62,7 +62,6 @@ HEADERS += \
     Scenes/PauseState.hpp \
     Scenes/PerformanceState.hpp \
     Scenes/SongListState.hpp \
-    Scenes/PerformanceScene/Bars.h \
     Scenes/PerformanceScene/FingerPlacement.h \
     Scenes/PerformanceScene/FretGuide.h \
     Scenes/PerformanceScene/Chord.h \
@@ -76,8 +75,9 @@ HEADERS += \
     Scenes/PerformanceScene/Targets.h \
     Scenes/PerformanceScene/Elements.h \
     Scenes/PerformanceScene/Neck.h \
-    Scenes/PerformanceScene/LabelMaterial.h
-
+    Scenes/PerformanceScene/LabelMaterial.h \
+    Scenes/PerformanceScene/Bar.h \
+    Scenes/PerformanceScene/Frets.h
 
 SOURCES += \
     AdvancedOgreFramework.cpp \
@@ -88,7 +88,6 @@ SOURCES += \
     Scenes/PauseState.cpp \
     Scenes/PerformanceState.cpp \
     Scenes/SongListState.cpp \
-    Scenes/PerformanceScene/Bars.cpp \
     Scenes/PerformanceScene/FingerPlacement.cpp \
     Scenes/PerformanceScene/FretGuide.cpp \
     Scenes/PerformanceScene/Chord.cpp \
@@ -102,4 +101,6 @@ SOURCES += \
     Scenes/PerformanceScene/Targets.cpp \
     Scenes/PerformanceScene/Elements.cpp \
     Scenes/PerformanceScene/Neck.cpp \
-    Scenes/PerformanceScene/LabelMaterial.cpp
+    Scenes/PerformanceScene/LabelMaterial.cpp \
+    Scenes/PerformanceScene/Bar.cpp \
+    Scenes/PerformanceScene/Frets.cpp
