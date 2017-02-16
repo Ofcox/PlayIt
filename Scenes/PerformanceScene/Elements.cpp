@@ -16,6 +16,5 @@ Elements::~Elements() {
 }
 
 void Elements::loadElements( NotationFileParser * pNotationFileParser ) {
-    pNotationFileParser->loadElements( m_elementsVector );
-    pNotationFileParser->createElementsModels( m_elementsVector, m_sceneMgr, m_staffNode );
+    pNotationFileParser->loadElements( m_elementsVector, m_sceneMgr, m_staffNode );
 }

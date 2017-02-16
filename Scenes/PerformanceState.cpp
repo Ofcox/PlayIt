@@ -57,7 +57,7 @@ void PerformanceState::createScene() {
 
     // Fret node
     m_fretLinesNode = m_perfSceneNode->createChildSceneNode( "FretLinesNode" );
-    m_frets->load( m_fretLinesNode );
+    m_frets->createModels( m_fretLinesNode );
     m_fretLinesNode->setPosition( 0, 0, 0 );
 
     // Neck node

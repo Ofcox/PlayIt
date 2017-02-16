@@ -2,22 +2,30 @@
 
 NotationFileParser::NotationFileParser( std::string fileName ) {
     m_fileName = fileName;
+    m_barNumber = -1;
 }
 
-void NotationFileParser::loadElements( std::vector<Element *> &elements ) {
+void NotationFileParser::loadElements( std::vector<Element *> &elements, Ogre::SceneManager* pSceneMgr, Ogre::SceneNode* pStaffNode ) {
     std::ifstream	  file( m_fileName );
     std::stringstream buffer;
     buffer << file.rdbuf();
     file.close();
     std::string content( buffer.str() );
 
-    // Parse the buffer using the xml file parsing library into doc
-    m_doc.parse<0>( &content[0] );
-    // Find our root node
-    m_rootNode = m_doc.first_node( "song" );
+    bool isNoteLastElement = true;
+//    int previousBar;
+    std::string lastChordName = "";
+//    bool isNextChordFrame = false;
+    bool isFirstElementOfBar = true;
 
-    m_chordList = new ChordList();
+    // Parse the buffer using the xml file parsing library into doc
+    m_document.parse<0>( &content[0] );
+    // Find our root node
+    m_rootNode = m_document.first_node( "song" );
+
+    m_chordList = new ChordTemplates();
     loadChordList( m_chordList );
+
     m_FingerPositions = new FingerPositions( m_rootNode, m_chordList );
 
     //loop variable
@@ -25,7 +33,6 @@ void NotationFileParser::loadElements( std::vector<Element *> &elements ) {
 
     //loop through all bars
     while ( currentBarNode != NULL ) {
-
         //define loop variables
         m_barNumber = std::stoi( currentBarNode->first_attribute( "number" )->value() );
         xml_node<>* currentElementNode = currentBarNode->first_node( "element" );
@@ -37,68 +44,54 @@ void NotationFileParser::loadElements( std::vector<Element *> &elements ) {
 
             if ( m_type == "chord" ) {
                 m_currentChord = m_chordList->getChordPatternByName( currentElementNode->first_attribute( "name" )->value() );
-                ocx::Chord* ChordObject = new ocx::Chord(  m_currentChord,
-                                                           actualPosition( std::stof( currentElementNode->first_attribute( "position" )->value() ) ) ) ;
+                ocx::Chord* ChordObject = new ocx::Chord(  m_currentChord, m_barNumber,
+                                                           relativeToAbsolutePosition( std::stof( currentElementNode->first_attribute( "position" )->value() ) ),
+                                                           std::stof( currentElementNode->first_attribute( "value" )->value() ));
                 elements.push_back( ChordObject );
 
-                //Kdyz je chord
-                //zjistit nazev jeho pocatecni a konecny prazec
-                //set begin set end ulozit akord
-                //je dalsi akord?
-                //ano pokracovat dokud neni zmena
-                //ne konec drahy
+                //pokud se jmeno predesleho neshoduje se soucasnym
+                if (isFirstElementOfBar || (ChordObject->getName() != lastChordName) || isNoteLastElement){
+                    ChordObject->createEntire(pStaffNode, pSceneMgr);
+                } else {
+                    ChordObject->createFrame(pStaffNode, pSceneMgr);
+                }
+
+                lastChordName = ChordObject->getName();
+                isNoteLastElement = false;
 
             } else if ( m_type == "note" ) {
                 ocx::Note* NoteObject = new ocx::Note( std::stoi( currentElementNode->first_attribute( "string" )->value() ),
                                                        std::stoi( currentElementNode->first_attribute( "fret" )->value() ),
-                                                       actualPosition( std::stof( currentElementNode->first_attribute( "position" )->value() ) ) );
+                                                       m_barNumber,
+                                                       relativeToAbsolutePosition( std::stof( currentElementNode->first_attribute( "position" )->value() ) ),
+                                                       std::stof( currentElementNode->first_attribute( "value" )->value() ));
                 elements.push_back( NoteObject );
-
-                //Kdyz je note
-                //Uloz jeji pozici
-                //Pokud j
-                //pokud je dalsi element
+                NoteObject->create(pStaffNode, pSceneMgr);
+                isNoteLastElement = true;
             }
             //Next element
             currentElementNode = currentElementNode->next_sibling();
+            isFirstElementOfBar = false;
         }
         //Next Bar
         currentBarNode = currentBarNode->next_sibling();
+        isFirstElementOfBar = true;
     }
     SceneSettings::barCount = m_barNumber;
 }
 
-void NotationFileParser::createElementsModels( std::vector<Element*>& elements, Ogre::SceneManager* pSceneMgr, Ogre::SceneNode* pStaffNode ) {
-    std::vector<Element*>::iterator itr;
-
-    ocx::Note*	NoteObject;
-    ocx::Chord* ChordObject;
-
-    for ( itr = elements.begin(); itr != elements.end(); ++itr ) {
-
-        if ( ( *itr )->m_type == NOTE ) {
-            NoteObject = dynamic_cast<ocx::Note*>( *itr );
-            NoteObject->create(pStaffNode, pSceneMgr);
-
-        } else if ( ( *itr )->m_type == CHORD ) {
-            ChordObject				 = dynamic_cast<ocx::Chord*>( *itr );
-            ChordObject->create(pStaffNode, pSceneMgr);
-        }
-    }
-}
-
-void NotationFileParser::loadChordList( ChordList *chordList ) {
-    xml_node<>* currentNode = m_rootNode->first_node( "chordList" )->first_node( "chordPattern" );
+void NotationFileParser::loadChordList( ChordTemplates *chordList ) {
+    xml_node<>* currentNode = m_rootNode->first_node( "chordList" )->first_node( "chordTemplate" );
     while ( currentNode != NULL ) {
 
-        chordList->chordPatterns.push_back( new ChordPattern(  currentNode->first_attribute( "name" )->value(),
+        chordList->chordTemplate.push_back( new ChordTemplate( currentNode->first_attribute( "name" )->value(),
                                                                currentNode->first_attribute( "englishName" )->value(),
                                                                currentNode->first_attribute( "germanName" )->value(),
                                                                std::stoi( currentNode->first_attribute( "string4" )->value() ),
                                                                std::stoi( currentNode->first_attribute( "string3" )->value() ),
                                                                std::stoi( currentNode->first_attribute( "string2" )->value() ),
                                                                std::stoi( currentNode->first_attribute( "string1" )->value() ) ) );
-        chordList->chordPatterns.back()->m_labelTexture = new LabelMaterial( currentNode->first_attribute( "germanName" )->value() );
+        chordList->chordTemplate.back()->m_labelTexture = new LabelMaterial( currentNode->first_attribute( "germanName" )->value() );
         // jump to next element
         currentNode = currentNode->next_sibling();
     }

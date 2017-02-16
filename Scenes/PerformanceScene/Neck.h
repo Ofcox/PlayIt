@@ -3,23 +3,36 @@
 #include "Strings.h"
 #include "Targets.h"
 
-/*
-===============================================================================
-
-    This class holds all elements bound to the neck like strings or targets
-
-===============================================================================
-*/
-
+/**
+ * @brief This class contains all objects that are bound to the neck
+ */
 class Neck {
 public:
+
+    /**
+     * @brief Simple consturctor
+     *
+     * @param pSceneMgr
+     * @param pNeckNode
+     */
     Neck( Ogre::SceneManager* pSceneMgr, Ogre::SceneNode* pNeckNode );
+
+    /**
+     * @brief
+     *
+     */
     ~Neck();
+
+    /**
+     * @brief Returns Targets object
+     *
+     * @return Targets
+     */
     Targets* getTargets() { return m_targets; }
 
 private:
-    Strings* m_strings;
-    Targets* m_targets;
+    Strings* m_strings; /**< Strings object */
+    Targets* m_targets; /**< Targets object */
 };
 
 #endif // NECK_H

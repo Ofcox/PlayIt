@@ -15,105 +15,202 @@ namespace ocx {
 
 class FingerPattern;
 
-/*
-===============================================================================
-
-    Basic structure for chord patterns
-
-===============================================================================
-*/
-
-class ChordPattern {
+/**
+ * @brief Basic class for chord templates
+ * TODO: Change all strings to a single array
+ */
+class ChordTemplate {
 private:
-    int         m_beginFret;
-    int         m_endFret;
-    std::string m_name;
-    std::string m_englishName;
-    std::string m_germanName;
+    int         m_beginFret; /**< Begin of the chord defined by left fret */
+    int         m_endFret; /**< End of the chord defined by right fret */
+    std::string m_name; /**< Identification name of the chord template */
+    std::string m_englishName; /**< English name used interntionally */
+    std::string m_germanName; /**< German name used mostly in European countries */
 
 public:
-    int m_fretOnString4;
-    int m_fretOnString3;
-    int m_fretOnString2;
-    int m_fretOnString1;
+    int m_fretOnString4; /**< which fret is held on string 4 */
+    int m_fretOnString3; /**< which fret is held on string 3 */
+    int m_fretOnString2; /**< which fret is held on string 2 */
+    int m_fretOnString1; /**< which fret is held on string 1 */
 
-    LabelMaterial* m_labelTexture;
+    LabelMaterial* m_labelTexture; /**< Label texture of the chord */
 
-    ChordPattern( std::string name, std::string englishName, std::string germanName, int fretOnString4, int fretOnString3, int fretOnString2, int fretOnString1 );
-    ~ChordPattern() { }
+    /**
+     * @brief This constructor requires all informations at initialization
+     *
+     * @param name
+     * @param englishName
+     * @param germanName
+     * @param fretOnString4
+     * @param fretOnString3
+     * @param fretOnString2
+     * @param fretOnString1
+     */
+    ChordTemplate( std::string name, std::string englishName, std::string germanName, int fretOnString4, int fretOnString3, int fretOnString2, int fretOnString1 );
 
+    /**
+     * @brief
+     */
+    ~ChordTemplate() { }
+
+    /**
+     * @brief Sets begin of the chord defined by left fret
+     *
+     * @param beginFret
+     */
     void setBeginFret( int& beginFret ) { m_beginFret = beginFret; }
+
+    /**
+     * @brief Sets end of the chord defined by right fret
+     *
+     * @param endFret
+     */
     void setEndFret( int& endFret ) { m_endFret = endFret; }
+
+    /**
+     * @brief Returns begin of the chord defined by left fret
+     *
+     * @return int
+     */
     int getBeginFret() { return m_beginFret; }
+
+    /**
+     * @brief Sets end of the chord defined by right fret
+     *
+     * @return int
+     */
     int getEndFret() { return m_endFret; }
 
+    /**
+     * @brief Returns name of the chord template
+     *
+     * @return std::string
+     */
     std::string getName() { return m_name; }
+
+    /**
+     * @brief Returns english name of the chord template
+     *
+     * @return std::string
+     */
     std::string getEnglishName() { return m_englishName; }
+
+    /**
+     * @brief Returns german name of the chord template
+     *
+     * @return std::string
+     */
     std::string getGermanName() { return m_germanName; }
 };
 
-/*
-===============================================================================
-
-    Here are stored all needed chords
-
-===============================================================================
-*/
-class ChordList {
+/**
+ * @brief Here are stored all needed chords
+ */
+class ChordTemplates {
 public:
-    std::vector<ChordPattern*> chordPatterns;
+    std::vector<ChordTemplate*> chordTemplate;
 
-    ChordList();
-    ~ChordList();
+    ChordTemplates();
 
-    // Returns chord pattern by name
-    ChordPattern* getChordPatternByName( std::string chordName );
+    ~ChordTemplates();
+
+    /**
+     * @brief Returns chord pattern by name
+     *
+     * @param chordName
+     * @return ChordTemplate
+     */
+    ChordTemplate* getChordPatternByName( std::string chordName );
 };
 
-
-/*
-===============================================================================
-
-    Basic structure for chords
-
-===============================================================================
-*/
+/**
+ * @brief Basic class for chords
+ */
 class ocx::Chord : public Element {
 public:
-    ocx::Chord(ChordPattern* chordDefinition, float timePosition);
+
+    /**
+     * @brief
+     */
+    ocx::Chord(ChordTemplate* chordDefinition, int bar, float timePosition, float value);
+
+    /**
+     * @brief
+     */
     virtual ~Chord();
 
-    // Sets visibility of chords
+    /**
+     * @brief Sets visibility of the chord
+     *
+     * @param isVisible
+     */
     virtual void setVisibility( bool isVisible ) { m_chordNode->setVisible( isVisible ); }
-    virtual Ogre::SceneNode* getNode() { return m_chordNode; }
-    std::string getGermanName() { return m_germanName; }
-    std::string getEnglishName() { return m_englishName; }
-    int getBeginFret() { return m_beginFret; }
-    int getEngFret() { return m_endFret; }
 
-    void create( Ogre::SceneNode* staffNode, Ogre::SceneManager* sceneMgr );
+    /**
+     * @brief Returns chord node
+     *
+     * @return Ogre::SceneNode
+     */
+    virtual Ogre::SceneNode* getNode() { return m_chordNode; }
+
+    /**
+     * @brief Returns german name
+     *
+     * @return std::string
+     */
+    std::string getGermanName() { return m_germanName; }
+
+    /**
+     * @brief Returns english name
+     *
+     * @return std::string
+     */
+    std::string getEnglishName() { return m_englishName; }
+
+    /**
+     * @brief Returns begin of the chord defined by left fret
+     *
+     * @return int
+     */
+    int getBeginFret() { return m_beginFret; }
+
+    /**
+     * @brief Returns end of the chord defined by right fret
+     *
+     * @return int
+     */
+    int getEndFret() { return m_endFret; }
+
+    /**
+     * @brief This creates objects and models for the scene using dependency injection - lazy init
+     *
+     * @param staffNode
+     * @param sceneMgr
+     */
+    void createEntire( Ogre::SceneNode* staffNode, Ogre::SceneManager* sceneMgr );
+    void createFrame( Ogre::SceneNode* staffNode, Ogre::SceneManager* sceneMgr );
 
 private:
-    Ogre::SceneNode*    m_chordNode;
-    Ogre::SceneManager* m_sceneMgr;
+    Ogre::SceneNode*    m_chordNode; /**< Ogre node for chord */
+    Ogre::SceneManager* m_sceneMgr; /**< Ogre scenene manager */
 
-    std::vector<ocx::Note*> m_notes;
+    std::vector<ocx::Note*> m_notes; /**< Vector of notes from chord consists */
 
-    Ogre::Entity*    m_labelEntity;
-    Ogre::SceneNode* m_labelNode;
+    Ogre::Entity*    m_labelEntity; /**< Ogre entity of label */
+    Ogre::SceneNode* m_labelNode; /**< Ogre scene node */
 
-    Ogre::Entity*    m_frameEntity;
-    Ogre::SceneNode* m_frameNode;
+    Ogre::Entity*    m_frameEntity; /**< Ogre entity of frame */
+    Ogre::SceneNode* m_frameNode; /**< Ogre scene node */
 
-    std::string m_germanName;
-    std::string m_englishName;
-    int         m_beginFret;
-    int         m_endFret;
+    std::string m_germanName; /**< German name */
+    std::string m_englishName; /**< english name */
+    int         m_beginFret; /**< Begin of the chord defined by left fret */
+    int         m_endFret; /**< End of the chord defined by right fret */
 
-    ocx::Note* note4;
-    ocx::Note* note3;
-    ocx::Note* note2;
-    ocx::Note* note1;
+    ocx::Note* note4; /**< Note object on string 4 */
+    ocx::Note* note3; /**< Note object on string 3 */
+    ocx::Note* note2; /**< Note object on string 2 */
+    ocx::Note* note1; /**< Note object on string 1 */
 };
 
 #endif // CHORD_H

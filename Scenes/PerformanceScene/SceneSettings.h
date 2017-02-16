@@ -3,23 +3,22 @@
 
 #include <OgreSceneManager.h>
 #include "../SongListScene/SongInfo.h"
-/*
-===============================================================================
 
-    This class contains a basic scene settings
-
-===============================================================================
-*/
-
+/**
+ * @brief This class contains a basic scene settings
+ */
 class SceneSettings {
 public:
-    static float         stringSpacing;
-    static int           fretSpacing;
-    static float         barScale;
-    static int           barCount;
-    static Ogre::Vector3 direction;
-    static Ogre::Real    value;
+    static float         stringSpacing; /**< Space between strings */
+    static int           fretSpacing; /**< Space between frets */
+    static float         barScale; /**< Space between bars */
+    static int           barCount; /**< Total number of bars */
+    static Ogre::Vector3 direction; /**< Everything on the staff is in negative direction */
+    static Ogre::Real    value; /**< Scale of staff */
 
+    /**
+     * @brief
+     */
     SceneSettings();
 
     void setScale( Ogre::Real value /* basic 0.7 /*, float tempo = 60 /* basic 60 bpm*/ ) {

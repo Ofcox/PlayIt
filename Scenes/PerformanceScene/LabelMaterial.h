@@ -12,30 +12,54 @@
 #include <string>
 #include <vector>
 
-/*
-===============================================================================
-
-    This class creates textures an materials for labels
-
-===============================================================================
-*/
-
+/**
+ * @brief This class creates textures an materials for labels
+ */
 class LabelMaterial {
 public:
-    Ogre::MaterialPtr m_material;
-    static int        m_objectCount;
+    Ogre::MaterialPtr m_material; /**< Ogre pointer of material */
+    static int        m_objectCount; /**< Object counter */
 
-    static std::vector<std::string> m_createdLabels;
+    static std::vector<std::string> m_createdLabels; /**< Container for all already created labels */
 
+    /**
+     * @brief Creates label
+     *
+     * @param Text of the label
+     */
     LabelMaterial( std::string text );
-    void WriteToTexture( const std::string &str, Ogre::Image::Box destRectangle, Ogre::Font* m_font, const Ogre::ColourValue &color, char justify = 'l',  bool wordwrap = true );
+
+    /**
+     * @brief Creates the texture of label
+     *
+     * @param Label text
+     * @param Image box
+     * @param Label font
+     * @param Label colour
+     * @param Alignment
+     * @param Wrapping of text
+     */
+    void WriteToTexture( const std::string &str, Ogre::Image::Box destRectangle, Ogre::Font* font, const Ogre::ColourValue &color, char justify = 'l',  bool wordwrap = true );
+
+    /**
+     * @brief Returns Ogre pointer to label material
+     *
+     * @return Ogre::MaterialPtr
+     */
     Ogre::MaterialPtr getMaterial() { return m_material; }
 
 private:
-    Ogre::Font*      m_font;
-    Ogre::TexturePtr m_destTexture;
-    std::string      m_materialName;
-    std::string      m_textureName;
+    Ogre::Font*      m_font; /**< Label font */
+    Ogre::TexturePtr m_destTexture; /**< Ogre pointer to texture */
+    std::string      m_materialName; /**< Identification name of material */
+    std::string      m_textureName; /**< Identification name of texture */
+
+    /**
+     * @brief Check if the label is created
+     *
+     * @param text
+     * @return bool
+     */
     bool isAlreadyCreated(std::string& text);
 };
 

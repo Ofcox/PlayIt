@@ -2,7 +2,6 @@
 
 Frets::Frets( Ogre::SceneManager* pSceneMgr ) {
     m_pSceneMgr = pSceneMgr;
-    m_width		= 5;
 }
 
 Frets::~Frets() {
@@ -25,7 +24,7 @@ Frets::~Frets() {
     }
 }
 
-void Frets::load( Ogre::SceneNode *fretLinesNode ) {
+void Frets::createModels( Ogre::SceneNode *fretLinesNode ) {
     OgreFramework::getSingletonPtr()->m_pLog->logMessage( "Loading performance scene..." );
     m_pFretLinesNode = fretLinesNode;
 

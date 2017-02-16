@@ -1,32 +1,44 @@
 #ifndef ELEMENTS_H
 #define ELEMENTS_H
-#include "Chord.h"
+#include "Element.h"
 #include "NotationFileParser.h"
-#include "Targets.h"
+
+/**
+ * @brief Represents vector of Elements pointers std::vector<Element*>
+ */
 using VectorElements = std::vector<Element*>;
 
+/**
+ * @brief This is the base class for notes and chords
+ */
 class Elements {
 public:
-    Ogre::SceneNode*	m_staffNode;
-    Ogre::SceneManager* m_sceneMgr;
+    Ogre::SceneNode*	m_staffNode; /**< Ogre node of Staff */
+    Ogre::SceneManager* m_sceneMgr; /**< Ogre scene manager */
 
-    /*std::vector<Element*>*/ VectorElements m_elementsVector;
+    VectorElements m_elementsVector; /**< Container for elements */
 
     Elements( Ogre::SceneManager *pSceneMgr, Ogre::SceneNode *pStaffNode );
     ~Elements();
+
+    /**
+     * @brief Loads all elements into the vector of Elements
+     *
+     * @param pNotationFileParser
+     */
     void loadElements( NotationFileParser* pNotationFileParser );
-    void setTargets( Targets* pTargets ) {targets = pTargets; }
+
+    /**
+     * @brief Returns vector of Elements
+     *
+     * @return VectorElements
+     */
     VectorElements& getElementsVector(){return m_elementsVector;}
 
-
 private:
-    // Number of the last element that passed through strings
-    int m_lastPassedElement;
-    int m_currentElement;
-    // Number of next element that passing through strings
-    int m_nextElement;
-
-    Targets* targets;
+    int m_lastPassedElement; /**< Index of the last element that passed through strings */
+    int m_currentElement; /**< Index of current element being processsed */
+    int m_nextElement; /**< Index of next element that passing through strings */
 };
 
 #endif // ELEMENTS_H

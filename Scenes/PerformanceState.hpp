@@ -63,7 +63,7 @@ public:
 
 private:
     OgreBites::ParamsPanel* m_pDetailsPanel;
-    bool					m_bQuit;
+    bool m_bQuit;
 
     Ogre::Vector3 m_TranslateVector;
     Ogre::Real	  m_MoveSpeed;
@@ -82,8 +82,8 @@ private:
     Ogre::SceneNode* m_staffNode = nullptr;
 
     Frets* m_frets = nullptr;
-    Staff*	   m_staff = nullptr;
-    Neck*	   m_neck = nullptr;
+    Staff* m_staff = nullptr;
+    Neck*  m_neck = nullptr;
 
     NotationFileParser* m_notationFileParser = nullptr;
 };

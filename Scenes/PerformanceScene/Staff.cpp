@@ -24,6 +24,7 @@ void Staff::loadElements() {
     m_elements->loadElements( m_notationFileParser );
     // Fret Guide
     m_fretGuide = new FretGuide(m_sceneMgr, m_staffNode);
+    m_fretGuide->createTrails(m_elements);
 }
 
 bool Staff::elementHasReachedTarget() {
@@ -39,7 +40,7 @@ bool Staff::elementHasReachedTarget() {
 }
 
 bool Staff::elementIsInStringsRange() {
-    int   range = 380; // If next element is closer than this distance, the actual target will not show
+    int   range = 380;
     float elementWorldPosition;
 
     elementWorldPosition = m_staffNode->getPosition().z + m_elements->m_elementsVector[m_upcomingElement]->getNode()->getPosition().z;
@@ -94,7 +95,7 @@ void Staff::update() {
                         m_neck->getTargets()->hideTargetAt( i, m_elements->m_elementsVector[m_currentElement]->getFretAt( i ) );
                     }
 
-                    // TODO: End of track
+                    // TODO: End of track event
                 }
             }
 

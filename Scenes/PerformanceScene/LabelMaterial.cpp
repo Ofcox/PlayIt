@@ -16,7 +16,7 @@ LabelMaterial::LabelMaterial(std::string text ) {
         m_font = FontManager::getSingleton().getByName( "SdkTrays/Caption" ).getPointer();
 
         // Make sure the texture is not WRITE_ONLY, we need to read the buffer to do the blending with the font (get the alpha for example)
-        m_destTexture = TextureManager::getSingleton().createManual( m_textureName.c_str(), "General", TEX_TYPE_2D, 1024, 1024, MIP_UNLIMITED, PF_X8R8G8B8, Ogre::TU_STATIC | Ogre::TU_AUTOMIPMAP ) /*.getPointer()*/;
+        m_destTexture = TextureManager::getSingleton().createManual( m_textureName.c_str(), "General", TEX_TYPE_2D, 512, 512, MIP_UNLIMITED, PF_X8R8G8B8, Ogre::TU_STATIC | Ogre::TU_AUTOMIPMAP ) /*.getPointer()*/;
 
         WriteToTexture( text.c_str(), Image::Box( 50,50,150,150 ), m_font, ColourValue( 1.0,1.0,1.0,1.0 ), 'c' );
 
@@ -46,7 +46,7 @@ void LabelMaterial::WriteToTexture( const std::string &str, Image::Box destRecta
 
     PixelBox destPb = destBuffer->lock( destRectangle,HardwareBuffer::HBL_NORMAL );
 
-    // The font texture buffer was created write only...so we cannot read it back :o). One solution is to copy the buffer  instead of locking it. (Maybe there is a way to create a font texture which is not write_only ?)
+    // The font texture buffer was created write only...so we cannot read it back :o). One solution is to copy the buffer instead of locking it. (Maybe there is a way to create a font texture which is not write_only ?)
 
     // create a buffer
     size_t nBuffSize = fontBuffer->getSizeInBytes();

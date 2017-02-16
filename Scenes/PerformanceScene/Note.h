@@ -6,71 +6,95 @@
 
 #include <OgreSceneManager.h>
 #include <OgreEntity.h>
-#include "SceneSettings.h"
-
-/*
-===============================================================================
-
-    This class contains definitions of elements base class and Notes
-
-===============================================================================
-*/
+#include "Element.h"
 
 namespace ocx {
     class Note;
 }
 
-enum ElementType { NOTE, CHORD };
-
-class Element {
-public:
-    ElementType m_type;
-    int         m_string;
-    int         m_fret;
-
-    Element() { }
-    virtual ~Element() {}
-
-    virtual void setVisibility( bool isVisible ) {}
-    virtual float getTimePosition() { return m_timePosition; }
-    virtual Ogre::SceneNode* getNode() { return nullptr; }
-    virtual std::string getName() { return m_name; }
-    virtual int getString() { return m_fret; }
-    virtual int getFret() { return m_string; }
-    virtual int getFretAt( int string ) { return m_strings[( string - 1 )]; }
-
-protected:
-    std::string m_name;
-    float       m_timePosition;
-    bool        m_hit        = false;
-    bool        m_hasReached = false;
-    // Because dynamic casting is expensive, I rather use this array. For notes there will be waste of four ints, but it's
-    // still much cheaper.
-    int m_strings[4] = {0,0,0,0};
-
-};
-
+/**
+ * @brief Basic class for notes
+ */
 class ocx::Note : public Element {
 public:
-    Ogre::Entity*    m_noteEntity;
-    Ogre::SceneNode* m_noteNode;
-    Ogre::SceneManager* m_sceneMgr;
+    Ogre::Entity*    m_noteEntity; /**< Ogre entity of note */
+    Ogre::SceneNode* m_noteNode; /**< Ogre node of note */
+    Ogre::SceneManager* m_sceneMgr; /**< Ogre scene node */
 
-    ocx::Note( int string, int fret, float timePosition );
-    ocx::Note( int string, int fret, float timePosition, bool isNullFret );
+    /**
+     * @brief Constructor for notes
+     *
+     * @param string
+     * @param fret
+     * @param bar
+     * @param timePosition
+     * @param value
+     */
+    ocx::Note( int string, int fret, int bar, float timePosition, float value );
+
+    /**
+     * @brief Constructor mostly for open notes
+     *
+     * @param string
+     * @param fret
+     * @param bar
+     * @param timePosition
+     * @param value
+     * @param isNullFret
+     */
+    ocx::Note( int string, int fret, int bar, float timePosition, float value, bool isNullFret );
+
+    /**
+     * @brief
+     */
     virtual ~Note();
 
+    /**
+     * @brief Creates model for note
+     *
+     * @param staffNode
+     * @param sceneMgr
+     */
     void create( Ogre::SceneNode* staffNode, Ogre::SceneManager* sceneMgr );
 
+    /**
+     * @brief Returns fret where is the note
+     *
+     * @return int
+     */
     int getFret() { return m_fret; }
+
+    /**
+     * @brief Returns string where is the note
+     *
+     * @return int
+     */
     int getString() { return m_string; }
+
+    /**
+     * @brief Returns if its a null fret
+     *
+     * @return bool
+     */
     bool getIsNullFret() { return m_isNullFret; }
 
+
+    /**
+     * @brief Sets visibility of note
+     *
+     * @param isVisible
+     */
     virtual void setVisibility( bool isVisible ) { m_noteNode->setVisible( isVisible ); }
+
+    /**
+     * @brief Returns Ogre node of the note
+     *
+     * @return Ogre::SceneNode
+     */
     virtual Ogre::SceneNode* getNode() { return m_noteNode; }
 
 private:
-    bool m_isNullFret;
+    bool m_isNullFret; /**< Is note open? */
 };
 
 #endif // NOTE_H

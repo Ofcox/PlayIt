@@ -33,8 +33,8 @@ public:
 protected:
     void init( AppState *state );
 
-    std::vector<AppState*> m_ActiveStateStack;
-    std::vector<AppState*> m_States;
+    std::vector<AppState*> m_activeStateStack;
+    std::vector<AppState*> m_states;
     bool                   m_bShutdown;
 };
 

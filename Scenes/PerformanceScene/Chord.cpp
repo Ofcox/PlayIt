@@ -5,7 +5,7 @@
     ChordPatterns definition
 ===============================================================================
 */
-ChordPattern::ChordPattern( std::string name, std::string englishName, std::string germanName, int fretOnString4, int fretOnString3, int fretOnString2, int fretOnString1 ) {
+ChordTemplate::ChordTemplate( std::string name, std::string englishName, std::string germanName, int fretOnString4, int fretOnString3, int fretOnString2, int fretOnString1 ) {
     m_name			= name;
     m_englishName	= englishName;
     m_germanName	= germanName;
@@ -18,10 +18,10 @@ ChordPattern::ChordPattern( std::string name, std::string englishName, std::stri
     m_endFret	= 10;
 }
 
-ChordPattern *ChordList::getChordPatternByName( std::string chordName ) {
-    std::vector<ChordPattern*>::iterator itr;
+ChordTemplate *ChordTemplates::getChordPatternByName( std::string chordName ) {
+    std::vector<ChordTemplate*>::iterator itr;
 
-    for ( itr = chordPatterns.begin(); itr != chordPatterns.end(); ++itr )
+    for ( itr = chordTemplate.begin(); itr != chordTemplate.end(); ++itr )
     {
         if ( ( *itr )->getName() == chordName ) {
             return *itr;
@@ -35,14 +35,14 @@ ChordPattern *ChordList::getChordPatternByName( std::string chordName ) {
     ChordList definition
 ===============================================================================
 */
-ChordList::ChordList() {
+ChordTemplates::ChordTemplates() {
 }
 
-ChordList::~ChordList() {
-    while ( !chordPatterns.empty() )
+ChordTemplates::~ChordTemplates() {
+    while ( !chordTemplate.empty() )
     {
-        delete chordPatterns.back();
-        chordPatterns.pop_back();
+        delete chordTemplate.back();
+        chordTemplate.pop_back();
     }
 }
 
@@ -50,18 +50,19 @@ ChordList::~ChordList() {
     Chords definition
 ===============================================================================
 */
-ocx::Chord::Chord( ChordPattern *chordDefinition, float timePosition) {
+ocx::Chord::Chord( ChordTemplate *chordDefinition, int bar, float timePosition, float value) {
     m_type		   = CHORD;
-    m_timePosition = timePosition;
+    m_barPosition = timePosition;
+    m_value        = value;
     m_germanName   = chordDefinition->getGermanName();
     m_englishName  = chordDefinition->getEnglishName();
     m_beginFret	   = chordDefinition->getBeginFret();
     m_endFret	   = chordDefinition->getEndFret();
 
-    note4 = new Note( 4, chordDefinition->m_fretOnString4, m_timePosition, chordDefinition->m_fretOnString4 == 0 ? true : false );
-    note3 = new Note( 3, chordDefinition->m_fretOnString3, m_timePosition, chordDefinition->m_fretOnString3 == 0 ? true : false );
-    note2 = new Note( 2, chordDefinition->m_fretOnString2, m_timePosition, chordDefinition->m_fretOnString2 == 0 ? true : false );
-    note1 = new Note( 1, chordDefinition->m_fretOnString1, m_timePosition, chordDefinition->m_fretOnString1 == 0 ? true : false );
+    note4 = new Note( 4, chordDefinition->m_fretOnString4, m_bar, m_barPosition, m_value, chordDefinition->m_fretOnString4 == 0 ? true : false );
+    note3 = new Note( 3, chordDefinition->m_fretOnString3, m_bar, m_barPosition, m_value, chordDefinition->m_fretOnString3 == 0 ? true : false );
+    note2 = new Note( 2, chordDefinition->m_fretOnString2, m_bar, m_barPosition, m_value, chordDefinition->m_fretOnString2 == 0 ? true : false );
+    note1 = new Note( 1, chordDefinition->m_fretOnString1, m_bar, m_barPosition, m_value, chordDefinition->m_fretOnString1 == 0 ? true : false );
 
     m_strings[0] = chordDefinition->m_fretOnString1;
     m_strings[1] = chordDefinition->m_fretOnString2;
@@ -102,7 +103,7 @@ ocx::Chord::~Chord() {
     m_sceneMgr->destroySceneNode(m_chordNode->getName());
 }
 
-void ocx::Chord::create(Ogre::SceneNode *staffNode, Ogre::SceneManager *sceneMgr){
+void ocx::Chord::createEntire(Ogre::SceneNode *staffNode, Ogre::SceneManager *sceneMgr){
     m_sceneMgr = sceneMgr;
     m_chordNode = staffNode->createChildSceneNode();
 
@@ -131,17 +132,18 @@ void ocx::Chord::create(Ogre::SceneNode *staffNode, Ogre::SceneManager *sceneMgr
                                               0 );
 
         if ( !m_notes[i]->getIsNullFret() ) {
-            m_chordNode->setPosition( 0, 0, -getTimePosition() * SceneSettings::barScale );
+            m_chordNode->setPosition( 0, 0, -getRelativeTimePosition() * SceneSettings::barScale );
             m_notes[i]->m_noteNode->setScale( 8, 4, 4 );
-        } else {
-            m_chordNode->setPosition( 0, 0, -getTimePosition() * SceneSettings::barScale );
+        } else { // if open string
+            m_chordNode->setPosition( 0, 0, -getRelativeTimePosition() * SceneSettings::barScale );
             m_notes[i]->m_noteNode->setPosition( ( /*7.5+15 + */ ( m_beginFret * SceneSettings::fretSpacing ) + ( SceneSettings::fretSpacing ) /* position from finger guide class */ ),
                                                  ( m_notes[i]->getString() * SceneSettings::stringSpacing ),
                                                  0 );
-            m_notes[i]->m_noteNode->setScale( SceneSettings::fretSpacing * 4, 1, 1 );
+            m_notes[i]->m_noteNode->setScale( SceneSettings::fretSpacing * 4, 0.5, 0.5 );
         }
     }
 
+    //Chord frame
     m_frameEntity = m_sceneMgr->createEntity( "frame.mesh" );
     m_frameNode   = m_chordNode->createChildSceneNode();
     m_frameNode->attachObject( m_frameEntity );
@@ -150,11 +152,73 @@ void ocx::Chord::create(Ogre::SceneNode *staffNode, Ogre::SceneManager *sceneMgr
 
     m_frameEntity->setMaterialName( "Frame/ChordMat" );
 
+    //Chord label
     m_labelEntity = m_sceneMgr->createEntity( "plane.mesh" );
     m_labelNode   = m_chordNode->createChildSceneNode();
     m_labelNode->attachObject( m_labelEntity );
     m_labelNode->setScale( 10,10,0 );
     m_labelNode->setPosition( ( m_beginFret * SceneSettings::fretSpacing ) -20, SceneSettings::stringSpacing * 5, 0 );
+
+    m_labelEntity->setMaterialName( m_germanName.c_str() );
+}
+
+void ocx::Chord::createFrame(Ogre::SceneNode *staffNode, Ogre::SceneManager *sceneMgr)
+{
+    m_sceneMgr = sceneMgr;
+    m_chordNode = staffNode->createChildSceneNode();
+
+    for ( int i = 0; i <= 3; ++i ) {
+        m_notes[i]->m_sceneMgr = m_sceneMgr;
+        m_notes[i]->m_noteEntity = m_sceneMgr->createEntity( "cube.mesh" );
+
+        switch ( m_notes[i]->getString() ) {
+        case 1:
+            m_notes[i]->m_noteEntity->setMaterialName( "Fret/String1Mat" );
+            break;
+        case 2:
+            m_notes[i]->m_noteEntity->setMaterialName( "Fret/String2Mat" );
+            break;
+        case 3:
+            m_notes[i]->m_noteEntity->setMaterialName( "Fret/String3Mat" );
+            break;
+        case 4:
+            m_notes[i]->m_noteEntity->setMaterialName( "Fret/String4Mat" );
+            break;
+        }
+        m_notes[i]->m_noteNode = m_chordNode->createChildSceneNode();
+        m_notes[i]->m_noteNode->attachObject( m_notes[i]->m_noteEntity );
+        m_notes[i]->m_noteNode->setPosition(  ( m_notes[i]->getFret() * SceneSettings::fretSpacing ) - ( SceneSettings::fretSpacing / 2 ),
+                                              ( m_notes[i]->getString() * SceneSettings::stringSpacing ),
+                                              0 );
+        m_notes[i]->setVisibility(false);
+
+        if ( !m_notes[i]->getIsNullFret() ) {
+            m_chordNode->setPosition( 0, 0, -getRelativeTimePosition() * SceneSettings::barScale );
+            m_notes[i]->m_noteNode->setScale( 8, 4, 4 );
+        } else { // if open string
+            m_chordNode->setPosition( 0, 0, -getRelativeTimePosition() * SceneSettings::barScale );
+            m_notes[i]->m_noteNode->setPosition( ( /*7.5+15 + */ ( m_beginFret * SceneSettings::fretSpacing ) + ( SceneSettings::fretSpacing ) /* position from finger guide class */ ),
+                                                 ( m_notes[i]->getString() * SceneSettings::stringSpacing ),
+                                                 0 );
+            m_notes[i]->m_noteNode->setScale( SceneSettings::fretSpacing * 4, 0.5, 0.5 );
+        }
+    }
+
+    //Chord frame
+    m_frameEntity = m_sceneMgr->createEntity( "frame.mesh" );
+    m_frameNode   = m_chordNode->createChildSceneNode();
+    m_frameNode->attachObject( m_frameEntity );
+    m_frameNode->setScale( 20,15,0 );
+    m_frameNode->setPosition( ( m_beginFret * SceneSettings::fretSpacing ) - ( SceneSettings::fretSpacing ), 0, 0 );
+
+    m_frameEntity->setMaterialName( "Frame/ChordMat" );
+
+    //Chord label
+    m_labelEntity = m_sceneMgr->createEntity( "plane.mesh" );
+    m_labelNode   = m_chordNode->createChildSceneNode();
+    m_labelNode->attachObject( m_labelEntity );
+    m_labelNode->setScale( 10,10,0 );
+    m_labelNode->setPosition( ( m_beginFret * SceneSettings::fretSpacing ) -20, SceneSettings::stringSpacing * 4, 0 );
 
     m_labelEntity->setMaterialName( m_germanName.c_str() );
 }

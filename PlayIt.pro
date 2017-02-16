@@ -52,7 +52,6 @@ DISTFILES += \
 HEADERS += \
     AdvancedOgreFramework.hpp \
     AppStateManager.hpp \
-    DotSceneLoader.hpp \
     Dependencies/rapidxml/rapidxml.hpp \
     Dependencies/rapidxml/rapidxml_iterators.hpp \
     Dependencies/rapidxml/rapidxml_print.hpp \
@@ -77,12 +76,12 @@ HEADERS += \
     Scenes/PerformanceScene/Neck.h \
     Scenes/PerformanceScene/LabelMaterial.h \
     Scenes/PerformanceScene/Bar.h \
-    Scenes/PerformanceScene/Frets.h
+    Scenes/PerformanceScene/Frets.h \
+    Scenes/PerformanceScene/Element.h
 
 SOURCES += \
     AdvancedOgreFramework.cpp \
     AppStateManager.cpp \
-    DotSceneLoader.cpp \
     main.cpp \
     Scenes/MenuState.cpp \
     Scenes/PauseState.cpp \
@@ -103,4 +102,5 @@ SOURCES += \
     Scenes/PerformanceScene/Neck.cpp \
     Scenes/PerformanceScene/LabelMaterial.cpp \
     Scenes/PerformanceScene/Bar.cpp \
-    Scenes/PerformanceScene/Frets.cpp
+    Scenes/PerformanceScene/Frets.cpp \
+    Scenes/PerformanceScene/Element.cpp

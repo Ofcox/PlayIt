@@ -8,34 +8,34 @@ AppStateManager::AppStateManager() {
 
 AppStateManager::~AppStateManager() {
 
-    while( !m_ActiveStateStack.empty() ) {
-        m_ActiveStateStack.back()->exit();
-        m_ActiveStateStack.pop_back();
+    while( !m_activeStateStack.empty() ) {
+        m_activeStateStack.back()->exit();
+        m_activeStateStack.pop_back();
     }
 
-    while( !m_States.empty() ) {
-        m_States.back()->destroy();
-        m_States.pop_back();
+    while( !m_states.empty() ) {
+        m_states.back()->destroy();
+        m_states.pop_back();
     }
 }
 
 void AppStateManager::manageAppState( AppState* state) {
-        m_States.push_back(state);
+        m_states.push_back(state);
 }
 
 AppState* AppStateManager::getAppState(GameState gameState) {
     switch (gameState) {
     case GS_MenuState:
-        return m_States[0];
+        return m_states[0];
         break;
     case GS_PauseState:
-        return m_States[1];
+        return m_states[1];
         break;
     case GS_SongListState:
-        return m_States[2];
+        return m_states[2];
         break;
     case GS_PerformanceState:
-        return m_States[3];
+        return m_states[3];
         break;
     default:
         return NULL;
@@ -60,7 +60,7 @@ void AppStateManager::start(AppState* state) {
             OgreFramework::getSingletonPtr()->m_pKeyboard->capture();
             OgreFramework::getSingletonPtr()->m_pMouse->capture();
 
-            m_ActiveStateStack.back()->update(timeSinceLastFrame);
+            m_activeStateStack.back()->update(timeSinceLastFrame);
 
             OgreFramework::getSingletonPtr()->updateOgre(timeSinceLastFrame);
             OgreFramework::getSingletonPtr()->m_pRoot->renderOneFrame();
@@ -79,62 +79,62 @@ void AppStateManager::start(AppState* state) {
 }
 
 void AppStateManager::changeAppState(AppState* state) {
-    if( !m_ActiveStateStack.empty() ) {
-        m_ActiveStateStack.back()->exit();
-        m_ActiveStateStack.pop_back();
+    if( !m_activeStateStack.empty() ) {
+        m_activeStateStack.back()->exit();
+        m_activeStateStack.pop_back();
     }
 
-    m_ActiveStateStack.push_back(state);
+    m_activeStateStack.push_back(state);
     init(state);
-    m_ActiveStateStack.back()->enter();
+    m_activeStateStack.back()->enter();
 }
 
 bool AppStateManager::pushAppState(AppState* state) {
 
-    if( !m_ActiveStateStack.empty() ) {
-        if( !m_ActiveStateStack.back()->pause() )
+    if( !m_activeStateStack.empty() ) {
+        if( !m_activeStateStack.back()->pause() )
             return false;
     }
 
-    m_ActiveStateStack.push_back(state);
+    m_activeStateStack.push_back(state);
     init(state);
-    m_ActiveStateStack.back()->enter();
+    m_activeStateStack.back()->enter();
 
     return true;
 }
 
 void AppStateManager::popAppState() {
 
-    if( !m_ActiveStateStack.empty() ) {
-        m_ActiveStateStack.back()->exit();
-        m_ActiveStateStack.pop_back();
+    if( !m_activeStateStack.empty() ) {
+        m_activeStateStack.back()->exit();
+        m_activeStateStack.pop_back();
     }
 
-    if( !m_ActiveStateStack.empty() ) {
-        init(m_ActiveStateStack.back() );
-        m_ActiveStateStack.back()->resume();
+    if( !m_activeStateStack.empty() ) {
+        init(m_activeStateStack.back() );
+        m_activeStateStack.back()->resume();
     } else
         shutdown();
 }
 
 void AppStateManager::popAllAndPushAppState(AppState* state) {
-    while( !m_ActiveStateStack.empty() ) {
-        m_ActiveStateStack.back()->exit();
-        m_ActiveStateStack.pop_back();
+    while( !m_activeStateStack.empty() ) {
+        m_activeStateStack.back()->exit();
+        m_activeStateStack.pop_back();
     }
 
     pushAppState(state);
 }
 
 void AppStateManager::pauseAppState() {
-    if( !m_ActiveStateStack.empty() ) {
+    if( !m_activeStateStack.empty() ) {
         //Calls a Pause method of the last object in ActiveStateStack
-        m_ActiveStateStack.back()->pause();
+        m_activeStateStack.back()->pause();
     }
 
-    if( m_ActiveStateStack.size() > 2 ) {
-        init(m_ActiveStateStack.at(m_ActiveStateStack.size() - 2) );
-        m_ActiveStateStack.at(m_ActiveStateStack.size() - 2)->resume();
+    if( m_activeStateStack.size() > 2 ) {
+        init(m_activeStateStack.at(m_activeStateStack.size() - 2) );
+        m_activeStateStack.at(m_activeStateStack.size() - 2)->resume();
     }
 }
 

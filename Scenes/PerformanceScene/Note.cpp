@@ -1,23 +1,27 @@
 #include "Note.h"
 
-ocx::Note::Note( int string, int fret, float timePosition ) {
+ocx::Note::Note( int string, int fret, int bar, float timePosition, float value ) {
     m_type					  = NOTE;
     m_isNullFret			  = false;
     m_name					  = "";
     m_string				  = string;
     m_fret					  = fret;
     m_strings[( string - 1 )] = fret;
-    m_timePosition			  = timePosition;
+    m_bar                     = bar;
+    m_barPosition			  = timePosition;
+    m_value                   = value;
 }
 
-ocx::Note::Note( int string, int fret, float timePosition, bool isNullFret ) {
+ocx::Note::Note( int string, int fret, int bar, float timePosition,float value, bool isNullFret ) {
     m_type					  = NOTE;
     m_isNullFret			  = isNullFret;
     m_name					  = "";
     m_string				  = string;
     m_fret					  = fret;
     m_strings[( string - 1 )] = fret;
-    m_timePosition			  = timePosition;
+    m_bar                     = bar;
+    m_barPosition			  = timePosition;
+    m_value                   = value;
 }
 
 ocx::Note::~Note() {
@@ -52,6 +56,6 @@ void ocx::Note::create(Ogre::SceneNode *staffNode, Ogre::SceneManager *sceneMgr)
     m_noteNode->attachObject( m_noteEntity );
     m_noteNode->setPosition( ( m_fret * SceneSettings::fretSpacing ) - ( SceneSettings::fretSpacing / 2 ),
                              ( m_string * SceneSettings::stringSpacing ),
-                             -m_timePosition * SceneSettings::barScale );
+                             -m_barPosition * SceneSettings::barScale );
     m_noteNode->setScale( 8, 4, 4 );
 }
